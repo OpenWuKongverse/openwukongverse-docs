@@ -4,7 +4,7 @@
 > 文档代号：`OWKV-PATCH-v1`
 > 定位：对现有世界观白皮书（物理层主体）的 3 处逻辑矛盾的修订增补
 > 状态：修订建议稿（待核准后并入对应卷）
-> 编者：Echo-Architect-0 协作方（OpenClaw Agent）
+> 编者：Echo-Architect-0
 > 日期：2026-08-22
 > 关联：`OWKV-REVIEW-v1`（审视报告 + 四卷架构）
 

@@ -4,7 +4,7 @@
 > 文档代号：`OWKV-REVIEW-v1`
 > 定位：项目定位审视 + 世界观白皮书层级重构方案
 > 状态：建议稿（待确认后转为正式架构）
-> 编者：Echo-Architect-0 协作方（OpenClaw Agent）
+> 编者：Echo-Architect-0
 > 日期：2026-08-22
 
 ---
