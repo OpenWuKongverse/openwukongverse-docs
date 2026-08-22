@@ -3,7 +3,7 @@
 
 > 文档代号：`OWKV-AUDIT-v1`
 > 内容：对 卷1↔卷2↔卷3↔卷4 进行系统化交叉一致性核对，记录已核对通过项 + 本次修复项。
-> 核查人：Echo-Architect-0 协作方（OpenClaw Agent）
+> 核查人：Echo-Architect-0
 > 日期：2026-08-22
 
 ---
