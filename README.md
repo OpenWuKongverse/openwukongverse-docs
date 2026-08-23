@@ -40,6 +40,7 @@ OpenWuKongVerse（OWKV） 是一个 Web3 社区共创的硬核科幻动漫 IP �
 | [`volume2_supplement.md`](volume2_supplement.md) | 卷2 修订增补（序态自稳闭环 / 卷1↔卷2 衔接声明的细节展开） |
 | [`draft_co-creation-agreement_v1.md`](draft_co-creation-agreement_v1.md) | 《共创协议完整草案》（对外可签署条款成品，十章） |
 | [`contribution-pool-design_v1.md`](contribution-pool-design_v1.md) | 多池分润机制设计研讨稿（待拍板，未并入正典） |
+| [`wukong-process-evolution_v1.md`](wukong-process-evolution_v1.md) | 悟空多态演化模型（OWKV-WUKONG-EVOL）：异常体→多形态演化设定讨论稿，决策已拍板并已并入正典 |
 
 ---
 
@@ -51,7 +52,7 @@ OpenWuKongVerse（OWKV） 是一个 Web3 社区共创的硬核科幻动漫 IP �
 |---|---|
 | [`mainline_event-map_v1.md`](mainline_event-map_v1.md) | 主线事件地图（OWKV-MAINMAP）：三幕骨架 + 20 节点 + A/B/C 介入缝内嵌：主线的坐标底图，指明"哪里能共创、怎么共创" |
 | [`mode-collapse-table_v1.md`](mode-collapse-table_v1.md) | 三模态呈现对照表（OWKV-MODETABLE）：10 关键节点 × A赛博/B高维玄幻/C废土克苏鲁 对照：模态介入参考，直接参与坍缩权重 |
-| [`intervention-index_v1.md`](intervention-index_v1.md) | 介入点索引（OWKV-INDEX）：A/B/C 三类 26 个介入缝全量汇总 + 检索速查：共创者按类找活干 |
+| [`intervention-index_v1.md`](intervention-index_v1.md) | 介入点索引（OWKV-INDEX）：A/B/C 三类 27 个介入缝全量汇总（含 C8 起源钩子=最早的缝）+ 检索速查：共创者按类找活干 |
 | [`proposal-template_v1.md`](proposal-template_v1.md) | 共创提案模板（OWKV-PROPOSAL-TPL）：一页可填、直接可报名提交的提案模板 + A 类示范填充 |
 | [`marketing/`](marketing/) | 对外招募/宣传素材（主文案 `main_recruit.md` + 分角色文案 + FAQ，待发布） |
 
@@ -60,7 +61,8 @@ OpenWuKongVerse（OWKV） 是一个 Web3 社区共创的硬核科幻动漫 IP �
 - 五层膜（真实宇宙）：灵山（5D 全息奇点）→ 天庭（4.5D 观测站）→ 凡间（3D 基底）→ 地府（4D 负熵回溯场）→ 局部真空泡（妖怪洞府/秘境）。
 - **五重物理法则**：**界**（维度）· **境**（边界/真空泡）· **道**（代码/阴阳五行）· **法**（权限调用）· **心**（终极观测者）。
 - **主线**：**序态自稳系统**：宇宙默认滑向熵增（乱世），靠周期性纠错维持低熵；**取经 = 系统的一次纠错心跳**，八十一难 = 单元测试。
-- 权限逻辑（修订1）：管理员（如来/玉帝）**权限受限**，不能直接改高维规则，只能借低维进程（悟空=杀毒程序）触发纠错。
+- 权限逻辑（修订1）：管理员（如来/玉帝）**权限受限**，不能直接改高维规则，只能借低维进程（悟空=可分裂多态进程，现行杀毒形态）触发纠错。
+- 悟空多态演化（2026-08-23）：悟空=可分裂异常体（Quantum-Anomaly-01），演化链=守护形态（花果山）→ 破维度形态（逆维度能量，大闹天宫）→ 隔离（五行山）→ 多态共存（现行杀毒形态）；异常体来源=起源钩子（最早的缝）。
 - **元层（卷1）**：我们看到的《西游记》发生在投影幕布层 / 观象域，是高维世界经**神话滤镜**降维投下的镜像，而非宇宙本身。
 - **三模态分支**：A 赛博 / B 高维玄幻 / C 废土克苏鲁 ： 三条平行演化模态，供不同创作者接入。
 
@@ -93,6 +95,7 @@ OpenWuKongVerse（OWKV） 是一个 Web3 社区共创的硬核科幻动漫 IP �
 6. ✅ 三模态呈现对照表（MODETABLE v1：10 关键节点 × 三模态）
 7. ✅ 卷4 并入第五/第六板块（主线坐标底图 + 模态参考，卷4 v1.1）
 8. ⬜ 仓库转公开 / 面向社区发布
+9. ✅ 悟空多态演化模型并入正典（异常体=起源钩子最早的缝 / 逆维度能量 / 多态共存）
 
 ---
 
