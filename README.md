@@ -24,7 +24,7 @@
 | **卷1** | [`volume1_concept-protocol.md`](volume1_concept-protocol.md) | **元层**（Meta） | 宇宙是什么、凭什么存在、为何我们看到的《西游记》只是投影镜像 |
 | **卷2** | [`volume2_worldview-bible.md`](volume2_worldview-bible.md) | **物理层**（Physics） | 宇宙内部如何运作：五层膜拓扑、五重物理法则、主线叙事 |
 | **卷3** | [`volume3_co-creation-protocol.md`](volume3_co-creation-protocol.md) | **机制层**（Mechanism） | 如何共创、如何分润、如何定权重、如何保障正典兼容 |
-| **卷4** | [`volume4_content-directory.md`](volume4_content-directory.md) | **内容层**（Content） | 创作者手上有什么素材：底层协议手册、角色档案、维度地图、入门指南 |
+| **卷4** | [`volume4_content-directory.md`](volume4_content-directory.md) | **内容层**（Content） | 创作者手上有什么素材：底层协议手册、角色档案、维度地图、入门指南、主线事件地图、三模态呈现对照（6 板块） |
 
 **阅读建议：** 新读者按 卷1→卷2→卷3→卷4 顺序；创作者直接看 卷4 + 卷3；想先感受宇宙氛围看 卷2。
 
@@ -38,8 +38,20 @@
 | [`patch_v1_three-contradictions.md`](patch_v1_three-contradictions.md) | 白皮书三处逻辑矛盾修订补丁（权限受限 / 序态自稳 / 观象域改名） |
 | [`review_v1_doc-architecture.md`](review_v1_doc-architecture.md) | 项目审视报告 v1：四卷架构的提出依据 |
 | [`volume2_supplement.md`](volume2_supplement.md) | 卷2 修订增补（序态自稳闭环 / 卷1↔卷2 衔接声明的细节展开） |
+| [`draft_co-creation-agreement_v1.md`](draft_co-creation-agreement_v1.md) | 《共创协议完整草案》（对外可签署条款成品，十章） |
+| [`contribution-pool-design_v1.md`](contribution-pool-design_v1.md) | 多池分润机制设计研讨稿（待拍板，未并入正典） |
 
 ---
+
+## 创作配套文档（主线 × 模态）
+
+> 由内容层（卷4）派生、供共创者直接取用的两套坐标底图与模态参考。已并入卷4 第五/第六板块（本仓库保留完整版独立文档）。
+
+| 文档 | 说明 |
+|---|---|
+| [`mainline_event-map_v1.md`](mainline_event-map_v1.md) | **主线事件地图（OWKV-MAINMAP）**：三幕骨架 + 20 节点 + A/B/C 介入缝内嵌——主线的坐标底图，指明"哪里能共创、怎么共创" |
+| [`mode-collapse-table_v1.md`](mode-collapse-table_v1.md) | **三模态呈现对照表（OWKV-MODETABLE）**：10 关键节点 × A赛博/B高维玄幻/C废土克苏鲁 对照——模态介入参考，直接参与坍缩权重 |
+| [`marketing/`](marketing/) | 对外招募/宣传素材（主文案 `main_recruit.md` + 分角色文案 + FAQ，待发布） |
 
 ## 核心世界观速览（30 秒版）
 
@@ -75,7 +87,10 @@
 2. ✅ 三处逻辑矛盾修订并入（权限受限 / 序态自稳 / 观象域）
 3. ✅ 白皮书第七节"贡献力计算体系"空标题补全
 4. ✅ 《共创协议完整草案》（对外条款成品）—— 见 `draft_co-creation-agreement_v1.md`
-5. ⬜ 仓库转公开 / 面向社区发布
+5. ✅ 主线事件地图（MAINMAP v1：三幕骨架 + 20 节点 + A/B/C 介入缝）
+6. ✅ 三模态呈现对照表（MODETABLE v1：10 关键节点 × 三模态）
+7. ✅ 卷4 并入第五/第六板块（主线坐标底图 + 模态参考，卷4 v1.1）
+8. ⬜ 仓库转公开 / 面向社区发布
 
 ---
 
