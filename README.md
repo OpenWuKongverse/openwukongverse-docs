@@ -52,6 +52,7 @@
 | [`mainline_event-map_v1.md`](mainline_event-map_v1.md) | **主线事件地图（OWKV-MAINMAP）**：三幕骨架 + 20 节点 + A/B/C 介入缝内嵌——主线的坐标底图，指明"哪里能共创、怎么共创" |
 | [`mode-collapse-table_v1.md`](mode-collapse-table_v1.md) | **三模态呈现对照表（OWKV-MODETABLE）**：10 关键节点 × A赛博/B高维玄幻/C废土克苏鲁 对照——模态介入参考，直接参与坍缩权重 |
 | [`intervention-index_v1.md`](intervention-index_v1.md) | **介入点索引（OWKV-INDEX）**：A/B/C 三类 26 个介入缝全量汇总 + 检索速查——共创者按类找活干 |
+| [`proposal-template_v1.md`](proposal-template_v1.md) | **共创提案模板（OWKV-PROPOSAL-TPL）**：一页可填、直接可报名提交的提案模板 + A 类示范填充 |
 | [`marketing/`](marketing/) | 对外招募/宣传素材（主文案 `main_recruit.md` + 分角色文案 + FAQ，待发布） |
 
 ## 核心世界观速览（30 秒版）
