@@ -103,4 +103,31 @@
 
 ---
 
+## 五、域名接入指引（Dynadot 侧 DNS，到点后执行）
+
+> 站点代码与 GitHub Pages 配置由 Hub 侧完成；以下为 **openwkv.xyz 在 Dynadot 控制面板**的 DNS 设置，接入后站点以 `https://openwkv.xyz` 访问。
+
+### 5.1 记录类型（根域 vs 子域）
+
+| 想用的域名 | 记录类型 | 指向 | 备注 |
+|---|---|---|---|
+| `openwkv.xyz`（根域，推荐） | **A 记录** ×4 | `185.199.108.153` / `185.199.109.153` / `185.199.110.153` / `185.199.111.153` | GitHub Pages 四个专用 IP；根域不用 CNAME |
+| `www.openwkv.xyz`（可选） | **CNAME 记录** | `OpenWuKongverse.github.io` | 建议同时配，更稳（可裸域+www 双通） |
+
+> ⚠️ GitHub 官方：**根域（apex）用 A 记录**，不能用 CNAME（根域 CNAME 是受限的）。子域（www）用 CNAME。若用 `www`，GitHub 会自动关联根域。
+
+### 5.2 Dynadot 操作步骤
+1. 登录 Dynadot → 左侧 **我的域名（My Domains）** → 点 `openwkv.xyz` 的 **管理（Manage）**。
+2. 进入 **DNS 设置 / 自定义 DNS（DNS Settings）**。
+3. 添加以下记录：
+   - **A 记录**：主机 `@`（根），指向 `185.199.108.153`（删掉旧/默认 A 冲突项，GitHub 要求四个 IP 都加）
+   - **A 记录**：主机 `@`，指向 `185.199.109.153`
+   - **A 记录**：主机 `@`，指向 `185.199.110.153`
+   - **A 记录**：主机 `@`，指向 `185.199.111.153`
+   - （可选）**CNAME**：主机 `www`，指向 `OpenWuKongverse.github.io`
+4. 保存。DNS 生效最长 24 小时（通常更快）。
+> 若先前存在默认解析（如 `@` → 旧 IP 或 Dynadot 占位页），**删除它们**，避免与 GitHub 四个 A 冲突。/ > 提示：可在设置里同时把 **HTTPS** 交给 GitHub 强制（仓库 Pages 设置里勾 Enforce HTTPS），GitHub 会自动申请证书。
+
+---
+
 *End of PUBLIC-LAUNCH · OWKV-PUBLIC-LAUNCH · 公开时间 2026-08-24 17:00 · 状态：试运行*
