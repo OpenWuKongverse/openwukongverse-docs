@@ -1,5 +1,5 @@
 # 核心世界观白皮书
-###### Worldview Bible v1.1（并入三处修订）
+###### Worldview Bible v1.2（并入三处修订 + 悟空多态演化模型）
 
 #### 项目代码：Project Multiverse-X
 #### 首席架构师：Echo-Architect-0
@@ -125,4 +125,4 @@
 - 凡描述**真实世界结构**用"五层膜"；凡描述人类感知/神话呈现用"投影幕布层/观象域"。禁止混用。
 
 ---
-*End of Worldview Bible v1.1*
+*End of Worldview Bible v1.2*
