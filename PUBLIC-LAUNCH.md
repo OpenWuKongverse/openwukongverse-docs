@@ -103,30 +103,47 @@
 
 ---
 
-## 五、域名接入指引（Dynadot 侧 DNS，到点后执行）
+## 五、域名与部署方案（GitHub Pages 主 + Vercel 并行）
 
-> 站点代码与 GitHub Pages 配置由 Hub 侧完成；以下为 **openwkv.xyz 在 Dynadot 控制面板**的 DNS 设置，接入后站点以 `https://openwkv.xyz` 访问。
+> 决策（2026-08-24 11:38，发起人定）：**GitHub Pages 为主站 + Vercel 同源并行**，不叠 Cloudflare。理由：国际国内统一一套 URL；Vercel 海外体验优于 Pages；国内加速不靠境外代理，留给 S4 阶段备案+国内 CDN（唯一正解）。
 
-### 5.1 记录类型（根域 vs 子域）
+### 5.1 双平台分工（同源 `web/`）
+
+| 平台 | 角色 | 发布源 | 触发 | 域名 |
+|---|---|---|---|---|
+| **GitHub Pages** | **主站**（留档/同源/兜底） | `web/` 子目录 | push 自动 | `openwkv.xyz`（根域，A 记录） |
+| **Vercel** | **并行加速站**（海外体验） | `web/`（Root Directory） | push 自动（连仓库） | `openwkv.xyz.vercel.app`（Vercel 默认域，先跑） |
+
+> 两平台发布**同一份 `web/` 代码**，push 即双端同步（门面=事实源镜像）。互为冗余，随时可切换。
+
+### 5.2 Vercel 接入步骤（需用户 GitHub 账号侧授权）
+1. 登录 vercel.com → **Add New → Project → Import Git Repository**。
+2. 选 `OpenWuKongverse/openwukongverse-docs`（会跳 GitHub OAuth 授权——**这一步是账号级授权，需用户本人完成**）。
+3. Configure：**Root Directory 设为 `web`**（只发布站点目录，不碰文档仓库其余）。
+4. Framework Preset 让 Vercel 自动识别（纯静态，零构建）。
+5. Deploy → 得到 `https://openwukongverse-docs.vercel.app`（或自定义）。
+6. 若要自定义子域：可加 `www.openwkv.xyz` → CNAME `cname.vercel-dns.com`（可选，主域仍归 Pages）。
+
+### 5.3 域名归属（Dynadot 侧 DNS，到点后执行）
+
+> 主域 `openwkv.xyz` 归 **GitHub Pages**（根域 A 记录）；Vercel 先走默认域，避免两平台抢同一 DNS 的冲突。跑顺后再决定是否把子域拨给 Vercel。
 
 | 想用的域名 | 记录类型 | 指向 | 备注 |
 |---|---|---|---|
-| `openwkv.xyz`（根域，推荐） | **A 记录** ×4 | `185.199.108.153` / `185.199.109.153` / `185.199.110.153` / `185.199.111.153` | GitHub Pages 四个专用 IP；根域不用 CNAME |
-| `www.openwkv.xyz`（可选） | **CNAME 记录** | `OpenWuKongverse.github.io` | 建议同时配，更稳（可裸域+www 双通） |
+| `openwkv.xyz`（根域，主） | **A 记录** ×4 | `185.199.108.153` / `185.199.109.153` / `185.199.110.153` / `185.199.111.153` | GitHub Pages 四个专用 IP；根域不用 CNAME |
+| `www.openwkv.xyz`（可选） | **CNAME 记录** | `OpenWuKongverse.github.io` 或 `cname.vercel-dns.com` | 建议指向 Pages 优先 |
 
-> ⚠️ GitHub 官方：**根域（apex）用 A 记录**，不能用 CNAME（根域 CNAME 是受限的）。子域（www）用 CNAME。若用 `www`，GitHub 会自动关联根域。
+> ⚠️ GitHub 官方：**根域（apex）用 A 记录**，不能用 CNAME。子域（www）用 CNAME。若用 `www` 指向 GitHub，GitHub 会自动关联根域。
 
-### 5.2 Dynadot 操作步骤
-1. 登录 Dynadot → 左侧 **我的域名（My Domains）** → 点 `openwkv.xyz` 的 **管理（Manage）**。
+### 5.4 Dynadot 操作步骤
+1. 登录 Dynadot → **我的域名（My Domains）** → 点 `openwkv.xyz` → **管理（Manage）**。
 2. 进入 **DNS 设置 / 自定义 DNS（DNS Settings）**。
-3. 添加以下记录：
-   - **A 记录**：主机 `@`（根），指向 `185.199.108.153`（删掉旧/默认 A 冲突项，GitHub 要求四个 IP 都加）
-   - **A 记录**：主机 `@`，指向 `185.199.109.153`
-   - **A 记录**：主机 `@`，指向 `185.199.110.153`
-   - **A 记录**：主机 `@`，指向 `185.199.111.153`
-   - （可选）**CNAME**：主机 `www`，指向 `OpenWuKongverse.github.io`
-4. 保存。DNS 生效最长 24 小时（通常更快）。
-> 若先前存在默认解析（如 `@` → 旧 IP 或 Dynadot 占位页），**删除它们**，避免与 GitHub 四个 A 冲突。/ > 提示：可在设置里同时把 **HTTPS** 交给 GitHub 强制（仓库 Pages 设置里勾 Enforce HTTPS），GitHub 会自动申请证书。
+3. 添加记录：
+   - **A 记录** ×4，主机 `@`：`185.199.108.153` / `185.199.109.153` / `185.199.110.153` / `185.199.111.153`
+   - （可选）**CNAME**，主机 `www` → `OpenWuKongverse.github.io`
+4. **删除**先前默认/占位解析（`@ → 旧 IP` 等冲突项）。
+5. 保存。DNS 生效最长 24 小时（通常更快）。
+> HTTPS：主域走 GitHub 强制（仓库 Pages 勾 Enforce HTTPS）；Vercel 侧默认自动 HTTPS 免费证书。
 
 ---
 
