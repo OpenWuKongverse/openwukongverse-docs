@@ -55,6 +55,7 @@ OpenWuKongVerse（OWKV） 是一个 Web3 社区共创的硬核科幻动漫 IP �
 | [`intervention-index_v1.md`](intervention-index_v1.md) | 介入点索引（OWKV-INDEX）：A/B/C 三类 27 个介入缝全量汇总（含 C8 起源钩子=最早的缝）+ 检索速查：共创者按类找活干 |
 | [`proposal-template_v1.md`](proposal-template_v1.md) | 共创提案模板（OWKV-PROPOSAL-TPL）：一页可填、直接可报名提交的提案模板 + A 类示范填充 |
 | [`community-structure_v1.md`](community-structure_v1.md) | 社区基础架构（OWKV-COMM-STRUCT）：四角色（首席架构师/评审团/共创者/观察者）+ 进入/退出机制 + 三阶段演进 |
+| [`hub-frontend-plan_v1.md`](hub-frontend-plan_v1.md) | Hub 前端网站规划（OWKV-HUB-FRONTEND）：路线2备案站结构（前台9页+后台5模块）/技术方案/实施路径/F1-F6待拍板 |
 | [`marketing/`](marketing/) | 对外招募/宣传素材（主文案 `main_recruit.md` + 分角色文案 + FAQ，待发布） |
 
 ## 核心世界观速览（30 秒版）
