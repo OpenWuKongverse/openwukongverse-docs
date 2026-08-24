@@ -1,0 +1,132 @@
+/* =========================================================
+   OpenWuKongVerse（开源悟空多维宇宙）· Hub 门面站
+   统一样式：清爽、科幻、低负担
+   ========================================================= */
+
+:root {
+  --bg: #0d1117;
+  --bg-soft: #161b22;
+  --card: #1c2333;
+  --line: #2d3648;
+  --txt: #e6edf3;
+  --txt-dim: #8b949e;
+  --accent: #58a6ff;   /* 星蓝 */
+  --accent2: #f0b429;  /* 金（真经/灵山） */
+  --ok: #3fb950;
+  --warn: #d29922;
+  --brand: #c9d1d9;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  background: radial-gradient(1200px 800px at 20% -10%, #161b22 0%, var(--bg) 55%);
+  color: var(--txt);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---- 顶栏导航 ---- */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(13, 17, 23, .92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar-inner {
+  max-width: 1100px; margin: 0 auto; padding: .9rem 1.2rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+}
+.brand { font-weight: 700; font-size: 1.05rem; letter-spacing: .02em; }
+.brand .en { color: var(--accent); }
+.brand .zh { color: var(--txt); }
+.brand .tag { display: block; font-size: .72rem; color: var(--txt-dim); font-weight: 400; letter-spacing: .08em; }
+.nav { display: flex; gap: 1.1rem; flex-wrap: wrap; }
+.nav a { color: var(--txt-dim); font-size: .92rem; }
+.nav a:hover, .nav a.on { color: var(--txt); text-decoration: none; }
+
+/* ---- 布局 ---- */
+.wrap { max-width: 1100px; margin: 0 auto; padding: 2.4rem 1.2rem 4rem; }
+
+.hero {
+  padding: 3.2rem 0 2.6rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 2.4rem;
+}
+.hero h1 { font-size: 2.1rem; line-height: 1.35; margin-bottom: .6rem; }
+.hero h1 .c { color: var(--accent); }
+.hero h1 .g { color: var(--accent2); }
+.hero .lead { color: var(--txt-dim); font-size: 1.08rem; max-width: 60ch; }
+.cta-row { margin-top: 1.6rem; display: flex; gap: .9rem; flex-wrap: wrap; }
+.btn {
+  display: inline-block; padding: .62rem 1.3rem; border-radius: 8px;
+  background: var(--accent); color: #0d1117; font-weight: 600; font-size: .95rem;
+  border: 1px solid transparent;
+}
+.btn:hover { text-decoration: none; filter: brightness(1.08); }
+.btn.ghost { background: transparent; color: var(--txt); border-color: var(--line); }
+.btn.gold { background: var(--accent2); color: #0d1117; }
+
+section.block { margin: 2.2rem 0; }
+h2 { font-size: 1.45rem; margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--line); }
+h3 { font-size: 1.12rem; margin: 1.2rem 0 .6rem; }
+
+p { margin: .5rem 0; }
+.dim { color: var(--txt-dim); }
+
+/* ---- 卡片网格 ---- */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 1rem; }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  padding: 1.2rem 1.3rem;
+}
+.card h3 { margin-top: 0; }
+.card .tag { font-size: .72rem; color: var(--accent2); letter-spacing: .06em; text-transform: uppercase; }
+
+/* ---- 表格 ---- */
+table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: .95rem; }
+th, td { text-align: left; padding: .6rem .8rem; border-bottom: 1px solid var(--line); }
+th { color: var(--txt-dim); font-weight: 600; }
+
+/* ---- 列表 ---- */
+ul, ol { padding-left: 1.3rem; margin: .5rem 0; }
+li { margin: .35rem 0; }
+
+/* ---- 面板 ---- */
+.panel {
+  background: var(--bg-soft); border: 1px solid var(--line); border-left: 3px solid var(--accent);
+  border-radius: 8px; padding: 1rem 1.2rem; margin: 1rem 0;
+}
+.panel.warn { border-left-color: var(--warn); }
+.panel.ok { border-left-color: var(--ok); }
+
+code {
+  background: #161b22; border: 1px solid var(--line); border-radius: 4px;
+  padding: .1rem .35rem; font-size: .88em; font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+/* ---- 页脚 ---- */
+.footer {
+  border-top: 1px solid var(--line); margin-top: 3rem; padding: 1.6rem 1.2rem 2rem;
+  color: var(--txt-dim); font-size: .85rem; text-align: center;
+}
+.footer .brand { color: var(--txt-dim); }
+
+/* ---- 公告条目 ---- */
+.notice { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.2rem; margin: .8rem 0; }
+.notice .date { color: var(--accent2); font-size: .78rem; letter-spacing: .04em; }
+.notice h4 { margin: .2rem 0 .3rem; }
+
+/* 响应式 */
+@media (max-width: 640px) {
+  .hero h1 { font-size: 1.6rem; }
+  .topbar-inner { padding: .7rem 1rem; }
+  .nav { gap: .7rem; }
+}
