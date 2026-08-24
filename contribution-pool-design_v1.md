@@ -1,7 +1,7 @@
-# OpenWuKongVerse · 多池分润机制设计 v1.1（决策已拍板 · 定稿路径）
+# OpenWuKongVerse · 多池分润机制设计 v1.2（决策已拍板 · 定稿路径）
 ## Contribution Pool Design · Multi-Pool Revenue Sharing
 
-> 文档代号：`OWKV-POOL-DESIGN-v1`
+> 文档代号：`OWKV-POOL-DESIGN-v1.2`
 > **状态：决策已拍板（2026-08-23，5 决策点全部落地）→ 正在并入卷3/草案/卷2。本文件仍为研讨稿底稿，以并入后的正典条款为准。**
 > 性质：机制层（卷3）的分润机制重构方案，用"多池分润"替代现行单一"贡献者分润 30%"模型。
 > 编者：Echo-Architect-0
