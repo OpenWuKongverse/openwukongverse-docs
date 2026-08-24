@@ -34,12 +34,13 @@ OpenWuKongVerse（OWKV） 是一个 Web3 社区共创的硬核科幻动漫 IP �
 
 | 文档 | 说明 |
 |---|---|
+| [`creator-management-system_v1.md`](creator-management-system_v1.md) | **运营体系主档**（OWKV-CREATOR-SYS v2.0）：一个 Hub + 六平台入口、地理双轨·同一事实源、决策表（D1-D7）、共创流水线、积分看板、公示四档；Hub 门面站与平台矩阵的管理中枢 |
 | [`cross-consistency-audit_v1.md`](cross-consistency-audit_v1.md) | 四卷交叉一致性核对报告（含 Level 双义术语红线等处理记录） |
 | [`patch_v1_three-contradictions.md`](patch_v1_three-contradictions.md) | 白皮书三处逻辑矛盾修订补丁（权限受限 / 序态自稳 / 观象域改名） |
 | [`review_v1_doc-architecture.md`](review_v1_doc-architecture.md) | 项目审视报告 v1：四卷架构的提出依据 |
 | [`volume2_supplement.md`](volume2_supplement.md) | 卷2 修订增补（序态自稳闭环 / 卷1↔卷2 衔接声明的细节展开） |
 | [`draft_co-creation-agreement_v1.md`](draft_co-creation-agreement_v1.md) | 《共创协议完整草案》（对外可签署条款成品，十章） |
-| [`contribution-pool-design_v1.md`](contribution-pool-design_v1.md) | 多池分润机制设计研讨稿（待拍板，未并入正典） |
+| [`contribution-pool-design_v1.md`](contribution-pool-design_v1.md) | 多池分润机制设计稿（已拍板并入正典，当前基线=创作40%/运维20%/资产池20%挂起/回流20%） |
 | [`wukong-process-evolution_v1.md`](wukong-process-evolution_v1.md) | 悟空多态演化模型（OWKV-WUKONG-EVOL）：异常体→多形态演化设定讨论稿，决策已拍板并已并入正典 |
 
 ---
@@ -53,7 +54,7 @@ OpenWuKongVerse（OWKV） 是一个 Web3 社区共创的硬核科幻动漫 IP �
 | [`mainline_event-map_v1.md`](mainline_event-map_v1.md) | 主线事件地图（OWKV-MAINMAP）：三幕骨架 + 20 节点 + A/B/C 介入缝内嵌：主线的坐标底图，指明"哪里能共创、怎么共创" |
 | [`mode-collapse-table_v1.md`](mode-collapse-table_v1.md) | 三模态呈现对照表（OWKV-MODETABLE）：10 关键节点 × A赛博/B高维玄幻/C废土克苏鲁 对照：模态介入参考，直接参与坍缩权重 |
 | [`intervention-index_v1.md`](intervention-index_v1.md) | 介入点索引（OWKV-INDEX）：A/B/C 三类 27 个介入缝全量汇总（含 C8 起源钩子=最早的缝）+ 检索速查：共创者按类找活干 |
-| [`proposal-template_v1.md`](proposal-template_v1.md) | 共创提案模板（OWKV-PROPOSAL-TPL）：一页可填、直接可报名提交的提案模板 + A 类示范填充 |
+| [`proposal-template_v1.md`](proposal-template_v1.md) | 共创提案模板（OWKV-PROPOSAL-TPL）：一页可填、直接可报名提交的提案模板 + A12/B3/C7 三则示范填充 |
 | [`community-structure_v1.md`](community-structure_v1.md) | 社区基础架构（OWKV-COMM-STRUCT）：四角色（首席架构师/评审团/共创者/观察者）+ 进入/退出机制 + 三阶段演进 |
 | [`hub-frontend-plan_v1.md`](hub-frontend-plan_v1.md) | 前端入口（Hub 门面站）规划（OWKV-HUB-FRONTEND-v2）：国际国内统一门面，GitHub Pages 起步零成本，备案仅作国内加速层可选；v2 重写替代原备案站大规划 |
 | [`marketing/`](marketing/) | 对外招募/宣传素材（主文案 `main_recruit.md` + 分角色文案 + FAQ，待发布） |
