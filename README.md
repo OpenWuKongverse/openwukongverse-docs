@@ -30,6 +30,19 @@ OpenWuKongVerse（OWKV） 是一个 Web3 社区共创的硬核科幻动漫 IP �
 
 ---
 
+## 前端入口（Hub 门面站）
+
+> 国际国内共用一套 URL，只做展示与入口，不建第二套系统、不建自建 DB。讨论区归平台矩阵（Discord / 微信群 / Reddit）。正典库本体就在本仓库。
+
+| 站点 | 说明 | 技术 |
+|---|---|---|
+| [`web/index.html`](web/index.html) | Hub 统一门面站（页：首页公告 / 世界观速览 / 报名 / 提案投票 / 积分看板展示） | 纯静态 HTML/CSS（GitHub Pages，零构建、零成本） |
+
+- 域名：`openwkv.xyz`（已注册，拟接入 GitHub Pages 自定义域名）
+- 规划文档：`hub-frontend-plan_v1.md`（OWKV-HUB-FRONTEND-v2，S1–S4 轻量路径）
+
+---
+
 ## 支撑与过程文档
 
 | 文档 | 说明 |
