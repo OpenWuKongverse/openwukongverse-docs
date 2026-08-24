@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,102 +17,132 @@
       <span class="tag">OWKV · HUB</span>
     </div>
     <nav class="nav">
-      <a href="index.html">首页</a>
-      <a href="worldview.html" class="on">世界观</a>
-      <a href="join.html">报名</a>
-      <a href="proposals.html">提案 / 投票</a>
-      <a href="points.html">积分看板</a>
+      <a href="index.html"><span class="zhonly">首页</span><span class="enonly">Home</span></a>
+      <a href="worldview.html" class="on"><span class="zhonly">世界观</span><span class="enonly">Worldview</span></a>
+      <a href="join.html"><span class="zhonly">报名</span><span class="enonly">Join</span></a>
+      <a href="proposals.html"><span class="zhonly">提案 / 投票</span><span class="enonly">Proposals</span></a>
+      <a href="points.html"><span class="zhonly">积分看板</span><span class="enonly">Points</span></a>
     </nav>
+    <div class="langbar">
+      <button class="langbtn on" data-lang="zh">中文</button>
+      <button class="langbtn" data-lang="en">EN</button>
+    </div>
   </div>
 </header>
 
 <main class="wrap">
 
+  <div class="previewbar">
+    <button class="previewbtn" data-preview data-off="机器翻译预览（仅供参考）" data-on="关闭预览">机器翻译预览（仅供参考）</button>
+  </div>
+
   <section class="block">
-    <h1>世界观速览</h1>
-    <p class="lead dim">下面是整套宇宙设定的精华速览，完整内容见正典库（卷1《概念协议》· 卷2《世界观圣经》）。</p>
+    <h1 class="zhonly">世界观速览</h1>
+    <h1 class="enonly">Worldview Overview</h1>
+    <p class="lead dim zhonly">下面是整套宇宙设定的精华速览，完整内容见正典库（卷1《概念协议》· 卷2《世界观圣经》）。</p>
+    <p class="lead dim enonly">A condensed overview of the whole setting; the full canon lives in Vol.1 (Concept Protocol) and Vol.2 (Worldview Bible).</p>
   </section>
 
   <section class="block">
-    <h2>一句话</h2>
-    <p>宇宙默认熵增，靠周期性的 <strong>序态自稳系统</strong>（原「负熵稳定系统」）纠错维持低熵；\n      <strong>取经就是一次纠错心跳</strong>，<strong>八十一难就是系统的一次次单元测试</strong>。</p>
+    <h2 class="zhonly">一句话</h2>
+    <h2 class="enonly">In One Line</h2>
+    <p class="zhonly">宇宙默认熵增，靠周期性的 <strong>序态自稳系统</strong>（原「负熵稳定系统」）纠错维持低熵；<strong>取经就是一次纠错心跳</strong>，<strong>八十一难就是系统的一次次单元测试</strong>。</p>
+    <p class="enonly">The universe defaults to entropy increase and stays low-entropy through periodic error correction of the <strong>Order-State Self-Stabilization System</strong> (formerly the "negentropy stabilization system"); <strong>the pilgrimage is one error-correction heartbeat</strong>, and <strong>the eighty-one trials are the system's unit tests</strong>.</p>
   </section>
 
   <section class="block">
-    <h2>五层膜宇宙（真实物理结构，本尊）</h2>
+    <h2 class="zhonly">五层膜宇宙（真实物理结构 · 本尊）</h2>
+    <h2 class="enonly">Five-Layer Membrane Universe (the physical structure itself)</h2>
     <table>
-      <thead><tr><th>层</th><th>维度</th><th>定位</th><th>神话对应</th></tr></thead>
+      <thead><tr><th><span class="zhonly">层</span><span class="enonly">Layer</span></th><th><span class="zhonly">维度</span><span class="enonly">Dimension</span></th><th><span class="zhonly">定位</span><span class="enonly">Role</span></th><th><span class="zhonly">神话对应</span><span class="enonly">Mythic Echo</span></th></tr></thead>
       <tbody>
-        <tr><td>灵山</td><td>5D</td><td>全息奇点（系统最深处的收敛点）</td><td>「灵山胜境」</td></tr>
-        <tr><td>天庭</td><td>4.5D</td><td>观测站（层级管理者视角）</td><td>「天宫」</td></tr>
-        <tr><td>凡间</td><td>3D</td><td>基底物理层（主舞台）</td><td>「人间」</td></tr>
-        <tr><td>地府</td><td>4D</td><td>负熵回溯场（信息回收/平衡）</td><td>「阴司地府」</td></tr>
-        <tr><td>局部真空泡</td><td>—</td><td>五层膜之外的封闭小空间（妖怪洞府）</td><td>「洞天福地」</td></tr>
+        <tr><td class="zhonly">灵山</td><td class="enonly">Lingshan</td><td>5D</td><td class="zhonly">全息奇点（系统最深处的收敛点）</td><td class="enonly">holographic singularity (deepest convergence)</td><td class="zhonly">「灵山胜境」</td><td class="enonly">"Lingshan paradise"</td></tr>
+        <tr><td class="zhonly">天庭</td><td class="enonly">Heaven</td><td>4.5D</td><td class="zhonly">观测站（层级管理者视角）</td><td class="enonly">observatory (hierarchy management vantage)</td><td class="zhonly">「天宫」</td><td class="enonly">"Heavenly Palace"</td></tr>
+        <tr><td class="zhonly">凡间</td><td class="enonly">Mundane</td><td>3D</td><td class="zhonly">基底物理层（主舞台）</td><td class="enonly">base physical layer (main stage)</td><td class="zhonly">「人间」</td><td class="enonly">"Human world"</td></tr>
+        <tr><td class="zhonly">地府</td><td class="enonly">Underworld</td><td>4D</td><td class="zhonly">负熵回溯场（信息回收/平衡）</td><td class="enonly">negentropy-retrospection field</td><td class="zhonly">「阴司地府」</td><td class="enonly">"Nether court"</td></tr>
+        <tr><td class="zhonly">局部真空泡</td><td class="enonly">Local vacuum bubble</td><td>—</td><td class="zhonly">五层膜之外的封闭小空间（妖怪洞府）</td><td class="enonly">sealed sub-space outside the membranes (demon lairs)</td><td class="zhonly">「洞天福地」</td><td class="enonly">"cave-heavens"</td></tr>
       </tbody>
     </table>
   </section>
 
   <section class="block">
-    <h2>五重物理法则</h2>
+    <h2 class="zhonly">五重物理法则</h2>
+    <h2 class="enonly">Five Physical Laws</h2>
     <table>
-      <thead><tr><th>法则</th><th>含义</th></tr></thead>
+      <thead><tr><th><span class="zhonly">法则</span><span class="enonly">Law</span></th><th><span class="zhonly">含义</span><span class="enonly">Meaning</span></th></tr></thead>
       <tbody>
-        <tr><td><strong>界</strong></td><td>维度</td></tr>
-        <tr><td><strong>境</strong></td><td>边界 / 真空泡</td></tr>
-        <tr><td><strong>道</strong></td><td>代码 / 阴阳五行</td></tr>
-        <tr><td><strong>法</strong></td><td>权限调用</td></tr>
-        <tr><td><strong>心</strong></td><td>终极观测者</td></tr>
+        <tr><td><strong>界</strong></td><td class="zhonly">维度</td><td class="enonly">Dimension</td></tr>
+        <tr><td><strong>境</strong></td><td class="zhonly">边界 / 真空泡</td><td class="enonly">Boundary / vacuum bubble</td></tr>
+        <tr><td><strong>道</strong></td><td class="zhonly">代码 / 阴阳五行</td><td class="enonly">Code / yin-yang-five-elements</td></tr>
+        <tr><td><strong>法</strong></td><td class="zhonly">权限调用</td><td class="enonly">Permission invocation</td></tr>
+        <tr><td><strong>心</strong></td><td class="zhonly">终极观测者</td><td class="enonly">Ultimate observer</td></tr>
       </tbody>
     </table>
   </section>
 
   <section class="block">
-    <h2>权限受限原理</h2>
-    <p>Root / Admin 不能直接修改高维规则，只能借低维进程触发；<strong>紧箍咒 = 维度锁</strong>。\n      这是「强者不能平白无敌」的物理根基——再强的能力也必须落在合法权限或受限授权内。</p>
+    <h2 class="zhonly">权限受限原理</h2>
+    <h2 class="enonly">Permission-Restriction Principle</h2>
+    <p class="zhonly">Root / Admin 不能直接修改高维规则，只能借低维进程触发；<strong>紧箍咒 = 维度锁</strong>。这是「强者不能平白无敌」的物理根基——再强的能力也必须落在合法权限或受限授权内。</p>
+    <p class="enonly">Root / Admin cannot directly rewrite high-dimensional rules; they may only trigger through low-dimensional processes; <strong>the headband = a dimension lock</strong>. This is the physical basis of "the strong cannot be invincible for free" — even overwhelming power must land within legitimate permission or restricted authorization.</p>
   </section>
 
   <section class="block">
-    <h2>观象域（投影幕布层）</h2>
-    <p>人类所见《西游记》的神话镜像（腾云驾雾、七十二变等）发生在<strong>观象域</strong>（Observational Mantle），\n      是宇宙本尊经<strong>神话滤镜</strong>降维投影的影像，<strong>不是宇宙本身</strong>。</p>
+    <h2 class="zhonly">观象域（投影幕布层）</h2>
+    <h2 class="enonly">Observational Mantle (projection layer)</h2>
+    <p class="zhonly">人类所见《西游记》的神话镜像（腾云驾雾、七十二变等）发生在<strong>观象域</strong>，是宇宙本尊经<strong>神话滤镜</strong>降维投影的影像，<strong>不是宇宙本身</strong>。</p>
+    <p class="enonly">The mythic mirror of <em>Journey to the West</em> seen by humans (cloud-riding, seventy-two transformations, etc.) occurs in the <strong>Observational Mantle</strong> — a projection of the universe itself, filtered down through a <strong>mythic filter</strong>; it is <strong>not the universe itself</strong>.</p>
     <div class="panel warn">
-      <strong>术语红线</strong>：五层膜 = 真实结构本尊；观象域 = 神话投影镜像。二者不混写。
+      <strong class="zhonly">术语红线</strong><strong class="enonly">Terminology red line</strong>：<span class="zhonly">五层膜 = 真实结构本尊；观象域 = 神话投影镜像。二者不混写。</span><span class="enonly">Five layers = the real structure; Observational Mantle = mythic projection image. Never conflate them.</span>
     </div>
   </section>
 
   <section class="block">
-    <h2>三模态（同一宇宙，三种呈现）</h2>
+    <h2 class="zhonly">三模态（同一宇宙，三种呈现）</h2>
+    <h2 class="enonly">Three Modes (one universe, three presentations)</h2>
     <div class="grid">
       <div class="card">
-        <div class="tag">模态 A</div>
-        <h3>赛博</h3>
-        <p>法术 = 代码调用；法宝 = 设备；天庭 = 云端主权</p>
+        <div class="tag">Mode A</div>
+        <h3 class="zhonly">赛博</h3><h3 class="enonly">Cyber</h3>
+        <p class="zhonly">法术 = 代码调用；法宝 = 设备；天庭 = 云端主权</p>
+        <p class="enonly">Spells = code invocation; treasures = devices; Heaven = sovereign cloud</p>
       </div>
       <div class="card">
-        <div class="tag">模态 B</div>
-        <h3>高维玄幻</h3>
-        <p>修真法则；法术 = 高维物理的古典外观</p>
+        <div class="tag">Mode B</div>
+        <h3 class="zhonly">高维玄幻</h3><h3 class="enonly">High-Dimension Xuanhuan</h3>
+        <p class="zhonly">修真法则；法术 = 高维物理的古典外观</p>
+        <p class="enonly">Cultivation laws; spells = classical exterior of high-dimension physics</p>
       </div>
       <div class="card">
-        <div class="tag">模态 C</div>
-        <h3>废土 · 克苏鲁</h3>
-        <p>世界维度崩坏后的衰败投影；露出高维不可名状真实</p>
+        <div class="tag">Mode C</div>
+        <h3 class="zhonly">废土 · 克苏鲁</h3><h3 class="enonly">Wasteland · Khthonic</h3>
+        <p class="zhonly">世界维度崩坏后的衰败投影；露出高维不可名状真实</p>
+        <p class="enonly">Decayed projection after dimensional collapse; the unnameable high-dimension reality shows through</p>
       </div>
     </div>
-    <p class="dim">三模态都是对同一本尊的不同呈现滤镜，换滤镜不换物理本尊。创作时选定主攻模态。</p>
+    <p class="dim zhonly">三模态都是对同一本尊的不同呈现滤镜，换滤镜不换物理本尊。创作时选定主攻模态。</p>
+    <p class="dim enonly">All three modes are different presentation filters over the same reality — change the filter, not the physics. Pick a home mode when you create.</p>
   </section>
 
   <section class="block">
     <div class="panel ok">
-      想深入？正典库完整设定见 GitHub 仓库卷1《概念协议》与卷2《世界观圣经》，介入点见《介入点索引》（A/B/C 三类缝）。
+      <span class="zhonly">想深入？正典库完整设定见 GitHub 仓库卷1《概念协议》与卷2《世界观圣经》，介入点见《介入点索引》（A/B/C 三类缝）。</span>
+      <span class="enonly">Want depth? The full canon lives in the GitHub repo (Vol.1 Concept Protocol, Vol.2 Worldview Bible); intervention points are in the Intervention Index (A/B/C slots).</span>
     </div>
   </section>
+
+  <div class="preview-tip">
+    <p class="zhonly">机器翻译预览仅供快速浏览大概，不构成正式语言版。正式多语言由人工认领并对照术语表把控口径（见「报名 · 多语言认领」）。浏览可自行使用浏览器自带的整页翻译功能查看参考。</p>
+    <p class="enonly">Machine translation preview is for rough scanning only — not an official language. Official languages are human-claimed with terminology controlled against the alignment table (see Join · Language Claiming). For reference you may use your browser's built-in page translation.</p>
+  </div>
 
 </main>
 
 <footer class="footer">
   <div class="brand">OpenWuKongVerse · 开源悟空多维宇宙</div>
-  <p>文档许可 CC BY-NC-SA 4.0 · 社区共创 · 发起人匿名代号 Echo-Architect-0</p>
+  <p><span class="zhonly">文档许可 CC BY-NC-SA 4.0 · 社区共创 · 发起人匿名代号 Echo-Architect-0</span><span class="enonly">CC BY-NC-SA 4.0 · Community co-creation · Founder alias: Echo-Architect-0</span></p>
 </footer>
 
+<script src="assets/js/i18n.js"></script>
 </body>
 </html>

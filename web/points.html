@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,87 +17,117 @@
       <span class="tag">OWKV · HUB</span>
     </div>
     <nav class="nav">
-      <a href="index.html">首页</a>
-      <a href="worldview.html">世界观</a>
-      <a href="join.html">报名</a>
-      <a href="proposals.html">提案 / 投票</a>
-      <a href="points.html" class="on">积分看板</a>
+      <a href="index.html"><span class="zhonly">首页</span><span class="enonly">Home</span></a>
+      <a href="worldview.html"><span class="zhonly">世界观</span><span class="enonly">Worldview</span></a>
+      <a href="join.html"><span class="zhonly">报名</span><span class="enonly">Join</span></a>
+      <a href="proposals.html"><span class="zhonly">提案 / 投票</span><span class="enonly">Proposals</span></a>
+      <a href="points.html" class="on"><span class="zhonly">积分看板</span><span class="enonly">Points</span></a>
     </nav>
+    <div class="langbar">
+      <button class="langbtn on" data-lang="zh">中文</button>
+      <button class="langbtn" data-lang="en">EN</button>
+    </div>
   </div>
 </header>
 
 <main class="wrap">
 
+  <div class="previewbar">
+    <button class="previewbtn" data-preview data-off="机器翻译预览（仅供参考）" data-on="关闭预览">机器翻译预览（仅供参考）</button>
+  </div>
+
   <section class="block">
-    <h1>积分看板</h1>
-    <p class="lead dim">本站只读展示积分 <strong>结构与规则</strong>。实际记账在 Hub 事实源（GitHub 仓库），随入库/评审即时更新（公示 D3：事实源永远实时）。</p>
+    <h1 class="zhonly">积分看板</h1>
+    <h1 class="enonly">Points Dashboard</h1>
+    <p class="lead dim zhonly">本站只读展示积分 <strong>结构与规则</strong>。实际记账在 Hub 事实源（GitHub 仓库），随入库/评审即时更新（公示 D3：事实源永远实时）。</p>
+    <p class="lead dim enonly">This site shows the points <strong>structure and rules</strong> read-only. The actual ledger lives in the Hub source of truth (GitHub repo), updated in real time with intake/review (announcement D3: the source of truth is always live).</p>
   </section>
 
   <section class="block">
-    <h2>维度积分（贡献力计算）</h2>
+    <h2 class="zhonly">维度积分（贡献力计算）</h2>
+    <h2 class="enonly">Dimension Points (contribution calculus)</h2>
     <table>
-      <thead><tr><th>维度</th><th>内容</th><th>权重</th></tr></thead>
+      <thead><tr><th><span class="zhonly">维度</span><span class="enonly">Dimension</span></th><th><span class="zhonly">内容</span><span class="enonly">Content</span></th><th><span class="zhonly">权重</span><span class="enonly">Weight</span></th></tr></thead>
       <tbody>
-        <tr><td><strong>C1 · 创作量</strong></td><td>入正典内容量 / 有效提案数</td><td>30%</td></tr>
-        <tr><td><strong>C2 · 质量分</strong></td><td>社区评议加权（评审团 + 观察者投票）</td><td>30%</td></tr>
-        <tr><td><strong>C3 · 采用率</strong></td><td>提案被采纳 / 入正典的比例</td><td>20%</td></tr>
-        <tr><td><strong>C4 · 生态贡献</strong></td><td>评审、架构、翻译、社群维护等非创作贡献</td><td>20%</td></tr>
+        <tr><td><strong>C1 · <span class="zhonly">创作量</span><span class="enonly">Volume</span></strong></td><td class="zhonly">入正典内容量 / 有效提案数</td><td class="enonly">canonical content / valid proposals</td><td>30%</td></tr>
+        <tr><td><strong>C2 · <span class="zhonly">质量分</span><span class="enonly">Quality</span></strong></td><td class="zhonly">社区评议加权（评审团 + 观察者投票）</td><td class="enonly">community-weighted review (jury + observer votes)</td><td>30%</td></tr>
+        <tr><td><strong>C3 · <span class="zhonly">采用率</span><span class="enonly">Adoption</span></strong></td><td class="zhonly">提案被采纳 / 入正典的比例</td><td class="enonly">share of proposals adopted / canonized</td><td>20%</td></tr>
+        <tr><td><strong>C4 · <span class="zhonly">生态贡献</span><span class="enonly">Ecosystem</span></strong></td><td class="zhonly">评审、架构、翻译、社群维护等非创作贡献</td><td class="enonly">review, architecture, translation, community ops (non-creative)</td><td>20%</td></tr>
       </tbody>
     </table>
-    <p class="dim">各维度归一化后加权求和 → 维度积分。入正典内容标记贡献者身份与当次积分，累入其账户。防刷：质量分由社区加权而非单一点赞，异常聚类触发复核。</p>
+    <p class="dim zhonly">各维度归一化后加权求和 → 维度积分。入正典内容标记贡献者身份与当次积分，累入其账户。防刷：质量分由社区加权而非单一点赞，异常聚类触发复核。</p>
+    <p class="dim enonly">Each dimension is normalized, then weighted-summed → dimension points. Canonized content records the contributor and the points awarded, accumulated into their account. Anti-abuse: quality is community-weighted, not a single like; anomalous clusters trigger re-review.</p>
   </section>
 
   <section class="block">
-    <h2>多池分润结构（决策已定）</h2>
+    <h2 class="zhonly">多池分润结构（决策已定）</h2>
+    <h2 class="enonly">Multi-Pool Revenue Split (decided)</h2>
     <table>
-      <thead><tr><th>池</th><th>基线比例</th><th>当前状态</th><th>说明</th></tr></thead>
+      <thead><tr><th><span class="zhonly">池</span><span class="enonly">Pool</span></th><th><span class="zhonly">基线比例</span><span class="enonly">Baseline</span></th><th><span class="zhonly">当前状态</span><span class="enonly">Status</span></th><th><span class="zhonly">说明</span><span class="enonly">Note</span></th></tr></thead>
       <tbody>
-        <tr><td><strong>创作池</strong></td><td>40%</td><td>40%</td><td>按维度积分 C1–C4 + 资产深度系数分配</td></tr>
-        <tr><td><strong>生态运维池</strong></td><td>20%</td><td>20%</td><td>生态岗回报（翻译/社群/评审/治理/工具）</td></tr>
-        <tr><td><strong>IP 资产池</strong></td><td>20%</td><td><strong>暂不启用</strong>（独立挂起）</td><td>资产化启动时直接启用，份额保留</td></tr>
-        <tr><td><strong>生态回流基金</strong></td><td>20%</td><td>20%</td><td>回投衍生内容/活动/工具/孵化；管理方=架构师评审团+社区代表</td></tr>
-        <tr><td><strong>合计</strong></td><td>100%</td><td>100%</td><td>任何分配恒守恒</td></tr>
+        <tr><td><strong class="zhonly">创作池</strong><strong class="enonly">Creation pool</strong></td><td>40%</td><td>40%</td><td class="zhonly">按维度积分 C1–C4 + 资产深度系数分配</td><td class="enonly">allocated by dimension points + asset-depth coefficient</td></tr>
+        <tr><td><strong class="zhonly">生态运维池</strong><strong class="enonly">Ecosystem ops pool</strong></td><td>20%</td><td>20%</td><td class="zhonly">生态岗回报（翻译/社群/评审/治理/工具）</td><td class="enonly">rewards ecosystem roles (translation/community/review/governance/tools)</td></tr>
+        <tr><td><strong class="zhonly">IP 资产池</strong><strong class="enonly">IP asset pool</strong></td><td>20%</td><td><strong class="zhonly">暂不启用</strong><strong class="enonly">suspended</strong>（<span class="zhonly">独立挂起</span><span class="enonly">held aside</span>）</td><td class="zhonly">资产化启动时直接启用，份额保留</td><td class="enonly">activates on assetization; share preserved</td></tr>
+        <tr><td><strong class="zhonly">生态回流基金</strong><strong class="enonly">Ecosystem return fund</strong></td><td>20%</td><td>20%</td><td class="zhonly">回投衍生内容/活动/工具/孵化；管理方=架构师评审团+社区代表</td><td class="enonly">reinvests in derivative content/events/tools/incubation; managed by architect jury + community reps</td></tr>
+        <tr><td><strong class="zhonly">合计</strong><strong class="enonly">Total</strong></td><td>100%</td><td>100%</td><td class="zhonly">任何分配恒守恒</td><td class="enonly">allocation is always conserved</td></tr>
       </tbody>
     </table>
   </section>
 
   <section class="block">
-    <h2>积分怎么用</h2>
-    <ul>
+    <h2 class="zhonly">积分怎么用</h2>
+    <h2 class="enonly">What Points Do</h2>
+    <ul class="zhonly">
       <li><strong>分润分配基数</strong>（第六章多池分润）</li>
       <li><strong>共创角色晋升</strong>：观察者 → 正式共创者 → 评审团</li>
       <li><strong>模态坍缩投票加权</strong>：影响 W(A/B/C) 权重周期重算</li>
     </ul>
+    <ul class="enonly">
+      <li><strong>Revenue allocation base</strong> (Ch.6 multi-pool split)</li>
+      <li><strong>Role advancement</strong>: observer → co-creator → jury</li>
+      <li><strong>Mode-collapse vote weighting</strong>: affects W(A/B/C) periodic recompute</li>
+    </ul>
     <div class="panel warn">
-      <strong>模态坍缩底线</strong>：三模态权重最低不低于 15%（多样性底线），单一模态不会被完全边缘化；你的创作持续计入，可触发该模态的坍缩收敛。
+      <strong class="zhonly">模态坍缩底线</strong><strong class="enonly">Mode-collapse floor</strong>：
+      <span class="zhonly">三模态权重最低不低于 15%（多样性底线），单一模态不会被完全边缘化；你的创作持续计入，可触发该模态的坍缩收敛。</span>
+      <span class="enonly">no mode weight drops below 15% (diversity floor); no single mode is fully marginalized; your ongoing creation counts and can trigger that mode's collapse-convergence.</span>
     </div>
   </section>
 
   <section class="block">
-    <h2>公示节奏（D3 已定）</h2>
+    <h2 class="zhonly">公示节奏（D3 已定）</h2>
+    <h2 class="enonly">Announcement Cadence (D3 settled)</h2>
     <table>
-      <thead><tr><th>档</th><th>节奏</th><th>内容</th></tr></thead>
+      <thead><tr><th><span class="zhonly">档</span><span class="enonly">Tier</span></th><th><span class="zhonly">节奏</span><span class="enonly">Cadence</span></th><th><span class="zhonly">内容</span><span class="enonly">Content</span></th></tr></thead>
       <tbody>
-        <tr><td>事实源</td><td><strong>永远实时</strong></td><td>积分看板随入库/评审即时更新（在此展示结构，明细以 Hub 为准）</td></tr>
-        <tr><td>重要节点</td><td>即时</td><td>里程碑公告（Bluesky + Discord 全体）</td></tr>
-        <tr><td>运行周报</td><td>每周</td><td>周期进展汇总</td></tr>
-        <tr><td>深度长文</td><td>每月</td><td>世界观/机制深度解析</td></tr>
+        <tr><td><span class="zhonly">事实源</span><span class="enonly">Source of truth</span></td><td><strong class="zhonly">永远实时</strong><strong class="enonly">always live</strong></td><td class="zhonly">积分看板随入库/评审即时更新（在此展示结构，明细以 Hub 为准）</td><td class="enonly">points update live with intake/review (structure shown here; details authority is the Hub)</td></tr>
+        <tr><td><span class="zhonly">重要节点</span><span class="enonly">Milestone</span></td><td class="zhonly">即时</td><td class="enonly">immediate</td><td class="zhonly">里程碑公告（Bluesky + Discord 全体）</td><td class="enonly">milestone broadcast (Bluesky + Discord all)</td></tr>
+        <tr><td><span class="zhonly">运行周报</span><span class="enonly">Weekly ops</span></td><td class="zhonly">每周</td><td class="enonly">weekly</td><td class="zhonly">周期进展汇总</td><td class="enonly">periodic progress digest</td></tr>
+        <tr><td><span class="zhonly">深度长文</span><span class="enonly">Deep article</span></td><td class="zhonly">每月</td><td class="enonly">monthly</td><td class="zhonly">世界观/机制深度解析</td><td class="enonly">deep-dive into worldview/mechanism</td></tr>
       </tbody>
     </table>
   </section>
 
   <section class="block">
     <div class="panel ok">
-      <strong>只读展示</strong>：本站不记账、不存正典本体。所有积分录入、复核、多池分配发生在 Hub 事实源（GitHub 仓库）。前端站被下线/换址也不丢任何正典与积分。
+      <strong class="zhonly">只读展示</strong><strong class="enonly">Read-only display</strong>：
+      <span class="zhonly">本站不记账、不存正典本体。所有积分录入、复核、多池分配发生在 Hub 事实源（GitHub 仓库）。前端站被下线/换址也不丢任何正典与积分。</span>
+      <span class="enonly">this site keeps no ledger and no canon. All point entry, review, and multi-pool allocation happen in the Hub source of truth (GitHub repo). Taking this site down or changing its address loses no canon and no points.</span>
     </div>
   </section>
+
+  <div class="preview-tip">
+    <p class="zhonly">机器翻译预览仅供快速浏览大概，不构成正式语言版。正式多语言由人工认领并对照术语表把控口径（见「报名 · 多语言认领」）。浏览可自行使用浏览器自带的整页翻译功能查看参考。</p>
+    <p class="enonly">Machine translation preview is for rough scanning only — not an official language. Official languages are human-claimed with terminology controlled against the alignment table (see Join · Language Claiming). For reference you may use your browser's built-in page translation.</p>
+  </div>
 
 </main>
 
 <footer class="footer">
   <div class="brand">OpenWuKongVerse · 开源悟空多维宇宙</div>
-  <p>文档许可 CC BY-NC-SA 4.0 · 社区共创 · 发起人匿名代号 Echo-Architect-0</p>
+  <p><span class="zhonly">文档许可 CC BY-NC-SA 4.0 · 社区共创 · 发起人匿名代号 Echo-Architect-0</span><span class="enonly">CC BY-NC-SA 4.0 · Community co-creation · Founder alias: Echo-Architect-0</span></p>
 </footer>
 
+<script src="assets/js/i18n.js"></script>
 </body>
 </html>

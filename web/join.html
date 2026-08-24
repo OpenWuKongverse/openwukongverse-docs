@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="OpenWuKongVerse 报名加入：邮件 + 微信表单双入口（已定 D2），观察者身份起步，可晋升共创者。">
+<meta name="description" content="OpenWuKongVerse 报名加入：邮件 + 微信双入口（已定 D2），观察者身份起步，可晋升共创者；另设多语言认领（C4 生态贡献）。">
 <title>报名加入 · OpenWuKongVerse</title>
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -17,79 +17,129 @@
       <span class="tag">OWKV · HUB</span>
     </div>
     <nav class="nav">
-      <a href="index.html">首页</a>
-      <a href="worldview.html">世界观</a>
-      <a href="join.html" class="on">报名</a>
-      <a href="proposals.html">提案 / 投票</a>
-      <a href="points.html">积分看板</a>
+      <a href="index.html"><span class="zhonly">首页</span><span class="enonly">Home</span></a>
+      <a href="worldview.html"><span class="zhonly">世界观</span><span class="enonly">Worldview</span></a>
+      <a href="join.html" class="on"><span class="zhonly">报名</span><span class="enonly">Join</span></a>
+      <a href="proposals.html"><span class="zhonly">提案 / 投票</span><span class="enonly">Proposals</span></a>
+      <a href="points.html"><span class="zhonly">积分看板</span><span class="enonly">Points</span></a>
     </nav>
+    <div class="langbar">
+      <button class="langbtn on" data-lang="zh">中文</button>
+      <button class="langbtn" data-lang="en">EN</button>
+    </div>
   </div>
 </header>
 
 <main class="wrap">
 
+  <div class="previewbar">
+    <button class="previewbtn" data-preview data-off="机器翻译预览（仅供参考）" data-on="关闭预览">机器翻译预览（仅供参考）</button>
+  </div>
+
   <section class="block">
-    <h1>报名加入</h1>
-    <p class="lead dim">本站不做原生表单，报名走 <strong>邮件 + 微信</strong> 双入口（决策 D2 已定），提交后进入观察者身份，可逐步晋升共创者。</p>
+    <h1 class="zhonly">报名加入</h1>
+    <h1 class="enonly">Join</h1>
+    <p class="lead dim zhonly">本站不做原生表单，报名走 <strong>邮件 + 微信</strong> 双入口（决策 D2 已定）；提交后进入观察者身份，可逐步晋升共创者。</p>
+    <p class="lead dim enonly">This site has no native forms. Joining goes through the <strong>email + WeChat</strong> dual entry (decision D2 settled); you start as an observer and can advance to co-creator.</p>
   </section>
 
   <section class="block">
-    <h2>双入口（决策 D2）</h2>
+    <h2 class="zhonly">双入口（决策 D2）</h2>
+    <h2 class="enonly">Dual Entry (D2)</h2>
     <div class="grid">
       <div class="card">
-        <div class="tag">入口 1 · 邮件</div>
-        <h3>邮件报名</h3>
-        <p>发送报名邮件（意向角色 / 模态偏好 / 自我介绍）。邮件方式适合国际用户与偏好正式沟通者。</p>
-        <p class="dim">报名邮箱待站内正式公布（此处为示意占位）。</p>
+        <div class="tag">Entry 1 · Email</div>
+        <h3 class="zhonly">邮件报名</h3>
+        <h3 class="enonly">Email Joining</h3>
+        <p class="zhonly">发送报名邮件（意向角色 / 模态偏好 / 自我介绍）。适合国际用户与偏好正式沟通者。</p>
+        <p class="enonly">Send an email (intended role / preferred mode / self-intro). Suits international users and those preferring formal contact.</p>
+        <p class="dim zhonly">报名邮箱待站内正式公布（此处为示意占位）。</p>
+        <p class="dim enonly">The mailbox will be published here at launch (placeholder for now).</p>
       </div>
       <div class="card">
-        <div class="tag">入口 2 · 微信</div>
-        <h3>微信表单</h3>
-        <p>国内相关方可通过微信表单登记（域名、语雀/腾讯文档工具栈）。适合国内创作者与画师社群。</p>
-        <p class="dim">微信表单链接随报名启动公布。</p>
+        <div class="tag">Entry 2 · WeChat</div>
+        <h3 class="zhonly">微信表单</h3>
+        <h3 class="enonly">WeChat Form</h3>
+        <p class="zhonly">国内相关方可通过微信表单登记（域名、语雀/腾讯文档工具栈）。适合国内创作者与画师社群。</p>
+        <p class="enonly">Domestic parties can register via a WeChat form (Yuque / Tencent Docs stack). Suits domestic creators and artist communities.</p>
+        <p class="dim zhonly">微信表单链接随报名启动公布。</p>
+        <p class="dim enonly">The WeChat form link is published when enrollment opens.</p>
       </div>
       <div class="card">
-        <div class="tag">备选 · Discord</div>
-        <h3>Discord 人工报名</h3>
-        <p>国际社区可在 Discord 内由管理人工登记报名，作为双入口之外的人工备选路径。</p>
+        <div class="tag">Fallback · Discord</div>
+        <h3 class="zhonly">Discord 人工报名</h3>
+        <h3 class="enonly">Discord Manual Enrollment</h3>
+        <p class="zhonly">国际社区可在 Discord 内由管理人工登记报名，作为双入口之外的人工备选路径。</p>
+        <p class="enonly">International community can register manually through Discord staff — a human fallback outside the dual entry.</p>
       </div>
     </div>
   </section>
 
   <section class="block">
-    <h2>报名后是什么身份</h2>
+    <h2 class="zhonly">报名后是什么身份</h2>
+    <h2 class="enonly">What Identity After Joining</h2>
     <table>
-      <thead><tr><th>身份</th><th>说明</th><th>权利</th></tr></thead>
+      <thead><tr><th><span class="zhonly">身份</span><span class="enonly">Identity</span></th><th><span class="zhonly">说明</span><span class="enonly">Description</span></th><th><span class="zhonly">权利</span><span class="enonly">Rights</span></th></tr></thead>
       <tbody>
-        <tr><td><strong>观察者 / 读者</strong></td><td>开放注册的受众（门槛最低）</td><td>阅读、投票、点赞、影响模态坍缩权重</td></tr>
-        <tr><td><strong>正式共创者</strong></td><td>通过注册与准入的个人/组织</td><td>提交提案、创作内容、参与评议投票、享分润权</td></tr>
-        <tr><td><strong>评审团</strong></td><td>社区推选/共识产生</td><td>审查提案正典兼容性、仲裁贡献与分润争议</td></tr>
+        <tr><td><strong class="zhonly">观察者 / 读者</strong><strong class="enonly">Observer / Reader</strong></td><td class="zhonly">开放注册的受众（门槛最低）</td><td class="enonly">Open-registered audience (lowest barrier)</td><td class="zhonly">阅读、投票、点赞、影响模态坍缩权重</td><td class="enonly">Read, vote, like, influence mode-collapse weights</td></tr>
+        <tr><td><strong class="zhonly">正式共创者</strong><strong class="enonly">Co-creator</strong></td><td class="zhonly">通过注册与准入的个人/组织</td><td class="enonly">Individual/organization passing registration & admission</td><td class="zhonly">提交提案、创作内容、参与评议投票、享分润权</td><td class="enonly">Propose, create, deliberate/vote, share revenue rights</td></tr>
+        <tr><td><strong class="zhonly">评审团</strong><strong class="enonly">Jury</strong></td><td class="zhonly">社区推选 / 共识产生</td><td class="enonly">Community-elected / consensus-formed</td><td class="zhonly">审查提案正典兼容性、仲裁贡献与分润争议</td><td class="enonly">Review canon compatibility, arbitrate contribution & revenue disputes</td></tr>
       </tbody>
     </table>
   </section>
 
   <section class="block">
-    <h2>共创能做什么</h2>
-    <ul>
+    <h2 class="zhonly">共创能做什么</h2>
+    <h2 class="enonly">What Co-creation Can Do</h2>
+    <ul class="zhonly">
       <li><strong>按介入缝创作</strong>：从《介入点索引》挑 A/B/C 三类缝（支线缝合 / 模态坍缩 / 前史后传）。</li>
       <li><strong>提交提案</strong>：用《共创提案模板》一页提交，走流程 <code>提案 → 评议 → 架构师审查 → 入正典/沙盒</code>。</li>
       <li><strong>参与评议</strong>：在各平台（Discord / Reddit / 微信）对候选提案投票、讨论。</li>
       <li><strong>换模态主攻</strong>：A 赛博 / B 高维玄幻 / C 废土克苏鲁，任选并参与坍缩权重。</li>
     </ul>
+    <ul class="enonly">
+      <li><strong>Create at intervention slots</strong>: pick an A/B/C slot from the Intervention Index (branch-sewing / mode-collapse / prequel-sequel).</li>
+      <li><strong>Submit proposals</strong>: one page via the Co-creation Proposal Template, following <code>Propose → Deliberate → Architect Review → Canon/Sandbox</code>.</li>
+      <li><strong>Deliberate</strong>: vote & discuss candidate proposals across platforms (Discord / Reddit / WeChat).</li>
+      <li><strong>Switch home mode</strong>: A Cyber / B High-Dimension Xuanhuan / C Wasteland-Khthonic — pick and join the collapse weighting.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h2 class="zhonly">多语言认领（翻译 = C4 生态贡献）</h2>
+    <h2 class="enonly">Language Claiming (translation = C4 ecosystem contribution)</h2>
+    <p class="zhonly">HUB 站官方双语为 <strong>中文 + 英文</strong>（人工把控术语口径）。更多语言以<strong>共创认领</strong>方式开放——认领即承担该语言的正典/站点翻译，按 <strong>C4 生态贡献</strong>记维度积分；翻译须对照<strong>术语对照表</strong>（正典三语口径），不得引入机器翻的伪术语。</p>
+    <p class="enonly">The HUB site officially ships manual <strong>Chinese + English</strong> (terminology controlled). More languages open via <strong>co-creation claiming</strong> — claiming means taking on that language's canon/site translation, scored under <strong>C4 ecosystem contribution</strong>; translation must follow the <strong>terminology alignment table</strong> (canonical trilingual wording) and must not introduce machine-garbled pseudo-terms.</p>
+    <table>
+      <thead><tr><th><span class="zhonly">语言</span><span class="enonly">Language</span></th><th><span class="zhonly">方向</span><span class="enonly">Direction</span></th><th><span class="zhonly">认领状态</span><span class="enonly">Status</span></th></tr></thead>
+      <tbody>
+        <tr><td><span class="zhonly">中文（简体）</span><span class="enonly">Simplified Chinese</span></td><td><span class="zhonly">主语言（官方）</span><span class="enonly">Primary (official)</span></td><td><span class="zhonly">✓ 已上线</span><span class="enonly">✓ Live</span></td></tr>
+        <tr><td><span class="zhonly">英文</span><span class="enonly">English</span></td><td><span class="zhonly">主语言（官方）</span><span class="enonly">Primary (official)</span></td><td><span class="zhonly">✓ 已上线</span><span class="enonly">✓ Live</span></td></tr>
+        <tr><td><span class="zhonly">日文 / 韩文 / 西班牙语 / 俄语…</span><span class="enonly">Japanese / Korean / Spanish / Russian…</span></td><td><span class="zhonly">共创认领</span><span class="enonly">Co-created</span></td><td><span class="zhonly">开放认领（联系报名入口）</span><span class="enonly">Open — contact the join entry</span></td></tr>
+      </tbody>
+    </table>
+    <p class="dim zhonly">注：本站顶栏的「机器翻译预览」仅供快速浏览，不算正式语言版；正式多语言以人工认领为准。</p>
+    <p class="dim enonly">Note: the machine-translation preview in the top bar is for rough browsing only — not an official language. Official languages are human-claimed.</p>
   </section>
 
   <section class="block">
     <div class="panel ok">
-      <strong>铁律</strong>：主干不可改（主线历史不可更改），只能丰富支线/补完局部；改系统级设定须先提案级讨论后再入正典。
+      <strong class="zhonly">铁律</strong><strong class="enonly">Iron rule</strong>：<span class="zhonly">主干不可改（主线历史不可更改），只能丰富支线 / 补完局部；改系统级设定须先提案级讨论后再入正典。</span><span class="enonly">the mainline cannot be changed (its history is fixed); you may enrich branches / complete local gaps; changing system-level settings must go through proposal-level discussion before canon.</span>
     </div>
   </section>
+
+  <div class="preview-tip">
+    <p class="zhonly">机器翻译预览仅供快速浏览大概，不构成正式语言版。正式多语言由人工认领并对照术语表把控口径（见「报名 · 多语言认领」）。浏览可自行使用浏览器自带的整页翻译功能查看参考。</p>
+    <p class="enonly">Machine translation preview is for rough scanning only — not an official language. Official languages are human-claimed with terminology controlled against the alignment table (see Join · Language Claiming). For reference you may use your browser's built-in page translation.</p>
+  </div>
 
 </main>
 
 <footer class="footer">
   <div class="brand">OpenWuKongVerse · 开源悟空多维宇宙</div>
-  <p>文档许可 CC BY-NC-SA 4.0 · 社区共创 · 发起人匿名代号 Echo-Architect-0</p>
+  <p><span class="zhonly">文档许可 CC BY-NC-SA 4.0 · 社区共创 · 发起人匿名代号 Echo-Architect-0</span><span class="enonly">CC BY-NC-SA 4.0 · Community co-creation · Founder alias: Echo-Architect-0</span></p>
 </footer>
 
+<script src="assets/js/i18n.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-lang="zh">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,86 +17,116 @@
       <span class="tag">OWKV · HUB</span>
     </div>
     <nav class="nav">
-      <a href="index.html">首页</a>
-      <a href="worldview.html">世界观</a>
-      <a href="join.html">报名</a>
-      <a href="proposals.html" class="on">提案 / 投票</a>
-      <a href="points.html">积分看板</a>
+      <a href="index.html"><span class="zhonly">首页</span><span class="enonly">Home</span></a>
+      <a href="worldview.html"><span class="zhonly">世界观</span><span class="enonly">Worldview</span></a>
+      <a href="join.html"><span class="zhonly">报名</span><span class="enonly">Join</span></a>
+      <a href="proposals.html" class="on"><span class="zhonly">提案 / 投票</span><span class="enonly">Proposals</span></a>
+      <a href="points.html"><span class="zhonly">积分看板</span><span class="enonly">Points</span></a>
     </nav>
+    <div class="langbar">
+      <button class="langbtn on" data-lang="zh">中文</button>
+      <button class="langbtn" data-lang="en">EN</button>
+    </div>
   </div>
 </header>
 
 <main class="wrap">
 
+  <div class="previewbar">
+    <button class="previewbtn" data-preview data-off="机器翻译预览（仅供参考）" data-on="关闭预览">机器翻译预览（仅供参考）</button>
+  </div>
+
   <section class="block">
-    <h1>提案 / 投票入口</h1>
-    <p class="lead dim">本站是指引和目录，不在此做原生表单。提案走共创流水线，投票在平台矩阵评议入口进行（Reddit / Discord / 微信）。</p>
+    <h1 class="zhonly">提案 / 投票入口</h1>
+    <h1 class="enonly">Proposals &amp; Voting</h1>
+    <p class="lead dim zhonly">本站是指引和目录，不在此做原生表单。提案走共创流水线，投票在平台矩阵评议入口进行（Reddit / Discord / 微信）。</p>
+    <p class="lead dim enonly">This site is a guide and directory — no native forms here. Proposals go through the co-creation pipeline; voting happens at the platform-matrix deliberation entries (Reddit / Discord / WeChat).</p>
   </section>
 
   <section class="block">
-    <h2>共创流水线</h2>
+    <h2 class="zhonly">共创流水线</h2>
+    <h2 class="enonly">Co-creation Pipeline</h2>
     <div class="panel">
-      <code>提案（Propose） → 评议（Deliberate） → 架构师审查（Review） → 入正典 / 入沙盒（Canonize）</code>
+      <code class="zhonly">提案（Propose） → 评议（Deliberate） → 架构师审查（Review） → 入正典 / 入沙盒（Canonize）</code>
+      <code class="enonly">Propose → Deliberate → Architect Review → Canonize / Sandbox</code>
     </div>
     <div class="grid">
       <div class="card">
-        <div class="tag">轨道 1</div>
-        <h3>正典轨道</h3>
-        <p>通过完整流程，成为正式宇宙设定，写入正典库。</p>
+        <div class="tag">Track 1</div>
+        <h3 class="zhonly">正典轨道</h3>
+        <h3 class="enonly">Canon Track</h3>
+        <p class="zhonly">通过完整流程，成为正式宇宙设定，写入正典库。</p>
+        <p class="enonly">Passing the full process becomes an official universe setting, written into the canon.</p>
       </div>
       <div class="card">
-        <div class="tag">轨道 2</div>
-        <h3>沙盒轨道</h3>
-        <p>可在沙盒内自由试探，经社区验证后再启动正典流程。</p>
+        <div class="tag">Track 2</div>
+        <h3 class="zhonly">沙盒轨道</h3>
+        <h3 class="enonly">Sandbox Track</h3>
+        <p class="zhonly">可在沙盒内自由试探，经社区验证后再启动正典流程。</p>
+        <p class="enonly">Probe freely in the sandbox; after community validation, start the canon process.</p>
       </div>
     </div>
   </section>
 
   <section class="block">
-    <h2>提案模板（OWKV-PROPOSAL-TPL）</h2>
-    <p>用《共创提案模板》一页可填、直接可报名提交。模板附 <strong>A12 / B3 / C7</strong> 三则完整示范填充。</p>
+    <h2 class="zhonly">提案模板（OWKV-PROPOSAL-TPL）</h2>
+    <h2 class="enonly">Proposal Template (OWKV-PROPOSAL-TPL)</h2>
+    <p class="zhonly">用《共创提案模板》一页可填、直接可报名提交。模板附 <strong>A12 / B3 / C7</strong> 三则完整示范填充。</p>
+    <p class="enonly">The Co-creation Proposal Template is one page, fill-in-ready — submit directly. It ships with <strong>A12 / B3 / C7</strong> three fully-worked examples.</p>
     <div class="panel ok">
-      <strong>拿不准做什么？</strong> 从《介入点索引》挑缝：A 类支线缝合（入门）/ B 类三模态（价值最高）/ C 类前史后传（专家）。全量内嵌标签以主线事件地图为准。
+      <strong class="zhonly">拿不准做什么？</strong><strong class="enonly">Unsure what to do?</strong>
+      <span class="zhonly">从《介入点索引》挑缝：A 类支线缝合（入门）/ B 类三模态（价值最高）/ C 类前史后传（专家）。全量内嵌标签以主线事件地图为准。</span>
+      <span class="enonly">Pick a slot from the Intervention Index: A branch-sewing (entry) / B three-modes (highest value) / C prequel-sequel (expert). Full embedded tags are authoritative in the mainline event map.</span>
     </div>
   </section>
 
   <section class="block">
-    <h2>三类型介入缝（按类找活干）</h2>
+    <h2 class="zhonly">三类型介入缝（按类找活干）</h2>
+    <h2 class="enonly">Three Slot Types (find work by type)</h2>
     <table>
-      <thead><tr><th>类</th><th>定位</th><th>适合</th></tr></thead>
+      <thead><tr><th><span class="zhonly">类</span><span class="enonly">Type</span></th><th><span class="zhonly">定位</span><span class="enonly">Role</span></th><th><span class="zhonly">适合</span><span class="enonly">Suits</span></th></tr></thead>
       <tbody>
-        <tr><td><strong>A · 支线缝合</strong></td><td>节点之间/内部未被记录的细节、因果、前史</td><td>新手首选（安全区，易出亮点）</td></tr>
-        <tr><td><strong>B · 三模态</strong></td><td>同一节点在三种模态下的呈现差异</td><td>进阶（价值最高，参与模态坍缩）</td></tr>
-        <tr><td><strong>C · 前史/后传</strong></td><td>系统建立、悟空起源、取经后的循环</td><td>专家/架构师（想象力天花板）</td></tr>
+        <tr><td><strong class="zhonly">A · 支线缝合</strong><strong class="enonly">A· Branch-sewing</strong></td><td class="zhonly">节点之间/内部未被记录的细节、因果、前史</td><td class="enonly">unrecorded details, causality, prehistory between/below nodes</td><td class="zhonly">新手首选（安全区，易出亮点）</td><td class="enonly">beginners (safe zone, easy wins)</td></tr>
+        <tr><td><strong class="zhonly">B · 三模态</strong><strong class="enonly">B· Three Modes</strong></td><td class="zhonly">同一节点在三种模态下的呈现差异</td><td class="enonly">how one node presents across three modes</td><td class="zhonly">进阶（价值最高，参与模态坍缩）</td><td class="enonly">advanced (highest value, joins mode-collapse)</td></tr>
+        <tr><td><strong class="zhonly">C · 前史/后传</strong><strong class="enonly">C· Prequel/Sequel</strong></td><td class="zhonly">系统建立、悟空起源、取经后的循环</td><td class="enonly">system founding, Wukong origin, post-pilgrimage cycle</td><td class="zhonly">专家/架构师（想象力天花板）</td><td class="enonly">experts/architects (imagination ceiling)</td></tr>
       </tbody>
     </table>
   </section>
 
   <section class="block">
-    <h2>提交与评议入口（平台矩阵）</h2>
+    <h2 class="zhonly">提交与评议入口（平台矩阵）</h2>
+    <h2 class="enonly">Submit &amp; Deliberation Entries (platform matrix)</h2>
     <table>
-      <thead><tr><th>动作</th><th>入口</th><th>备注</th></tr></thead>
+      <thead><tr><th><span class="zhonly">动作</span><span class="enonly">Action</span></th><th><span class="zhonly">入口</span><span class="enonly">Entry</span></th><th><span class="zhonly">备注</span><span class="enonly">Note</span></th></tr></thead>
       <tbody>
-        <tr><td>提案提交</td><td>邮件 + 微信（D2 双入口）</td><td>复用报名工具站，不在此做原生表单</td></tr>
-        <tr><td>提案评议 / 投票</td><td>Reddit（投票帖）/ Discord（讨论）</td><td>国际轨</td></tr>
-        <tr><td>评议 / 答疑</td><td>微信群</td><td>国内轨</td></tr>
-        <tr><td>管理动作（审查/积分/仲裁）</td><td>GitHub 仓库（issue / PR）</td><td>正典与记账的官方通道</td></tr>
+        <tr><td class="zhonly">提案提交</td><td class="enonly">Proposal submission</td><td class="zhonly">邮件 + 微信（D2 双入口）</td><td class="enonly">email + WeChat (D2 dual entry)</td><td class="zhonly">复用报名工具站，不在此做原生表单</td><td class="enonly">reuses the join tooling; no native form here</td></tr>
+        <tr><td class="zhonly">提案评议 / 投票</td><td class="enonly">Deliberation / voting</td><td class="zhonly">Reddit（投票帖）/ Discord（讨论）</td><td class="enonly">Reddit (vote threads) / Discord (discussion)</td><td class="zhonly">国际轨</td><td class="enonly">international track</td></tr>
+        <tr><td class="zhonly">评议 / 答疑</td><td class="enonly">Deliberation / Q&amp;A</td><td class="zhonly">微信群</td><td class="enonly">WeChat group</td><td class="zhonly">国内轨</td><td class="enonly">domestic track</td></tr>
+        <tr><td class="zhonly">管理动作（审查/积分/仲裁）</td><td class="enonly">Admin (review/points/arbitration)</td><td class="zhonly">GitHub 仓库（issue / PR）</td><td class="enonly">GitHub repo (issue / PR)</td><td class="zhonly">正典与记账的官方通道</td><td class="enonly">official channel for canon &amp; ledger</td></tr>
       </tbody>
     </table>
   </section>
 
   <section class="block">
     <div class="panel warn">
-      <strong>创作三红线</strong>：法则自洽 / 权限自洽 / 元层自洽。任何创作（正典或沙盒）均须满足；钩子节点（菩提 / 真假美猴王 / 取经后）建议留白不挑明。
+      <strong class="zhonly">创作三红线</strong><strong class="enonly">Three red lines of creation</strong>：
+      <span class="zhonly">法则自洽 / 权限自洽 / 元层自洽。任何创作（正典或沙盒）均须满足；钩子节点（菩提 / 真假美猴王 / 取经后）建议留白不挑明。</span>
+      <span class="enonly">law-consistency / permission-consistency / meta-layer-consistency. Every creation (canon or sandbox) must satisfy these; hook nodes (Bodhi / True-False Wukong / post-pilgrimage) are advised to stay blank, unstated.</span>
     </div>
   </section>
+
+  <div class="preview-tip">
+    <p class="zhonly">机器翻译预览仅供快速浏览大概，不构成正式语言版。正式多语言由人工认领并对照术语表把控口径（见「报名 · 多语言认领」）。浏览可自行使用浏览器自带的整页翻译功能查看参考。</p>
+    <p class="enonly">Machine translation preview is for rough scanning only — not an official language. Official languages are human-claimed with terminology controlled against the alignment table (see Join · Language Claiming). For reference you may use your browser's built-in page translation.</p>
+  </div>
 
 </main>
 
 <footer class="footer">
   <div class="brand">OpenWuKongVerse · 开源悟空多维宇宙</div>
-  <p>文档许可 CC BY-NC-SA 4.0 · 社区共创 · 发起人匿名代号 Echo-Architect-0</p>
+  <p><span class="zhonly">文档许可 CC BY-NC-SA 4.0 · 社区共创 · 发起人匿名代号 Echo-Architect-0</span><span class="enonly">CC BY-NC-SA 4.0 · Community co-creation · Founder alias: Echo-Architect-0</span></p>
 </footer>
 
+<script src="assets/js/i18n.js"></script>
 </body>
 </html>
