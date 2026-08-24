@@ -52,6 +52,32 @@ a:hover { text-decoration: underline; }
 .nav a { color: var(--txt-dim); font-size: .92rem; }
 .nav a:hover, .nav a.on { color: var(--txt); text-decoration: none; }
 
+/* ---- 语言切换 ---- */
+.langbar { display: flex; gap: .4rem; align-items: center; }
+.langbar .langbtn {
+  background: transparent; color: var(--txt-dim); border: 1px solid var(--line);
+  border-radius: 6px; padding: .3rem .7rem; font-size: .78rem; cursor: pointer;
+  letter-spacing: .03em;
+}
+.langbar .langbtn:hover { color: var(--txt); border-color: var(--accent); }
+.langbar .langbtn.on { color: var(--accent); border-color: var(--accent); font-weight: 600; background: rgba(88,166,255,.08); }
+.langbar .devider { color: var(--line); }
+[data-lang="zh"] .enonly, [data-lang="en"] .zhonly { display: none; }
+/* 预览翻译开关（仅预览，非正式术语口径） */
+.previewbar { text-align: right; margin-bottom: 1rem; }
+.previewbar .previewbtn {
+  background: transparent; color: var(--txt-dim); border: 1px dashed var(--line);
+  border-radius: 6px; padding: .3rem .8rem; font-size: .8rem; cursor: pointer;
+}
+.previewbar .previewbtn:hover { color: var(--warn); border-color: var(--warn); }
+.preview-note { font-size: .78rem; color: var(--warn); margin: .8rem 0 0; }
+/* 机器预览提示（仅提示，不隐藏任何官方内容） */
+.preview-tip {
+  display: none; background: rgba(210,153,34,.08); border: 1px dashed var(--warn);
+  border-radius: 8px; padding: .9rem 1.1rem; margin: .8rem 0; font-size: .9rem; color: var(--txt);
+}
+html.previewing .preview-tip { display: block; }
+
 /* ---- 布局 ---- */
 .wrap { max-width: 1100px; margin: 0 auto; padding: 2.4rem 1.2rem 4rem; }
 
@@ -129,4 +155,6 @@ code {
   .hero h1 { font-size: 1.6rem; }
   .topbar-inner { padding: .7rem 1rem; }
   .nav { gap: .7rem; }
+  .nav a { font-size: .82rem; }
+  .langbar { order: 2; }
 }
