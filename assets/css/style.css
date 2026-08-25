@@ -32,7 +32,8 @@ body {
 }
 
 /* =========================================================
-   极光流背景（方案 A · 纯 CSS，静态暗底 + 缓慢漂移色带）
+   极光流背景（方案 A · 纯 CSS，静态暗底 + 漂移色带）
+   （调亮加快档：更高透明度 + 14s 周期 + 更大位移/色相偏移）
    ========================================================= */
 body::before {
   content: "";
@@ -40,22 +41,22 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  /* 多层大尺寸模糊渐变：青绿→星蓝→紫金，模拟极光色带 */
+  /* 多层大尺寸模糊渐变：青绿→星蓝→紫金，模拟极光色带（调亮档） */
   background:
-    radial-gradient(60% 45% at 15% 20%, rgba(92, 200, 160, .30) 0%, transparent 60%),
-    radial-gradient(55% 40% at 85% 15%, rgba(88, 166, 255, .32) 0%, transparent 62%),
-    radial-gradient(70% 55% at 70% 85%, rgba(150, 110, 255, .22) 0%, transparent 60%),
-    radial-gradient(45% 35% at 30% 75%, rgba(240, 180, 41, .10) 0%, transparent 55%);
-  filter: blur(60px) saturate(1.2);
-  animation: auroraShift 26s ease-in-out infinite;
+    radial-gradient(60% 45% at 15% 20%, rgba(92, 210, 165, .48) 0%, transparent 60%),
+    radial-gradient(55% 40% at 85% 15%, rgba(88, 172, 255, .50) 0%, transparent 62%),
+    radial-gradient(70% 55% at 70% 85%, rgba(155, 116, 255, .36) 0%, transparent 60%),
+    radial-gradient(45% 35% at 30% 75%, rgba(244, 190, 48, .18) 0%, transparent 55%);
+  filter: blur(56px) saturate(1.35);
+  animation: auroraShift 14s ease-in-out infinite;
 }
 
 @keyframes auroraShift {
-  0%   { opacity: .55; filter: blur(60px) saturate(1.2) hue-rotate(0deg);    transform: translate3d(0, 0, 0) scale(1); }
-  25%  { opacity: .75; filter: blur(64px) saturate(1.35) hue-rotate(8deg);  transform: translate3d(-1.5%, 1%, 0) scale(1.04); }
-  50%  { opacity: .6;  filter: blur(58px) saturate(1.15) hue-rotate(-6deg); transform: translate3d(1%, -1.5%, 0) scale(1.06); }
-  75%  { opacity: .7;  filter: blur(62px) saturate(1.3) hue-rotate(10deg);  transform: translate3d(1.5%, 1.2%, 0) scale(1.02); }
-  100% { opacity: .55; filter: blur(60px) saturate(1.2) hue-rotate(0deg);    transform: translate3d(0, 0, 0) scale(1); }
+  0%   { opacity: .68; filter: blur(56px) saturate(1.35) hue-rotate(0deg);    transform: translate3d(0, 0, 0) scale(1); }
+  25%  { opacity: .9;  filter: blur(60px) saturate(1.5) hue-rotate(10deg);   transform: translate3d(-3%, 2%, 0) scale(1.09); }
+  50%  { opacity: .72; filter: blur(54px) saturate(1.25) hue-rotate(-9deg);  transform: translate3d(2.5%, -3%, 0) scale(1.12); }
+  75%  { opacity: .84; filter: blur(58px) saturate(1.45) hue-rotate(13deg);  transform: translate3d(3%, 2.5%, 0) scale(1.06); }
+  100% { opacity: .68; filter: blur(56px) saturate(1.35) hue-rotate(0deg);    transform: translate3d(0, 0, 0) scale(1); }
 }
 
 /* 内容层提到极光之上 */
