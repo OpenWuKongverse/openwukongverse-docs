@@ -194,13 +194,19 @@ code {
 
 /* ---- 报名表单 ---- */
 .enroll-form {
-  display: block; margin-top: .6rem;
+  display: grid; grid-template-columns: 210px 1fr;
+  column-gap: 1rem; row-gap: .95rem; align-items: center;
+  margin-top: .6rem;
 }
 .enroll-form label {
-  display: block; margin: 1.2rem 0 .35rem;
   color: var(--txt-dim); font-size: .85rem; font-weight: 600; letter-spacing: .02em;
+  text-align: right; line-height: 1.35;
 }
-.enroll-form label:first-of-type { margin-top: .2rem; }
+.enroll-form label .req { color: var(--accent2); margin-left: .15rem; }
+.enroll-form label .dim-msg {
+  display: block; color: var(--txt-dim); opacity: .72;
+  font-weight: 400; font-size: .76rem; margin-top: .15rem; text-align: right;
+}
 .enroll-form input[type=text],
 .enroll-form input[type=email],
 .enroll-form select {
@@ -220,18 +226,25 @@ code {
   background-repeat: no-repeat; background-position: right .8rem center;
   padding-right: 2.2rem;
 }
-.enroll-form .cf-turnstile { margin: 1.2rem 0 .4rem; }
+.enroll-form .cf-turnstile {
+  grid-column: 1 / -1; /* 跨两栏 */
+  justify-self: start; margin-top: .3rem;
+}
 .enroll-form .form-msg {
-  min-height: 1.2em; margin: .3rem 0 .6rem;
-  font-size: .86rem; color: var(--txt-dim);
+  grid-column: 1 / -1;
+  min-height: 1.2em; font-size: .86rem; color: var(--txt-dim);
 }
 .enroll-form .form-msg.err { color: var(--warn); }
 .enroll-form .form-msg.ok { color: var(--ok); }
+.enroll-form .enroll-submit {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
 .enroll-submit {
-  display: inline-block; cursor: pointer;
+  cursor: pointer;
   background: var(--accent); color: #0d1117; font-weight: 600;
   border: 1px solid var(--accent); border-radius: 8px;
-  font-size: 1rem; padding: .62rem 1.6rem; margin-top: .4rem;
+  font-size: 1rem; padding: .62rem 1.6rem;
   transition: filter .15s;
 }
 .enroll-submit:hover { filter: brightness(1.08); }
