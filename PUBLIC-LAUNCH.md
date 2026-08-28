@@ -76,7 +76,7 @@
 |---|---|
 | `web/index.html` | 首页 / 公告 |
 | `web/worldview.html` | 世界观速览 |
-| `web/join.html` | 报名（D2 邮件+微信双入口） |
+| `web/join.html` | 报名（D2 三入口：Hub站邮件主 + GitHub + Discord；微信仅人工引导展位） |
 | `web/proposals.html` | 提案 / 投票入口 |
 | `web/points.html` | 积分看板（只读展示） |
 | `web/assets/css/style.css` | 共用样式 |
