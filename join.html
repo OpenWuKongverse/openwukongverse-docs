@@ -58,7 +58,7 @@
       <div class="tag">Form · Observer tier</div>
       <h3 class="zhonly">观察者注册表（第一层 · 最低门槛）</h3>
       <h3 class="enonly">Observer Registration (Tier 1 · lowest barrier)</h3>
-      <form id="enrollForm" onsubmit="return false">
+      <form id="enrollForm" class="enroll-form" onsubmit="return false">
         <label class="zhonly">匿名代号 *（跨平台统一识别，公开身份）</label>
         <label class="enonly">Anon code *（unique public id across platforms）</label>
         <input name="anon_code" maxlength="40" placeholder="e.g. 悟空001" required>
@@ -95,9 +95,9 @@
         <input name="invite_code" maxlength="12" placeholder="4-12 位">
 
         <div class="cf-turnstile" data-sitekey="0x4AAAAAAEfHyydWm8nvQ_zJ" data-theme="auto"></div>
-        <div id="formMsg" class="dim"></div>
+        <div id="formMsg" class="form-msg"></div>
 
-        <button type="submit" class="btn"><span class="zhonly">提交 · 成为观察者</span><span class="enonly">Submit · become observer</span></button>
+        <button type="submit" class="enroll-submit"><span class="zhonly">提交 · 成为观察者</span><span class="enonly">Submit · become observer</span></button>
       </form>
       <p class="dim zhonly">轻防刷：人机验证（Turnstile）+ 蜜罐 + 邮箱域名规约 + 邀请码；提交走 CF Worker → D1，邮箱只存哈希。数据源接《贡献力数据规范》events_raw。</p>
       <p class="dim enonly">Light anti-spam: Turnstile + honeypot + email-domain rules + invite code; submissions go CF Worker → D1, email hashed only. Feeds events_raw per the data spec.</p>
