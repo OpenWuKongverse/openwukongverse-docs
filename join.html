@@ -59,12 +59,10 @@
       <h3 class="zhonly">观察者注册表（第一层 · 最低门槛）</h3>
       <h3 class="enonly">Observer Registration (Tier 1 · lowest barrier)</h3>
       <form id="enrollForm" class="enroll-form" onsubmit="return false">
-        <label class="zhonly">匿名代号 *（跨平台统一识别，公开身份）</label>
-        <label class="enonly">Anon code *（unique public id across platforms）</label>
-        <input name="anon_code" maxlength="40" placeholder="e.g. 悟空001" required>
+        <label><span class="zhonly">匿名代号</span><span class="enonly">Anon code</span><span class="req">*</span><span class="zhonly dim-msg">跨平台统一识别，公开身份</span></label>
+        <input name="anon_code" maxlength="40" placeholder="悟空001 / e.g. Wukong001" required>
 
-        <label class="zhonly">主攻角色</label>
-        <label class="enonly">Primary role</label>
+        <label><span class="zhonly">主攻角色</span><span class="enonly">Primary role</span></label>
         <select name="role_tag">
           <option value="">—</option>
           <option value="artist">画师 / Artist</option>
@@ -74,8 +72,7 @@
           <option value="community">运营 / Community</option>
         </select>
 
-        <label class="zhonly">主攻模态</label>
-        <label class="enonly">Primary mode</label>
+        <label><span class="zhonly">主攻模态</span><span class="enonly">Primary mode</span></label>
         <select name="mode_tag">
           <option value="">—</option>
           <option value="A">A · 赛博</option>
@@ -83,16 +80,14 @@
           <option value="C">C · 废土克苏鲁</option>
         </select>
 
-        <label class="zhonly">联系邮箱 *（只存哈希，不公开明文）</label>
-        <label class="enonly">Email *（hashed only, never public）</label>
-        <input type="email" name="email" maxlength="120" required>
+        <label><span class="zhonly">联系邮箱</span><span class="enonly">Email</span><span class="req">*</span><span class="zhonly dim-msg">只存哈希，不公开明文</span><span class="enonly dim-msg">hashed only, never public</span></label>
+        <input type="email" name="email" maxlength="120" placeholder="you@example.com" required>
 
         <!-- 蜜罐隐藏字段: 正常人不可见、不填; 机器人若填即判垃圾丢弃 -->
         <input type="text" name="hp" value="" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
 
-        <label class="zhonly">邀请码（从 Discord 报名频道 / 主办方领取；GitHub 公开一个通用码）</label>
-        <label class="enonly">Invite code（from Discord #enroll / organizer; a public code is in the GitHub README）</label>
-        <input name="invite_code" maxlength="12" placeholder="4-12 位">
+        <label><span class="zhonly">邀请码</span><span class="enonly">Invite code</span><span class="zhonly dim-msg">Discord 报名频道 / 主办方领取；GitHub 公开通用码</span><span class="enonly dim-msg">from Discord #enroll / organizer; a public code in README</span></label>
+        <input name="invite_code" maxlength="12" placeholder="4-12 位" style="max-width:14ch">
 
         <div class="cf-turnstile" data-sitekey="0x4AAAAAAEfHyydWm8nvQ_zJ" data-theme="auto"></div>
         <div id="formMsg" class="form-msg"></div>
@@ -242,7 +237,7 @@
 </footer>
 
 <script src="assets/js/i18n.js"></script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
 <script>
 // OWKV 站内报名表单 → CF Worker(D1) 提交
 (function () {
@@ -253,24 +248,26 @@
   var btn = form.querySelector('button[type=submit]');
   var msg = document.getElementById('formMsg');
 
-  // 显式渲染 Turnstile(等 api.js 就绪)
+  // 显式渲染 Turnstile：轮询等 api.js 就绪(不依赖 ready 时序,最稳),每 300ms 重试直到渲染成功
   var turnstileWidget = null;
+  var tsRetries = 0;
   function renderTurnstile() {
     if (window.turnstile && !turnstileWidget) {
       try {
         var el = form.querySelector('.cf-turnstile');
         if (el) {
-          if (turnstileWidget) window.turnstile.remove(turnstileWidget);
           turnstileWidget = window.turnstile.render(el, {
             sitekey: '0x4AAAAAAEfHyydWm8nvQ_zJ',
             callback: function (token) { form.dataset.tsToken = token; }
           });
         }
-      } catch (e) { /* turnstile 未就绪则等 */ }
+      } catch (e) { console.warn('turnstile render retry', e); }
+    }
+    if (!turnstileWidget && ++tsRetries < 50) {
+      setTimeout(renderTurnstile, 300); // 最长等 15s
     }
   }
   renderTurnstile();
-  if (window.turnstile) window.turnstile.ready(renderTurnstile);
 
   form.addEventListener('submit', function (ev) {
     ev.preventDefault();
