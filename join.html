@@ -44,41 +44,96 @@
       <span class="zhonly">报名与共创已对外开放（试运行）。主入口：<strong>Hub 站 · GitHub · Discord</strong>；微信仅作<a href="#wechat" class="zhonly">人工引导展位</a>，不承担数据/报名。</span>
       <span class="enonly">Enrollment & co-creation are now open (beta, trial run). Primary entries: <strong>Hub · GitHub · Discord</strong>; WeChat is only a <a href="#wechat">manual guidance display</a>, not a data/registration source.</span>
     </div>
-    <p class="lead dim zhonly">本站不做原生表单，报名走 <strong>Hub 站（邮件）· GitHub · Discord</strong> 三入口（决策 D2 修订）；提交后进入观察者身份，可逐步晋升共创者。报名邮箱<b>站内公布</b>，经 Discord / 主页<b>二次确认</b>领取——不裸奔公开，防刷。</p>
-    <p class="lead dim enonly">This site has no native forms. Joining goes through the <strong>Hub (email) · GitHub · Discord</strong> triple entry (decision D2 revised); you start as an observer and can advance to co-creator. The enrollment mailbox is published <b>in-site</b> and handed over via <b>second confirmation</b> on Discord / the homepage — not exposed publicly, anti-spam.</p>
+    <p class="lead dim zhonly">本站<b>直接建原生注册表</b>：填 匿名代号 / 角色 / 模态 / 邮箱 即成为<b>观察者</b>（CF Worker→私有 DB，邮箱只存哈希）。要成为创作者：路A 累积 C1–C4 积分自动转正，或 路B 直接申请（表单加意向字段 / 邮件 / Discord，评审团核验）。</p>
+    <p class="lead dim enonly">This site has a <b>native registration form</b>: fill anon code / role / mode / email to <b>become an observer</b> (CF Worker → private DB, email hashed only). To become a co-creator: Path A accumulate C1–C4 points for auto-promotion, or Path B apply directly (intent field on the form / email / Discord, jury-verified).</p>
   </section>
 
   <section class="block">
-    <h2 class="zhonly">报名三入口（决策 D2 修订）</h2>
-    <h2 class="enonly">Triple Entry (D2 revised)</h2>
+    <h2 class="zhonly">报名 = 站内注册表单（观察者门槛，直接填）</h2>
+    <h2 class="enonly">Join = In-site Registration Form (observer tier, fill directly)</h2>
+    <p class="lead dim zhonly">本站<b>直接建原生注册表</b>：填 匿名代号 / 主攻角色 / 模态 / 邮箱 即可<b>成为观察者</b>，无需绕道、无需进一步引导。要成为<b>创作者</b>，见下方两层路径。</p>
+    <p class="lead dim enonly">This site has a <b>native registration form</b>: fill anon code / role / mode / email to <b>become an observer</b> directly, no detour, no further guidance. To become a <b>co-creator</b>, see the two-tier path below.</p>
+
+    <div class="card">
+      <div class="tag">Form · Observer tier</div>
+      <h3 class="zhonly">观察者注册表（第一层 · 最低门槛）</h3>
+      <h3 class="enonly">Observer Registration (Tier 1 · lowest barrier)</h3>
+      <form id="enrollForm" onsubmit="return false">
+        <label class="zhonly">匿名代号 *（跨平台统一识别，公开身份）</label>
+        <label class="enonly">Anon code *（unique public id across platforms）</label>
+        <input name="anon_code" maxlength="40" placeholder="e.g. 悟空001" required>
+
+        <label class="zhonly">主攻角色</label>
+        <label class="enonly">Primary role</label>
+        <select name="role_tag">
+          <option value="">—</option>
+          <option value="artist">画师 / Artist</option>
+          <option value="writer">作者 / Writer</option>
+          <option value="player">玩家 / Player</option>
+          <option value="programmer">程序 / Programmer</option>
+          <option value="community">运营 / Community</option>
+        </select>
+
+        <label class="zhonly">主攻模态</label>
+        <label class="enonly">Primary mode</label>
+        <select name="mode_tag">
+          <option value="">—</option>
+          <option value="A">A · 赛博</option>
+          <option value="B">B · 高维玄幻</option>
+          <option value="C">C · 废土克苏鲁</option>
+        </select>
+
+        <label class="zhonly">联系邮箱 *（只存哈希，不公开明文）</label>
+        <label class="enonly">Email *（hashed only, never public）</label>
+        <input type="email" name="email" maxlength="120" required>
+
+        <!-- 蜜罐隐藏字段: 正常人不可见、不填; 机器人若填即判垃圾丢弃 -->
+        <input type="text" name="hp" value="" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
+
+        <label class="zhonly">邀请码（从 Discord 报名频道 / 主办方领取；GitHub 公开一个通用码）</label>
+        <label class="enonly">Invite code（from Discord #enroll / organizer; a public code is in the GitHub README）</label>
+        <input name="invite_code" maxlength="12" placeholder="4-12 位">
+
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAAEfHyydWm8nvQ_zJ" data-theme="auto"></div>
+        <div id="formMsg" class="dim"></div>
+
+        <button type="submit" class="btn"><span class="zhonly">提交 · 成为观察者</span><span class="enonly">Submit · become observer</span></button>
+      </form>
+      <p class="dim zhonly">轻防刷：人机验证（Turnstile）+ 蜜罐 + 邮箱域名规约 + 邀请码；提交走 CF Worker → D1，邮箱只存哈希。数据源接《贡献力数据规范》events_raw。</p>
+      <p class="dim enonly">Light anti-spam: Turnstile + honeypot + email-domain rules + invite code; submissions go CF Worker → D1, email hashed only. Feeds events_raw per the data spec.</p>
+    </div>
+
     <div class="grid">
       <div class="card">
-        <div class="tag">Entry 1 · Email</div>
-        <h3 class="zhonly">邮件报名（站内双层）</h3>
-        <h3 class="enonly">Email Joining (in-site, double-layer)</h3>
-        <p class="zhonly">报名邮箱<b>站内公布、非公开裸奔</b>：先加入 Discord / 在主页确认身份，领取报名邮箱与<b>报名模板</b>后发送（意向角色 / 模态偏好 / 自我简介）。防刷。</p>
-        <p class="enonly">The enrollment mailbox is <b>published in-site, not exposed publicly</b>: first join Discord / confirm identity on the homepage to receive the mailbox and the <b>enrollment template</b>, then send (intended role / mode preference / self-intro). Anti-spam.</p>
-        <p class="dim zhonly">报名邮箱经 Discord / 主页二次确认发放，非公开页面直接公布。</p>
-        <p class="dim enonly">The mailbox is handed over via Discord / homepage second confirmation, not printed directly on a public page.</p>
+        <div class="tag">Co-creator · Path A</div>
+        <h3 class="zhonly">创作者·路A：积累转正（自然进阶）</h3>
+        <h3 class="enonly">Co-creator · Path A: earn promotion</h3>
+        <p class="zhonly">观察者正常参与共创，累积 <b>C1–C4 积分</b>（提案 / 评议 / 采纳 / 生态）达标后<b>自动晋升创作者</b>——靠贡献说话，无需单独申请。积分看板实时可见。</p>
+        <p class="enonly">Observers join co-creation normally, accumulate <b>C1–C4 points</b> (proposals / reviews / adoption / ecosystem), and get <b>auto-promoted to co-creator</b> once the bar is met — earned, no separate application. See the live points board.</p>
       </div>
       <div class="card">
-        <div class="tag">Entry 2 · GitHub</div>
-        <h3 class="zhonly">GitHub 报名</h3>
-        <h3 class="enonly">GitHub Joining</h3>
-        <p class="zhonly">在 GitHub 仓库提 <code>Issue</code> 报名（填匿名代号 / 主攻角色 / 模态），或直接以 <code>PR</code> 参与共创。自动化友好：GH 事件可直接回流积分账本。</p>
-        <p class="enonly">Open an <code>Issue</code> in the repo to enroll (anon code / intended role / mode), or join directly via <code>PR</code>. Automation-friendly: GH events can flow straight back into the points ledger.</p>
-        <a class="btn" href="https://github.com/OpenWuKongverse/openwukongverse-docs"><span class="zhonly">前往仓库报名</span><span class="enonly">Go to the repo</span></a>
-        <p class="dim zhonly">仓库当前私有 — 申请见下「GitHub 可达」说明。</p>
-        <p class="dim enonly">Repo is private for now — see "GitHub access" below.</p>
+        <div class="tag">Co-creator · Path B</div>
+        <h3 class="zhonly">创作者·路B：直接申请（主动敲门）</h3>
+        <h3 class="enonly">Co-creator · Path B: apply directly</h3>
+        <p class="zhonly">不想等积分累积？观察者基础上<b>直接申请</b>：站内表单加<b>创作意向/样本字段</b>，或经<b>邮件 / Discord</b> 提交申请 → <b>评审团严格核验</b>（涉及积分与分润，人工核验）→ 通过即开创作者席位。</p>
+        <p class="enonly">Don't want to wait on points? As an observer, <b>apply directly</b>: add a <b>intent/portfolio field</b> on the in-site form, or submit via <b>email / Discord</b> → <b>strict jury verification</b> (points & revenue-share involved, manual check) → approved = co-creator seat.</p>
       </div>
       <div class="card">
-        <div class="tag">Entry 3 · Discord</div>
-        <h3 class="zhonly">Discord 报名</h3>
-        <h3 class="enonly">Discord Joining</h3>
-        <p class="zhonly">国际社区在 Discord 报名频道登记，管理人工核对后开 Hub 账户；同时可在这里领到<b>报名邮箱 + 报名模板</b>（双重入口联动）。</p>
-        <p class="enonly">International community registers in the Discord #enroll channel; staff verifies then opens your Hub account; you can also pick up the <b>enrollment mailbox + template</b> here (linking the dual entries).</p>
-        <a class="btn ghost" href="#discord-invite"><span class="zhonly">Discord 报名频道（邀请链接站内公布）</span><span class="enonly">Discord #enroll (invite in-site)</span></a>
+        <div class="tag">Entry · GitHub</div>
+        <h3 class="zhonly">GitHub（熟手通道，非主入口）</h3>
+        <h3 class="enonly">GitHub（pro path, not primary）</h3>
+        <p class="zhonly">熟悉 GitHub 的贡献者：在仓库提 <code>Issue</code> 报名（匿名代号/角色/模态），或直接 <code>PR</code> 参与。自动化友好，GH 事件回流积分账本。新手不必走这里——用上方站内表单即可。<a class="dim" href="https://github.com/OpenWuKongverse/openwukongverse-docs">GitHub 报名说明 →</a></p>
+        <p class="enonly">For GitHub-savvy contributors: open an <code>Issue</code> in the repo (anon code/role/mode), or join via <code>PR</code>. Automation-friendly, GH events flow to the ledger. Newcomers don't need this — use the in-site form above.<a class="dim" href="https://github.com/OpenWuKongverse/openwukongverse-docs">GitHub joining guide →</a></p>
+        <a class="btn ghost" href="https://github.com/OpenWuKongverse/openwukongverse-docs"><span class="zhonly">前往仓库（熟手）</span><span class="enonly">Go to repo (pro)</span></a>
       </div>
+    </div>
+
+    <div class="card" id="discord-invite">
+      <div class="tag">Entry · Discord</div>
+      <h3 class="zhonly">Discord（补充 / 领邀请码）</h3>
+      <h3 class="enonly">Discord（supplement / get invite code）</h3>
+      <p class="zhonly">国际社区在 Discord 报名频道登记，管理人工核对；<b>这里也是领邀请码 / 创作者路B申请</b>的地方。邀请链接<b>站内公布</b>（不裸奔公开）。</p>
+      <p class="enonly">International community registers in Discord #enroll; staff verifies. This is also where you <b>get the invite code / apply Path B</b>. Invite link is <b>published in-site</b>.</p>
     </div>
 
     <div class="card" id="wechat">
@@ -187,5 +242,92 @@
 </footer>
 
 <script src="assets/js/i18n.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+<script>
+// OWKV 站内报名表单 → CF Worker(D1) 提交
+(function () {
+  var ENROLL_URL = 'https://owkv-enroll.ava0630ava.workers.dev';
+  var form = document.getElementById('enrollForm');
+  if (!form) return;
+
+  var btn = form.querySelector('button[type=submit]');
+  var msg = document.getElementById('formMsg');
+
+  // 显式渲染 Turnstile(等 api.js 就绪)
+  var turnstileWidget = null;
+  function renderTurnstile() {
+    if (window.turnstile && !turnstileWidget) {
+      try {
+        var el = form.querySelector('.cf-turnstile');
+        if (el) {
+          if (turnstileWidget) window.turnstile.remove(turnstileWidget);
+          turnstileWidget = window.turnstile.render(el, {
+            sitekey: '0x4AAAAAAEfHyydWm8nvQ_zJ',
+            callback: function (token) { form.dataset.tsToken = token; }
+          });
+        }
+      } catch (e) { /* turnstile 未就绪则等 */ }
+    }
+  }
+  renderTurnstile();
+  if (window.turnstile) window.turnstile.ready(renderTurnstile);
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+
+    var anonCode = (form.anon_code.value || '').trim();
+    var email = (form.email.value || '').trim();
+    var hp = (form.hp.value || ''); // 蜜罐: 命中即丢弃
+    msg.textContent = '';
+
+    if (!anonCode || !email) { msg.textContent = '请填写 匿名代号 与 联系邮箱。'; return; }
+    if (hp) { msg.textContent = '提交已记录(重复表单)。'; return; } // 静默丢弃
+
+    var tsToken = form.dataset.tsToken;
+    if (!tsToken) {
+      if (window.turnstile) { msg.textContent = '请先完成人机验证(圆框勾选)。'; }
+      else { msg.textContent = '人机验证组件加载中,请稍候重试。'; }
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = '提交中…';
+
+    var payload = {
+      anon_code: anonCode,
+      role_tag: form.role_tag.value || '',
+      mode_tag: form.mode_tag.value || '',
+      email: email,
+      invite_code: (form.invite_code.value || '').trim(),
+      hp: hp,
+      'cf-turnstile-response': tsToken
+    };
+
+    fetch(ENROLL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (j && j.ok) {
+        msg.textContent = '✓ 已提交：你已进入观察者身份。欢迎加入共创！';
+        form.reset();
+        if (turnstileWidget) { window.turnstile.reset(turnstileWidget); form.dataset.tsToken = ''; }
+      } else {
+        var e = (j && j.error) || 'unknown';
+        msg.textContent = '提交未成功: ' + e + '。请重试。';
+      }
+    })
+    .catch(function () {
+      msg.textContent = '网络错误,请稍候重试。';
+    })
+    .finally(function () {
+      btn.disabled = false;
+      btn.textContent = '提交 · 成为观察者';
+    });
+  });
+})();
+</script>
 </body>
 </html>

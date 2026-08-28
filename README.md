@@ -70,8 +70,8 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 
 | 文档 | 说明 |
 |---|---|
-| [`co-creation/creator-management-system_v1.md`](co-creation/creator-management-system_v1.md) | **运营体系主档**（OWKV-CREATOR-SYS v2.1）：一个 Hub + 六平台入口、地理双轨·同一事实源、决策表（D1-D7）、共创流水线、积分看板、公示四档；D2 报名三入口（Hub站邮件主 + GitHub + Discord，微信仅人工引导展位不入数据流） |
-| [`co-creation/contribution-data-spec_v1.md`](co-creation/contribution-data-spec_v1.md) | **贡献力数据规范**（OWKV-DATA-SPEC v1）：注入源三入口（邮件/GitHub/Discord，微信不入流）、C1-C4 单次计分规则、表结构契约（events_raw/contributors/ledger/tasks/v_dashboard）、快照 schema、容量演进 |
+| [`co-creation/creator-management-system_v1.md`](co-creation/creator-management-system_v1.md) | **运营体系主档**（OWKV-CREATOR-SYS v2.2）：一个 Hub + 六平台入口、地理双轨·同一事实源、决策表（D1-D7）、共创流水线、积分看板、公示四档；D2 报名站内注册表单（CF Worker→D1，主）自动建档观察者 + GitHub（熟手）/Discord（补充）辅助，创作者路A积分转正/路B直接申请，微信仅人工引导展位不入数据流 |
+| [`co-creation/contribution-data-spec_v1.md`](co-creation/contribution-data-spec_v1.md) | **贡献力数据规范**（OWKV-DATA-SPEC v1）：注入源站内表单(CF·主)/邮件/GitHub/Discord（微信不入流）、C1-C4 单次计分规则、表结构契约（events_raw/contributors/ledger/tasks/v_dashboard）、快照 schema、容量演进；落地见 cf-owkv-deploy（CF D1 + Worker 已部署） |
 | [`co-creation/contribution-pool-design_v1.md`](co-creation/contribution-pool-design_v1.md) | **多池分润机制设计**（已拍板并入正典，当前基线=创作40%/运维20%/资产池20%挂起/回流20%） |
 | [`co-creation/proposal-template_v1.md`](co-creation/proposal-template_v1.md) | **共创提案模板**（OWKV-PROPOSAL-TPL）：一页可填、直接可报名提交的提案模板 + A12/B3/C7 三则示范填充 |
 | [`co-creation/community-structure_v1.md`](co-creation/community-structure_v1.md) | **社区基础架构**（OWKV-COMM-STRUCT）：四角色（首席架构师/评审团/共创者/观察者）+ 进入/退出机制 + 三阶段演进 |
