@@ -59,7 +59,7 @@
 ```sql
 CREATE TABLE events_raw (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  platform TEXT NOT NULL,          -- email / github / discord / manual
+  platform TEXT NOT NULL,          -- email / github / discord / web(hub站表单) / reddit / bluesky / manual
   event_type TEXT NOT NULL,        -- join / submit_proposal / review / merge / translation / ops
   contributor_key TEXT NOT NULL,   -- 匿名代号（跨平台统一识别键）
   payload TEXT,                    -- 原始载荷 JSON（平台原生，不动）
