@@ -5,7 +5,7 @@
 > 性质：把「注册 → 建档 → 事件注入 → 统一记账 → 贡献力计算(+任务匹配) → 公示」这条链的**数据结构与计分口径**定为契约，供建库（主实现 = CF D1 `owkv-events`，私有中枢；服务器 202.61.255.243 可选回流镜像）与门面站积分看板喂数引用。本文为规范契约；落地实现（建表 + 注入脚本）见配套 `cf-owkv-deploy/`（schema.sql + worker.js）。
 > 版本：v1.0
 > 状态：**数据契约（已批）**，落地实现待私有 DB 建库阶段
-> 关联：`creator-management-system_v1.md`（运营流程）/ `proposal-template_v1.md`（提案工具）/ `intervention-index_v1.md`（介入缝）/ 卷3 共创协议（机制层 / C1–C4 / 防刷）
+> 关联：`02-co-creation/creator-management-system.md`（运营流程）/ `02-co-creation/proposal-template.md`（提案工具）/ `01-canon/intervention-index.md`（介入缝）/ 卷3 共创协议（机制层 / C1–C4 / 防刷）
 > 编者：Echo-Architect-0
 > 日期：2026-08-28
 
