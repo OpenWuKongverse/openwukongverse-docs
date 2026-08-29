@@ -26,56 +26,61 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 
 ---
 
-## 仓库目录结构（分层）
+## 仓库目录结构（六块全景 + 法典全集）
 
 ```
-├── codex/            社区法典：四卷 + 修订补丁（唯一"律法"，改动需提案级流程）
-├── canon/            故事正典：主线事件地图（IP 内容本体）
-├── setting/          设定库：人物/法宝/支线介入点/模态坍缩/演化模型
-├── co-creation/      共创机制：运营体系/分润/提案模板/协议草案/社区架构
+├── 00-core/          ① 基本世界观 & 法典：白皮书四卷全集（卷1-卷4）+ 修订补丁（唯一"律法"，改动需提案级流程）
+├── 01-canon/         ② 创作故事正典：主线事件地图 + 介入索引 + 模态坍缩表 + 演化模型 + 设定资产库(assets/)
+├── 02-co-creation/   ③ 共创管理：卷3 的配套（运营体系/数据规范/分润/提案模板/协议草案）
+├── 03-community/     ④ 社区运营管理：社区基础结构
+├── 04-commercial/    ⑤ 商业化体系：（骨架，待规划：IP授权/衍生/通证化）
+├── 05-marketing/     招募素材（faq / 主文案 / 分角色）
+├── 06-hub/           HUB 站：门面站前端（index/join/points/proposals/worldview.html + assets css/js）
 ├── archive/          归档：已定稿的过程文档（审视/审计/前端规划）
-├── marketing/        对外招募素材
-└── *.html + assets/  门面站（GitHub Pages 发布源，仓库根）
+└── CNAME / PUBLIC-LAUNCH.md / README.md  仓库级文件
 ```
+
+> 00-core 为**唯一"律法"（法典全集）**，改动需提案级流程；02/03/04 为各管理块的应用层配套。
 
 ---
 
-## 四卷分层文档架构（`codex/`）
+## 四卷分层文档架构（法典全集 · `00-core/`）
 
 | 卷 | 文档 | 层级 | 回答的问题 |
 |---|---|---|---|
-| **卷1** | [`codex/volume1_concept-protocol.md`](codex/volume1_concept-protocol.md) | **元层**（Meta） | 宇宙是什么、凭什么存在、为何我们看到的《西游记》只是投影镜像 |
-| **卷2** | [`codex/volume2_worldview-bible.md`](codex/volume2_worldview-bible.md) | **物理层**（Physics） | 宇宙内部如何运作：五层膜拓扑、五重物理法则、主线叙事 |
-| **卷3** | [`codex/volume3_co-creation-protocol.md`](codex/volume3_co-creation-protocol.md) | **机制层**（Mechanism） | 如何共创、如何分润、如何定权重、如何保障正典兼容 |
-| **卷4** | [`codex/volume4_content-directory.md`](codex/volume4_content-directory.md) | **内容层**（Content） | 创作者手上有什么素材：底层协议手册、角色档案、维度地图、入门指南、主线事件地图、三模态呈现对照（6 板块） |
-| **补丁** | [`codex/patch_v1_three-contradictions.md`](codex/patch_v1_three-contradictions.md) | 修订补丁 | 白皮书三处逻辑矛盾修订（权限受限 / 序态自稳 / 观象域改名） |
-| **增补** | [`codex/volume2_supplement.md`](codex/volume2_supplement.md) | 卷2 增补 | 序态自稳闭环 / 卷1↔卷2 衔接声明的细节展开 |
+| **卷1** | [`00-core/concept-protocol.md`](00-core/concept-protocol.md) | **元层**（Meta） | 宇宙是什么、凭什么存在、为何我们看到的《西游记》只是投影镜像 |
+| **卷2** | [`00-core/worldview-bible.md`](00-core/worldview-bible.md) | **物理层**（Physics） | 宇宙内部如何运作：五层膜拓扑、五重物理法则、主线叙事 |
+| **卷3** | [`00-core/co-creation-protocol.md`](00-core/co-creation-protocol.md) | **机制层**（Mechanism） | 如何共创、如何分润、如何定权重、如何保障正典兼容 |
+| **卷4** | [`00-core/content-directory.md`](00-core/content-directory.md) | **内容层**（Content） | 创作者手上有什么素材：底层协议手册、角色档案、维度地图、入门指南、主线事件地图、三模态呈现对照（6 板块） |
+| **补丁** | [`00-core/patch-three-contradictions.md`](00-core/patch-three-contradictions.md) | 修订补丁 | 白皮书三处逻辑矛盾修订（权限受限 / 序态自稳 / 观象域改名） |
+| **增补** | [`00-core/worldview-supplement.md`](00-core/worldview-supplement.md) | 卷2 增补 | 序态自稳闭环 / 卷1↔卷2 衔接声明的细节展开 |
 
 阅读建议：新读者按 卷1→卷2→卷3→卷4 顺序；创作者直接看 卷4 + 卷3；想先感受宇宙氛围看 卷2。
 
 ---
 
-## 故事正典与设定（`canon/` + `setting/`）
+## 创作故事正典（`01-canon/`）
 
 | 分类 | 文档 | 说明 |
 |---|---|---|
-| **正典·主线** | [`canon/mainline_event-map_v1.md`](canon/mainline_event-map_v1.md) | **主线事件地图**（OWKV-MAINMAP）：三幕骨架 + 20 节点 + A/B/C 介入缝内嵌：主线的坐标底图，指明"哪里能共创、怎么共创" |
-| **设定·介入** | [`setting/intervention-index_v1.md`](setting/intervention-index_v1.md) | **介入点索引**（OWKV-INDEX）：A/B/C 三类介入缝检索速查：共创者按类找活干 |
-| **设定·模态** | [`setting/mode-collapse-table_v1.md`](setting/mode-collapse-table_v1.md) | **三模态呈现对照表**（OWKV-MODETABLE）：10 关键节点 × A赛博/B高维玄幻/C废土克苏鲁 对照：模态介入参考 |
-| **设定·演化** | [`setting/wukong-process-evolution_v1.md`](setting/wukong-process-evolution_v1.md) | **悟空多态演化模型**（OWKV-WUKONG-EVOL）：可分裂异常体 → 多形态演化设定讨论稿（已并入正典） |
+| **正典·主线** | [`01-canon/mainline-event-map.md`](01-canon/mainline-event-map.md) | **主线事件地图**（OWKV-MAINMAP）：三幕骨架 + 20 节点 + A/B/C 介入缝内嵌：主线的坐标底图，指明"哪里能共创、怎么共创" |
+| **正典·介入** | [`01-canon/intervention-index.md`](01-canon/intervention-index.md) | **介入点索引**（OWKV-INDEX）：A/B/C 三类介入缝检索速查：共创者按类找活干 |
+| **正典·模态** | [`01-canon/mode-collapse-table.md`](01-canon/mode-collapse-table.md) | **三模态呈现对照表**（OWKV-MODETABLE）：10 关键节点 × A赛博/B高维玄幻/C废土克苏鲁 对照：模态介入参考 |
+| **正典·演化** | [`01-canon/wukong-process-evolution.md`](01-canon/wukong-process-evolution.md) | **悟空多态演化模型**（OWKV-WUKONG-EVOL）：可分裂异常体 → 多形态演化设定讨论稿（已并入正典） |
+| **资产库** | [`01-canon/assets/README.md`](01-canon/assets/README.md) | **设定资产库**（OVWK-ASSETS）：人物/法术/法宝/隧道 独立条目库，可检索可增量（详见库内规范） |
 
 ---
 
-## 共创机制（`co-creation/`）
+## 共创管理（`02-co-creation/`）· 卷4 配套
 
 | 文档 | 说明 |
 |---|---|
-| [`co-creation/creator-management-system_v1.md`](co-creation/creator-management-system_v1.md) | **运营体系主档**（OWKV-CREATOR-SYS v2.2）：一个 Hub + 六平台入口、地理双轨·同一事实源、决策表（D1-D7）、共创流水线、积分看板、公示四档；D2 报名站内注册表单（CF Worker→D1，主）自动建档观察者 + GitHub（熟手）/Discord（补充）辅助，创作者路A积分转正/路B直接申请，微信仅人工引导展位不入数据流 |
-| [`co-creation/contribution-data-spec_v1.md`](co-creation/contribution-data-spec_v1.md) | **贡献力数据规范**（OWKV-DATA-SPEC v1）：注入源站内表单(CF·主)/邮件/GitHub/Discord（微信不入流）、C1-C4 单次计分规则、表结构契约（events_raw/contributors/ledger/tasks/v_dashboard）、快照 schema、容量演进；落地见 cf-owkv-deploy（CF D1 + Worker 已部署） |
-| [`co-creation/contribution-pool-design_v1.md`](co-creation/contribution-pool-design_v1.md) | **多池分润机制设计**（已拍板并入正典，当前基线=创作40%/运维20%/资产池20%挂起/回流20%） |
-| [`co-creation/proposal-template_v1.md`](co-creation/proposal-template_v1.md) | **共创提案模板**（OWKV-PROPOSAL-TPL）：一页可填、直接可报名提交的提案模板 + A12/B3/C7 三则示范填充 |
-| [`co-creation/community-structure_v1.md`](co-creation/community-structure_v1.md) | **社区基础架构**（OWKV-COMM-STRUCT）：四角色（首席架构师/评审团/共创者/观察者）+ 进入/退出机制 + 三阶段演进 |
-| [`co-creation/draft_co-creation-agreement_v1.md`](co-creation/draft_co-creation-agreement_v1.md) | **《共创协议完整草案》**（对外可签署条款成品，十章） |
+| [`02-co-creation/creator-management-system.md`](02-co-creation/creator-management-system.md) | **运营体系主档**（OWKV-CREATOR-SYS v2.2）：一个 Hub + 六平台入口、地理双轨·同一事实源、决策表（D1-D7）、共创流水线、积分看板、公示四档；D2 报名站内注册表单（CF Worker→D1，主）自动建档观察者 + GitHub（熟手）/Discord（补充）辅助，创作者路A积分转正/路B直接申请，微信仅人工引导展位不入数据流 |
+| [`02-co-creation/contribution-data-spec.md`](02-co-creation/contribution-data-spec.md) | **贡献力数据规范**（OWKV-DATA-SPEC v1）：注入源站内表单(CF·主)/邮件/GitHub/Discord（微信不入流）、C1-C4 单次计分规则、表结构契约（events_raw/contributors/ledger/tasks/v_dashboard）、快照 schema、容量演进；落地见 cf-owkv-deploy（CF D1 + Worker 已部署） |
+| [`02-co-creation/contribution-pool-design.md`](02-co-creation/contribution-pool-design.md) | **多池分润机制设计**（已拍板并入正典，当前基线=创作40%/运维20%/资产池20%挂起/回流20%） |
+| [`02-co-creation/proposal-template.md`](02-co-creation/proposal-template.md) | **共创提案模板**（OWKV-PROPOSAL-TPL）：一页可填、直接可报名提交的提案模板 + A12/B3/C7 三则示范填充 |
+| [`02-co-creation/draft-co-creation-agreement.md`](02-co-creation/draft-co-creation-agreement.md) | **《共创协议完整草案》**（对外可签署条款成品，十章） |
+| [`03-community/community-structure.md`](03-community/community-structure.md) | **社区基础架构**（OWKV-COMM-STRUCT）：四角色（首席架构师/评审团/共创者/观察者）+ 进入/退出机制 + 三阶段演进（在 03-community） |
 
 ---
 
@@ -89,17 +94,18 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 
 ---
 
-## 前端入口（Hub 门面站，仓库根）
+## HUB 站（`06-hub/`）
 
-> 国际国内共用一套 URL，只做展示与入口，不建第二套系统、不建自建 DB。讨论区归平台矩阵（Discord / 微信群 / Reddit）。正典库本体就在本仓库。
+> 国际国内共用一套 URL，只做展示与入口，不建第二套系统、不建自建 DB。讨论区归平台矩阵（Discord / 微信群 / Reddit）。正典库本体就在本仓库（00-core 等）。
 
 | 入口 | 说明 |
 |---|---|
-| `index.html` | Hub 统一门面站首页（公告 / 世界观速览 / 报名 / 提案投票 / 积分看板展示） |
-| `join.html` / `proposals.html` / `points.html` / `worldview.html` | 报名 / 提案 / 积分 / 世界观 分页 |
+| [`06-hub/index.html`](06-hub/index.html) | Hub 统一门面站首页（公告 / 世界观速览 / 报名 / 提案投票 / 积分看板展示） |
+| [`06-hub/join.html`](06-hub/join.html) / [`06-hub/proposals.html`](06-hub/proposals.html) / [`06-hub/points.html`](06-hub/points.html) / [`06-hub/worldview.html`](06-hub/worldview.html) | 报名 / 提案 / 积分 / 世界观 分页 |
+| [`06-hub/assets/`](06-hub/assets/) | 前端资源（css/style.css + js/i18n.js） |
 
 - 域名：`openwkv.xyz`（已接入 GitHub Pages 自定义域名）
-- 发布源：仓库根目录 `main:/`（HTML 与文档同根，Pages 直接渲染）
+- ⚠️ 发布源注意：GtHub Pages 从仓库根渲染 HTML，HUB 站现已在 `06-hub/` 子目录——若 Pages 配置为根渲染需调整发布目录为 `06-hub/`，或保持同根并调整（详见 PUBLIC-LAUNCH 与 hub 规划）
 
 ---
 
@@ -137,12 +143,13 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 1. ✅ 四卷分层文档集确立并全量一致
 2. ✅ 三处逻辑矛盾修订并入（权限受限 / 序态自稳 / 观象域）
 3. ✅ 白皮书第七节"贡献力计算体系"空标题补全
-4. ✅ 《共创协议完整草案》（对外条款成品）：见 `co-creation/draft_co-creation-agreement_v1.md`
+4. ✅ 《共创协议完整草案》（对外条款成品）：见 `02-co-creation/draft-co-creation-agreement.md`
 5. ✅ 主线事件地图（MAINMAP v1：三幕骨架 + 20 节点 + A/B/C 介入缝）
 6. ✅ 三模态呈现对照表（MODETABLE v1：10 关键节点 × 三模态）
 7. ✅ 卷4 并入第五/第六板块（主线坐标底图 + 模态参考，卷4 v1.1）
 8. ✅ 悟空多态演化模型并入正典（异常体=起源钩子最早的缝 / 逆维度能量 / 多态共存）
-9. ✅ **仓库目录分层整理**（codex/canon/setting/co-creation/archive/marketing 六大分区）
+9. ✅ 仓库目录分层整理（codex/canon/setting/co-creation/archive/marketing 六大分区）
+10. ✅ **六块全景目录重排**（00-core 法典全集 / 01-canon 正典+资产库 / 02-co-creation / 03-community / 04-commercial 骨架 / 05-marketing / 06-hub）——按用户六块管理体系收敛，隧道定义待议
 
 ---
 
