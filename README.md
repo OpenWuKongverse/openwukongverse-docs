@@ -35,7 +35,7 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 ├── 03-community/     ④ 社区运营管理：社区基础结构
 ├── 04-commercial/    ⑤ 商业化体系：（骨架，待规划：IP授权/衍生/通证化）
 ├── 05-marketing/     招募素材（faq / 主文案 / 分角色）
-├── 06-hub/           HUB 站：门面站前端（index/join/points/proposals/worldview.html + assets css/js）
+├── 06-hub/           HUB 站扩展目录（后期非入口前端文件；**入口站文件仍在仓库根**，见 Pages 根发布约束）
 ├── archive/          归档：已定稿的过程文档（审视/审计/前端规划）
 └── CNAME / PUBLIC-LAUNCH.md / README.md  仓库级文件
 ```
@@ -94,18 +94,19 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 
 ---
 
-## HUB 站（`06-hub/`）
+## HUB 站（前端在仓库根 + 扩展目录 `06-hub/`）
 
 > 国际国内共用一套 URL，只做展示与入口，不建第二套系统、不建自建 DB。讨论区归平台矩阵（Discord / 微信群 / Reddit）。正典库本体就在本仓库（00-core 等）。
 
-| 入口 | 说明 |
+| 文件 | 说明 |
 |---|---|
-| [`06-hub/index.html`](06-hub/index.html) | Hub 统一门面站首页（公告 / 世界观速览 / 报名 / 提案投票 / 积分看板展示） |
-| [`06-hub/join.html`](06-hub/join.html) / [`06-hub/proposals.html`](06-hub/proposals.html) / [`06-hub/points.html`](06-hub/points.html) / [`06-hub/worldview.html`](06-hub/worldview.html) | 报名 / 提案 / 积分 / 世界观 分页 |
-| [`06-hub/assets/`](06-hub/assets/) | 前端资源（css/style.css + js/i18n.js） |
+| [`index.html`](index.html) | Hub 统一门面站首页（公告 / 世界观速览 / 报名 / 提案投票 / 积分看板展示） |
+| [`join.html`](join.html) / [`proposals.html`](proposals.html) / [`points.html`](points.html) / [`worldview.html`](worldview.html) | 报名 / 提案 / 积分 / 世界观 分页（均在仓库根） |
+| [`assets/`](assets/) | 前端资源（css/style.css + js/i18n.js，仓库根） |
+| [`06-hub/README.md`](06-hub/README.md) | HUB 站**扩展目录**：后期非入口前端文件存放处 |
 
-- 域名：`openwkv.xyz`（已接入 GitHub Pages 自定义域名）
-- ⚠️ 发布源注意：GtHub Pages 从仓库根渲染 HTML，HUB 站现已在 `06-hub/` 子目录——若 Pages 配置为根渲染需调整发布目录为 `06-hub/`，或保持同根并调整（详见 PUBLIC-LAUNCH 与 hub 规划）
+- 域名：`openwkv.xyz`（已接入 GitHub Pages 自定义域名，Pages 配置 `main:/` 根发布）
+- ⚠️ **Pages 根发布约束**：入口页与前端资源必须在**仓库根**（组织/根发布时 index.html 须在根，否则 404）。因此入口前端在根；`06-hub/` 仅存后期不必根的文件（详见 06-hub/README.md）
 
 ---
 
@@ -149,7 +150,7 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 7. ✅ 卷4 并入第五/第六板块（主线坐标底图 + 模态参考，卷4 v1.1）
 8. ✅ 悟空多态演化模型并入正典（异常体=起源钩子最早的缝 / 逆维度能量 / 多态共存）
 9. ✅ 仓库目录分层整理（codex/canon/setting/co-creation/archive/marketing 六大分区）
-10. ✅ **六块全景目录重排**（00-core 法典全集 / 01-canon 正典+资产库 / 02-co-creation / 03-community / 04-commercial 骨架 / 05-marketing / 06-hub）——按用户六块管理体系收敛，隧道定义待议
+10. ✅ **六块全景目录重排**（00-core 法典全集 / 01-canon 正典+资产库 / 02-co-creation / 03-community / 04-commercial 骨架 / 05-marketing / 06-hub 扩展目录）——按用户六块管理体系收敛，隧道定义待议；入口前端回根（Pages 根发布约束）
 
 ---
 
