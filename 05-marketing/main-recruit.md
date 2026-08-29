@@ -3,8 +3,8 @@
 
 > 状态：**待发布**（仓库公开时同步发出）
 > 发布时间：由发起人 Echo-Architect-0 决定
-> 配套：`marketing/recruit_by_role.md`（分角色招募）、`marketing/faq.md`（参与须知）
-> 共创接入套件：`mainline_event-map_v1.md`（主线坐标底图）→ `intervention-index_v1.md`（介入缝索引）→ `proposal-template_v1.md`（提案模板，一页可提交）
+> 配套：`05-marketing/recruit-by-role.md`（分角色招募）、`05-marketing/faq.md`（参与须知）
+> 共创接入套件：`01-canon/mainline-event-map.md`（主线坐标底图）→ `01-canon/intervention-index.md`（介入缝索引）→ `02-co-creation/proposal-template.md`（提案模板，一页可提交）
 
 ---
 
@@ -72,8 +72,8 @@
 **第三步：挑一个介入缝，填一份提案（直接可用工具）。**
 
 我们已经把"从哪下笔"到"怎么提交"整理成一套可直接用的工具：
-1. **挑缝** → 看 `mainline_event-map_v1.md`（主线坐标底图，A/B/C 三类介入缝已内嵌标注）；想按类找活干 → `intervention-index_v1.md`（27 个介入缝分类汇总 + 检索速查）。
-2. **填提案** → 用 `proposal-template_v1.md`（一页可填，附 A/B/C 三类示范，新手照着抄就能提交）。
+1. **挑缝** → 看 `01-canon/mainline-event-map.md`（主线坐标底图，A/B/C 三类介入缝已内嵌标注）；想按类找活干 → `01-canon/intervention-index.md`（27 个介入缝分类汇总 + 检索速查）。
+2. **填提案** → 用 `02-co-creation/proposal-template.md`（一页可填，附 A/B/C 三类示范，新手照着抄就能提交）。
 3. **提交** → 按流水线走：提案 → 评议 → 架构师审查 → 入正典（或进沙盒）。三秒自查三层红线：法则自洽？权限自洽？元层自洽？
 
 > 新手小贴士：从沙盒轨道 + A 类介入缝起步最稳：局部自由、不碰正典、易过审易出亮点；洞府（局部真空泡）类提案最容易出彩。
