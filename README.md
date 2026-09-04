@@ -75,8 +75,8 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 
 | 文档 | 说明 |
 |---|---|
-| [`02-co-creation/creator-management-system.md`](02-co-creation/creator-management-system.md) | **运营体系主档**（OWKV-CREATOR-SYS v2.2）：一个 Hub + 六平台入口、地理双轨·同一事实源、决策表（D1-D7）、共创流水线、积分看板、公示四档；D2 报名站内注册表单（CF Worker→D1，主）自动建档观察者 + GitHub（熟手）/Discord（补充）辅助，创作者路A积分转正/路B直接申请，微信仅人工引导展位不入数据流 |
-| [`02-co-creation/contribution-data-spec.md`](02-co-creation/contribution-data-spec.md) | **贡献力数据规范**（OWKV-DATA-SPEC v1）：注入源站内表单(CF·主)/邮件/GitHub/Discord（微信不入流）、C1-C4 单次计分规则、表结构契约（events_raw/contributors/ledger/tasks/v_dashboard）、快照 schema、容量演进；落地见 cf-owkv-deploy（CF D1 + Worker 已部署） |
+| [`02-co-creation/creator-management-system.md`](02-co-creation/creator-management-system.md) | **运营体系主档**（OWKV-CREATOR-SYS v2.3）：一个 Hub + 平台矩阵、地理双轨·同一事实源、决策表（D1-D7）、共创流水线、积分看板、公示四档；D2 报名站内注册表单（CF Worker→D1，主）自动建档观察者 + GitHub（熟手）/Discord（补充）辅助，创作者路A积分转正/路B直接申请；**微信已退出所有沟通职能、不列入平台矩阵** |
+| [`02-co-creation/contribution-data-spec.md`](02-co-creation/contribution-data-spec.md) | **贡献力数据规范**（OWKV-DATA-SPEC v1）：注入源站内表单(CF·主)/邮件/GitHub/Discord（微信已移除不列入）、C1-C4 单次计分规则、表结构契约（events_raw/contributors/ledger/tasks/v_dashboard）、快照 schema、容量演进；落地见 cf-owkv-deploy（CF D1 + Worker 已部署） |
 | [`02-co-creation/contribution-pool-design.md`](02-co-creation/contribution-pool-design.md) | **多池分润机制设计**（已拍板并入正典，当前基线=创作40%/运维20%/资产池20%挂起/回流20%） |
 | [`02-co-creation/proposal-template.md`](02-co-creation/proposal-template.md) | **共创提案模板**（OWKV-PROPOSAL-TPL）：一页可填、直接可报名提交的提案模板 + A12/B3/C7 三则示范填充 |
 | [`02-co-creation/draft-co-creation-agreement.md`](02-co-creation/draft-co-creation-agreement.md) | **《共创协议完整草案》**（对外可签署条款成品，十章） |
@@ -96,7 +96,7 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 
 ## HUB 站（前端在仓库根 + 扩展目录 `06-hub/`）
 
-> 国际国内共用一套 URL，只做展示与入口，不建第二套系统、不建自建 DB。讨论区归平台矩阵（Discord / 微信群 / Reddit）。正典库本体就在本仓库（00-core 等）。
+> 国际国内共用一套 URL，只做展示与入口，不建第二套系统、不建自建 DB。讨论区归平台矩阵（Discord 唯一讨论通道 / Reddit）。正典库本体就在本仓库（00-core 等）。
 
 | 文件 | 说明 |
 |---|---|
