@@ -252,15 +252,22 @@
 
 <script src="assets/js/i18n.js"></script>
 <script src="assets/js/auth.js"></script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
 // OWKV · 免密码 OTP 注册/登录（两步：send-otp → verify-otp）
 (function () {
   var A = window.owkvAuth;
-  if (!A) return;
-
   var form = document.getElementById('enrollForm');
-  if (!form) return;
+  var msg = document.getElementById('formMsg');
+  console.log('[OWKV auth] script boot. owkvAuth:', !!A, '| form:', !!form);
+  if (!form) {
+    console.error('[OWKV auth] form not found.');
+    return;
+  }
+  if (!A) {
+    // auth.js 未加载: 发信仍可用(内联 apiReq), 仅登录态增强缺失
+    console.warn('[OWKV auth] auth.js not loaded; only login-state enhancements skipped.');
+  }
 
   var step1 = form.querySelector('[data-step="1"]');
   var step2 = form.querySelector('[data-step="2"]');
@@ -268,13 +275,22 @@
   var btnVerify = form.querySelector('[data-submit-verify]');
   var btnResend = form.querySelector('[data-resend]');
   var btnBack = form.querySelector('[data-back]');
-  var msg = document.getElementById('formMsg');
   var otpMsg = document.getElementById('otpMsg');
   var loggedIn = document.getElementById('authPanelLoggedIn');
   var welcome = document.getElementById('authWelcome');
   var currentEmail = '';
 
-  // 显式渲染 Turnstile(轮询, 最长15s)
+  // 自包含 API 请求(不依赖 auth.js, 即使 auth.js 加载失败发信仍可用)
+  var API = 'https://join.openwkv.xyz';
+  function apiReq(path, body) {
+    return fetch(API + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function (r) { return r.json(); });
+  }
+
+  // 显式渲染 Turnstile(轮询, 最长10s; 超时后提示可能被拦截)
   var tsWidget = null;
   var tsRetries = 0;
   function renderTs() {
@@ -287,7 +303,14 @@
         });
       } catch (e) { console.warn('turnstile retry', e); }
     }
-    if (!tsWidget && ++tsRetries < 50) setTimeout(renderTs, 300);
+    if (!tsWidget && ++tsRetries <= 10) {
+      setTimeout(renderTs, 300);
+    } else if (!tsWidget && tsRetries > 10) {
+      // 超时: 提示人机验证组件可能未加载
+      msg.textContent = (!window.turnstile)
+        ? '人机验证组件加载失败(可能被网络拦截),请刷新或更换网络后重试。'
+        : '人机验证组件未就绪,请稍候片刻再点发送。';
+    }
   }
   renderTs();
 
@@ -325,7 +348,7 @@
     btnSend.disabled = true;
     btnSend.textContent = '发送中…';
 
-    A.sendOtp({
+    apiReq('/api/auth/send-otp', {
       email: email,
       anon_code: anon,
       role_tag: form.role_tag.value || '',
@@ -392,7 +415,7 @@
       resetTs();
       return;
     }
-    A.sendOtp({ email: currentEmail, hp: '', 'cf-turnstile-response': ts })
+    apiReq('/api/auth/send-otp', { email: currentEmail, hp: '', 'cf-turnstile-response': ts })
       .then(function (j) {
         if (j && j.ok) {
           otpMsg.textContent = '✓ 已重新发送。';
@@ -422,18 +445,17 @@
     btnVerify.disabled = true;
     btnVerify.textContent = '验证中…';
 
-    A.verifyOtp({ email: currentEmail, otp: otp })
+    apiReq('/api/auth/verify-otp', { email: currentEmail, otp: otp })
       .then(function (j) {
         if (j && j.ok && j.token) {
-          A.setToken(j.token);
+          if (A && A.setToken) A.setToken(j.token);
           // 拉完整 me(含 points)后再落缓存与渲染, 避免 chip 显示 0 分
-          A.fetchMe()
-            .then(function (me) {
-              onLoggedIn(me);
-            })
-            .catch(function () {
-              onLoggedIn(j); // me 拉取失败仍可登录, 只缺积分显示
-            });
+          var finish = function (payload) { onLoggedIn(payload); };
+          if (A && A.fetchMe) {
+            A.fetchMe().then(function (me) { finish(me); }).catch(function () { finish(j); });
+          } else {
+            finish(j);
+          }
         } else {
           var e = (j && j.error) || 'unknown';
           var hint = {
@@ -456,6 +478,7 @@
   function onLoggedIn(j) {
     form.style.display = 'none';
     loggedIn.style.display = '';
+    if (A && A.renderNavAuth) A.renderNavAuth();
     var usr = j.user || {};
     welcome.innerHTML =
       '<span class="zhonly">欢迎, ' + escHtml(usr.anon_code || usr.email_masked || '观察者') + '。你的邮箱已验证,自动成为观察者。' +
@@ -482,7 +505,7 @@
   });
 
   // 已在登录状态：直接显示欢迎
-  if (A.getToken() && A.getMe()) {
+  if (A && A.getToken && A.getToken() && A.getMe()) {
     var m = A.getMe();
     form.style.display = 'none';
     loggedIn.style.display = '';
