@@ -23,6 +23,7 @@
       <a href="proposals.html"><span class="zhonly">提案 / 投票</span><span class="enonly">Proposals</span></a>
       <a href="points.html"><span class="zhonly">积分看板</span><span class="enonly">Points</span></a>
     </nav>
+    <span id="navAuth" class="navauth"></span>
     <div class="langbar">
       <button class="langbtn on" data-lang="zh">中文</button>
       <button class="langbtn" data-lang="en">EN</button>
@@ -56,46 +57,59 @@
 
     <div class="card">
       <div class="tag">Form · Observer tier</div>
-      <h3 class="zhonly">观察者注册表（第一层 · 最低门槛）</h3>
-      <h3 class="enonly">Observer Registration (Tier 1 · lowest barrier)</h3>
+      <h3 class="zhonly">观察者注册 / 登录（免密码 · 邮箱验证码）</h3>
+      <h3 class="enonly">Observer Register / Login (passwordless · email OTP)</h3>
+
+      <div id="authPanelLoggedIn" class="auth-logged-in" style="display:none">
+        <div class="panel ok">
+          <strong class="zhonly">已登录（观察者身份）</strong><strong class="enonly">Logged in (observer)</strong>
+          <p class="dim" id="authWelcome"></p>
+        </div>
+      </div>
+
       <form id="enrollForm" class="enroll-form" onsubmit="return false">
-        <label><span class="zhonly">匿名代号</span><span class="enonly">Anon code</span><span class="req">*</span><span class="zhonly dim-msg">跨平台统一识别，公开身份</span></label>
-        <input name="anon_code" maxlength="40" placeholder="悟空001 / e.g. Wukong001" required>
+        <div class="auth-step" data-step="1">
+          <label><span class="zhonly">联系邮箱</span><span class="enonly">Email</span><span class="req">*</span><span class="zhonly dim-msg">只存哈希；收 6 位验证码</span><span class="enonly dim-msg">hashed only; receive a 6-digit code</span></label>
+          <input type="email" name="email" maxlength="120" placeholder="you@example.com" required autocomplete="email">
 
-        <label><span class="zhonly">主攻角色</span><span class="enonly">Primary role</span></label>
-        <select name="role_tag">
-          <option value="">—</option>
-          <option value="artist">画师 / Artist</option>
-          <option value="writer">作者 / Writer</option>
-          <option value="player">玩家 / Player</option>
-          <option value="programmer">程序 / Programmer</option>
-          <option value="community">运营 / Community</option>
-        </select>
+          <label><span class="zhonly">匿名代号</span><span class="enonly">Anon code</span><span class="dim-msg zhonly">选填（留空则自动生成）</span><span class="dim-msg enonly">optional (auto if empty)</span></label>
+          <input name="anon_code" maxlength="40" placeholder="悟空001 / Wukong001">
 
-        <label><span class="zhonly">主攻模态</span><span class="enonly">Primary mode</span></label>
-        <select name="mode_tag">
-          <option value="">—</option>
-          <option value="A">A · 赛博</option>
-          <option value="B">B · 高维玄幻</option>
-          <option value="C">C · 废土克苏鲁</option>
-        </select>
+          <label><span class="zhonly">主攻角色</span><span class="enonly">Primary role</span><span class="dim-msg">选填</span></label>
+          <select name="role_tag"><option value="">—</option><option value="artist">画师/Artist</option><option value="writer">作者/Writer</option><option value="player">玩家/Player</option><option value="programmer">程序/Programmer</option><option value="community">运营/Community</option></select>
 
-        <label><span class="zhonly">联系邮箱</span><span class="enonly">Email</span><span class="req">*</span><span class="zhonly dim-msg">只存哈希，不公开明文</span><span class="enonly dim-msg">hashed only, never public</span></label>
-        <input type="email" name="email" maxlength="120" placeholder="you@example.com" required>
+          <label><span class="zhonly">主攻模态</span><span class="enonly">Primary mode</span><span class="dim-msg">选填</span></label>
+          <select name="mode_tag"><option value="">—</option><option value="A">A · 赛博</option><option value="B">B · 高维玄幻</option><option value="C">C · 废土克苏鲁</option></select>
 
-        <!-- 蜜罐隐藏字段: 正常人不可见、不填; 机器人若填即判垃圾丢弃 -->
-        <input type="text" name="hp" value="" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
+          <input type="text" name="hp" value="" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
 
-        <label><span class="zhonly">邀请码</span><span class="enonly">Invite code</span><span class="zhonly dim-msg">Discord 报名频道 / 主办方领取；GitHub 公开通用码</span><span class="enonly dim-msg">from Discord #enroll / organizer; a public code in README</span></label>
-        <input name="invite_code" maxlength="12" placeholder="4-12 位" style="max-width:14ch">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAEfHyydWm8nvQ_zJ" data-theme="auto"></div>
+          <div id="formMsg" class="form-msg"></div>
 
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAAEfHyydWm8nvQ_zJ" data-theme="auto"></div>
-        <div id="formMsg" class="form-msg"></div>
+          <button type="submit" class="enroll-submit" data-submit-send>
+            <span class="zhonly">发送验证码</span><span class="enonly">Send code</span>
+          </button>
+        </div>
 
-        <button type="submit" class="enroll-submit"><span class="zhonly">提交 · 成为观察者</span><span class="enonly">Submit · become observer</span></button>
+        <div class="auth-step" data-step="2" style="display:none">
+          <label><span class="zhonly">输入 6 位验证码</span><span class="enonly">Enter 6-digit code</span><span class="req">*</span></label>
+          <input name="otp" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" placeholder="••••••" required autocomplete="one-time-code">
+
+          <div id="otpMsg" class="form-msg"></div>
+
+          <button type="submit" class="enroll-submit" data-submit-verify>
+            <span class="zhonly">验证并登录</span><span class="enonly">Verify & login</span>
+          </button>
+          <button type="button" class="btn ghost" data-resend disabled>
+            <span class="zhonly">重新发送</span><span class="enonly">Resend</span>
+          </button>
+          <button type="button" class="btn ghost" data-back>
+            <span class="zhonly">← 更换邮箱</span><span class="enonly">← Change email</span>
+          </button>
+        </div>
       </form>
-      <p class="dim zhonly">轻防刷：人机验证（Turnstile）+ 蜜罐 + 邮箱域名规约 + 邀请码；提交走 CF Worker → D1，邮箱只存哈希。数据源接《贡献力数据规范》events_raw。</p>
-      <p class="dim enonly">Light anti-spam: Turnstile + honeypot + email-domain rules + invite code; submissions go CF Worker → D1, email hashed only. Feeds events_raw per the data spec.</p>
+      <p class="dim zhonly">免密码登录：邮箱收验证码 → 回填 → 登录（30 天长效）。新邮箱自动成为<b>观察者</b>；已注册邮箱直接登录。防刷：Turnstile + 蜜罐 + 邮箱域名规约 + 单邮箱冷却(60s)·每日3封 + 全局每日熔断。</p>
+      <p class="dim enonly">Passwordless login: email → code → verify → 30-day session. New email auto-becomes <b>observer</b>; existing email logs in. Anti-spam: Turnstile + honeypot + email-domain rules + per-email cooldown(60s)·3/day + global daily cap.</p>
     </div>
 
     <div class="grid">
@@ -237,93 +251,245 @@
 </footer>
 
 <script src="assets/js/i18n.js"></script>
+<script src="assets/js/auth.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
 <script>
-// OWKV 站内报名表单 → CF Worker(D1) 提交
+// OWKV · 免密码 OTP 注册/登录（两步：send-otp → verify-otp）
 (function () {
-  var ENROLL_URL = 'https://join.openwkv.xyz';
+  var A = window.owkvAuth;
+  if (!A) return;
+
   var form = document.getElementById('enrollForm');
   if (!form) return;
 
-  var btn = form.querySelector('button[type=submit]');
+  var step1 = form.querySelector('[data-step="1"]');
+  var step2 = form.querySelector('[data-step="2"]');
+  var btnSend = form.querySelector('[data-submit-send]');
+  var btnVerify = form.querySelector('[data-submit-verify]');
+  var btnResend = form.querySelector('[data-resend]');
+  var btnBack = form.querySelector('[data-back]');
   var msg = document.getElementById('formMsg');
+  var otpMsg = document.getElementById('otpMsg');
+  var loggedIn = document.getElementById('authPanelLoggedIn');
+  var welcome = document.getElementById('authWelcome');
+  var currentEmail = '';
 
-  // 显式渲染 Turnstile：轮询等 api.js 就绪(不依赖 ready 时序,最稳),每 300ms 重试直到渲染成功
-  var turnstileWidget = null;
+  // 显式渲染 Turnstile(轮询, 最长15s)
+  var tsWidget = null;
   var tsRetries = 0;
-  function renderTurnstile() {
-    if (window.turnstile && !turnstileWidget) {
+  function renderTs() {
+    if (window.turnstile && !tsWidget) {
       try {
         var el = form.querySelector('.cf-turnstile');
-        if (el) {
-          turnstileWidget = window.turnstile.render(el, {
-            sitekey: '0x4AAAAAAEfHyydWm8nvQ_zJ',
-            callback: function (token) { form.dataset.tsToken = token; }
-          });
-        }
-      } catch (e) { console.warn('turnstile render retry', e); }
+        if (el) tsWidget = window.turnstile.render(el, {
+          sitekey: '0x4AAAAAAEfHyydWm8nvQ_zJ',
+          callback: function (t) { form.dataset.tsToken = t; }
+        });
+      } catch (e) { console.warn('turnstile retry', e); }
     }
-    if (!turnstileWidget && ++tsRetries < 50) {
-      setTimeout(renderTurnstile, 300); // 最长等 15s
-    }
+    if (!tsWidget && ++tsRetries < 50) setTimeout(renderTs, 300);
   }
-  renderTurnstile();
+  renderTs();
 
-  form.addEventListener('submit', function (ev) {
-    ev.preventDefault();
+  function resetTs() {
+    form.dataset.tsToken = '';
+    if (tsWidget && window.turnstile) window.turnstile.reset(tsWidget);
+  }
+  function getTs() {
+    var t = form.dataset.tsToken;
+    if (!t && window.turnstile && tsWidget) t = (window.turnstile.getResponse(tsWidget) || '');
+    return t;
+  }
 
-    var anonCode = (form.anon_code.value || '').trim();
-    var email = (form.email.value || '').trim();
-    var hp = (form.hp.value || ''); // 蜜罐: 命中即丢弃
+  function showStep(n) {
+    step1.style.display = (n === 1) ? '' : 'none';
+    step2.style.display = (n === 2) ? '' : 'none';
+  }
+
+  // 第一步：send-otp
+  function doSend() {
+    var email = (form.email.value || '').trim().toLowerCase();
+    var anon = (form.anon_code.value || '').trim();
+    var hp = (form.hp.value || '');
     msg.textContent = '';
 
-    if (!anonCode || !email) { msg.textContent = '请填写 匿名代号 与 联系邮箱。'; return; }
-    if (hp) { msg.textContent = '提交已记录(重复表单)。'; return; } // 静默丢弃
+    if (!email || !email.includes('@')) { msg.textContent = '请填写有效的联系邮箱。'; return; }
+    if (hp) { msg.textContent = '已记录(重复表单)。'; return; }
 
-    var tsToken = form.dataset.tsToken;
-    if (!tsToken) {
-      if (window.turnstile) { msg.textContent = '请先完成人机验证(圆框勾选)。'; }
-      else { msg.textContent = '人机验证组件加载中,请稍候重试。'; }
+    var ts = getTs();
+    if (!ts) {
+      msg.textContent = window.turnstile ? '请先完成人机验证(勾选右侧圆框)。' : '人机验证组件加载中,请稍候…';
       return;
     }
 
-    btn.disabled = true;
-    btn.textContent = '提交中…';
+    btnSend.disabled = true;
+    btnSend.textContent = '发送中…';
 
-    var payload = {
-      anon_code: anonCode,
+    A.sendOtp({
+      email: email,
+      anon_code: anon,
       role_tag: form.role_tag.value || '',
       mode_tag: form.mode_tag.value || '',
-      email: email,
-      invite_code: (form.invite_code.value || '').trim(),
       hp: hp,
-      'cf-turnstile-response': tsToken
-    };
-
-    fetch(ENROLL_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    })
-    .then(function (r) { return r.json(); })
-    .then(function (j) {
+      'cf-turnstile-response': ts
+    }).then(function (j) {
       if (j && j.ok) {
-        msg.textContent = '✓ 已提交：你已进入观察者身份。欢迎加入共创！';
-        form.reset();
-        if (turnstileWidget) { window.turnstile.reset(turnstileWidget); form.dataset.tsToken = ''; }
+        currentEmail = email;
+        msg.textContent = '✓ 验证码已发送至 ' + (j.email_masked || email) + '（15分钟内有效）。';
+        showStep(2);
+        resetTs();
+        startCountdown();
+        form.otp.value = '';
+        window.setTimeout(function () { form.otp.focus(); }, 60);
       } else {
         var e = (j && j.error) || 'unknown';
-        msg.textContent = '提交未成功: ' + e + '。请重试。';
+        var hint = {
+          turnstile_failed: '人机验证未通过,请重新勾选。',
+          cooldown_active: '发送太频繁,请等待 60 秒。',
+          daily_budget_exhausted: '今日验证码发送已达上限,请明日再试。',
+          disposable_email: '请使用真实邮箱(临时邮箱被拒)。',
+          mail_send_failed: '邮件服务暂不可用,请稍后再试。',
+          rate_limited: '请求太频繁,请稍后再试。'
+        }[e] || ('发送失败: ' + e);
+        msg.textContent = hint;
       }
-    })
-    .catch(function () {
+    }).catch(function () {
       msg.textContent = '网络错误,请稍候重试。';
-    })
-    .finally(function () {
-      btn.disabled = false;
-      btn.textContent = '提交 · 成为观察者';
+    }).finally(function () {
+      btnSend.disabled = false;
+      btnSend.textContent = '发送验证码';
     });
+  }
+
+  // 60s 重发倒计时
+  function startCountdown() {
+    var secs = 60;
+    btnResend.disabled = true;
+    btnResend.textContent = '重新发送(' + secs + 's)';
+    var iv = window.setInterval(function () {
+      secs--;
+      if (secs <= 0) {
+        window.clearInterval(iv);
+        btnResend.disabled = false;
+        btnResend.textContent = '重新发送';
+      } else {
+        btnResend.textContent = '重新发送(' + secs + 's)';
+      }
+    }, 1000);
+  }
+
+  // 重发
+  function doResend() {
+    otpMsg.textContent = '';
+    btnResend.disabled = true;
+    btnResend.textContent = '发送中…';
+    var ts = getTs();
+    if (!ts) {
+      btnResend.disabled = false;
+      btnResend.textContent = '重新发送';
+      showStep(1);
+      msg.textContent = window.turnstile ? '请重新完成人机验证后再发送。' : '人机验证组件加载中。';
+      resetTs();
+      return;
+    }
+    A.sendOtp({ email: currentEmail, hp: '', 'cf-turnstile-response': ts })
+      .then(function (j) {
+        if (j && j.ok) {
+          otpMsg.textContent = '✓ 已重新发送。';
+          startCountdown();
+          resetTs();
+          form.otp.value = '';
+          form.otp.focus();
+        } else {
+          otpMsg.textContent = '重发失败: ' + ((j && j.error) || 'unknown');
+          btnResend.disabled = false;
+          btnResend.textContent = '重新发送';
+        }
+      })
+      .catch(function () {
+        otpMsg.textContent = '网络错误。';
+        btnResend.disabled = false;
+        btnResend.textContent = '重新发送';
+      });
+  }
+
+  // 第二步：verify-otp
+  function doVerify() {
+    var otp = (form.otp.value || '').trim();
+    otpMsg.textContent = '';
+    if (!/^[0-9]{6}$/.test(otp)) { otpMsg.textContent = '请输入 6 位数字验证码。'; return; }
+
+    btnVerify.disabled = true;
+    btnVerify.textContent = '验证中…';
+
+    A.verifyOtp({ email: currentEmail, otp: otp })
+      .then(function (j) {
+        if (j && j.ok && j.token) {
+          A.setToken(j.token);
+          // 拉完整 me(含 points)后再落缓存与渲染, 避免 chip 显示 0 分
+          A.fetchMe()
+            .then(function (me) {
+              onLoggedIn(me);
+            })
+            .catch(function () {
+              onLoggedIn(j); // me 拉取失败仍可登录, 只缺积分显示
+            });
+        } else {
+          var e = (j && j.error) || 'unknown';
+          var hint = {
+            no_token: '验证码已失效,请重新发送。',
+            token_expired: '验证码已过期,请重新发送。',
+            invalid_token: '验证码不正确。',
+            too_many_attempts: '尝试次数过多,验证码已作废,请重新发送。',
+            missing_fields: '缺少邮箱或验证码。'
+          }[e] || ('验证失败: ' + e);
+          otpMsg.textContent = hint;
+          var left = (j && j.attempts_left);
+          if (left != null) otpMsg.textContent += '（剩余 ' + left + ' 次）';
+        }
+      })
+      .catch(function () { otpMsg.textContent = '网络错误,请稍候重试。'; })
+      .finally(function () { btnVerify.disabled = false; btnVerify.textContent = '验证并登录'; });
+  }
+
+  // 登录成功：转登录态
+  function onLoggedIn(j) {
+    form.style.display = 'none';
+    loggedIn.style.display = '';
+    var usr = j.user || {};
+    welcome.innerHTML =
+      '<span class="zhonly">欢迎, ' + escHtml(usr.anon_code || usr.email_masked || '观察者') + '。你的邮箱已验证,自动成为观察者。' +
+      '可在 <a href="index.html">首页</a> 浏览,或参与提案/投票。积分与账户见 <strong>右上角个人中心</strong>。</span>' +
+      '<span class="enonly">Welcome, ' + escHtml(usr.anon_code || usr.email_masked || 'observer') + '. Email verified — you are now an observer. ' +
+      'Browse <a href="index.html">Home</a> or join Proposals/Votes. Points & account live in the <strong>account drawer</strong> (top-right).</span>';
+    A.renderNavAuth();
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+    });
+  }
+
+  // 事件
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (step2.style.display !== 'none') { doVerify(); } else { doSend(); }
   });
+  btnResend.addEventListener('click', doResend);
+  btnBack.addEventListener('click', function () {
+    showStep(1); form.otp.value=''; otpMsg.textContent=''; msg.textContent='';
+  });
+
+  // 已在登录状态：直接显示欢迎
+  if (A.getToken() && A.getMe()) {
+    var m = A.getMe();
+    form.style.display = 'none';
+    loggedIn.style.display = '';
+    welcome.innerHTML =
+      '<span class="zhonly">已登录为' + escHtml(m.anon_code || m.email_masked || '观察者') + '(观察者)。右上角个人中心查看积分与账户。</span>' +
+      '<span class="enonly">Logged in as ' + escHtml(m.anon_code || m.email_masked || 'observer') + ' (observer). See account/points in the top-right drawer.</span>';
+  }
 })();
 </script>
 </body>

@@ -258,3 +258,96 @@ code {
   .nav a { font-size: .82rem; }
   .langbar { order: 2; }
 }
+/* =========================================================
+   认证 UI（方案A 免密码 OTP 登录态）
+   - .navauth: 导航栏登录区
+   - .auth-chip / .auth-pts / .auth-logout: 登录态 chip
+   - .auth-drawer: 个人中心抽屉
+   - .auth-step / .dimmed: OTP 两步表单 + 倒计时钮
+   ========================================================= */
+.navauth {
+  display: inline-flex; align-items: center; gap: .5rem;
+  margin-left: .4rem; white-space: nowrap;
+}
+.auth-chip {
+  cursor: pointer;
+  background: rgba(88,166,255,.1);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--txt);
+  font-size: .84rem;
+  padding: .28rem .8rem;
+  display: inline-flex; align-items: center; gap: .4rem;
+  transition: border-color .15s, background .15s;
+}
+.auth-chip:hover { border-color: var(--accent); background: rgba(88,166,255,.18); }
+.auth-pts {
+  color: var(--accent2);
+  font-weight: 600;
+  border-left: 1px solid var(--line);
+  padding-left: .5rem;
+}
+.auth-logout {
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--txt-dim);
+  font-size: .78rem;
+  padding: .26rem .6rem;
+  transition: color .15s, border-color .15s;
+}
+.auth-logout:hover { color: var(--warn); border-color: var(--warn); }
+
+/* 个人中心抽屉 */
+.auth-drawer {
+  position: fixed; inset: 0; z-index: 200;
+  visibility: hidden; pointer-events: none;
+}
+.auth-drawer.open { visibility: visible; pointer-events: auto; }
+.auth-drawer-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.55);
+  opacity: 0; transition: opacity .2s;
+}
+.auth-drawer.open .auth-drawer-backdrop { opacity: 1; }
+.auth-drawer-panel {
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: min(360px, 92vw);
+  background: var(--bg-soft);
+  border-left: 1px solid var(--line);
+  padding: 1.3rem 1.4rem;
+  transform: translateX(100%);
+  transition: transform .24s ease;
+  overflow-y: auto;
+}
+.auth-drawer.open .auth-drawer-panel { transform: translateX(0); }
+.auth-drawer-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.auth-drawer-head strong { font-size: 1.1rem; }
+.auth-drawer-close {
+  cursor: pointer; background: none; border: none;
+  color: var(--txt-dim); font-size: 1.4rem; line-height: 1;
+}
+.auth-drawer-close:hover { color: var(--txt); }
+.auth-drawer-body .auth-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: .5rem 0; border-bottom: 1px solid var(--line);
+  font-size: .9rem;
+}
+.auth-drawer-body .auth-row .dim { color: var(--txt-dim); font-size: .8rem; }
+
+/* OTP 两步表单 */
+.auth-step .enroll-submit { grid-column: 1 / -1; justify-self: start; margin-top: .5rem; }
+.auth-step .btn.ghost {
+  margin-top: .4rem;
+  margin-right: .4rem;
+  display: inline-flex;
+}
+.auth-step .btn.ghost.dimmed { opacity: .5; }
+.auth-logged-in .panel.ok p { margin-top: .4rem; }
+@media (max-width: 640px) {
+  .navauth { margin-left: 0; width: 100%; justify-content: flex-end; }
+}
