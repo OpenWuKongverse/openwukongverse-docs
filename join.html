@@ -86,7 +86,7 @@
           <div class="cf-turnstile" data-sitekey="0x4AAAAAAEfHyydWm8nvQ_zJ" data-theme="auto"></div>
           <div id="formMsg" class="form-msg"></div>
 
-          <button type="submit" class="enroll-submit" data-submit-send>
+          <button type="button" class="enroll-submit" data-submit-send>
             <span class="zhonly">发送验证码</span><span class="enonly">Send code</span>
           </button>
         </div>
@@ -97,7 +97,7 @@
 
           <div id="otpMsg" class="form-msg"></div>
 
-          <button type="submit" class="enroll-submit" data-submit-verify>
+          <button type="button" class="enroll-submit" data-submit-verify>
             <span class="zhonly">验证并登录</span><span class="enonly">Verify & login</span>
           </button>
           <button type="button" class="btn ghost" data-resend disabled>
@@ -494,11 +494,10 @@
     });
   }
 
-  // 事件
-  form.addEventListener('submit', function (ev) {
-    ev.preventDefault();
-    if (step2.style.display !== 'none') { doVerify(); } else { doSend(); }
-  });
+  // 事件：直接 click 接管(按钮为 type=button, 绕开 HTML5 原生表单验证,
+  // 避免隐藏 step2 的 required otp 触发 "invalid form control not focusable" 拦截提交)
+  btnSend.addEventListener('click', doSend);
+  btnVerify.addEventListener('click', doVerify);
   btnResend.addEventListener('click', doResend);
   btnBack.addEventListener('click', function () {
     showStep(1); form.otp.value=''; otpMsg.textContent=''; msg.textContent='';
