@@ -75,8 +75,8 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 
 | 文档 | 说明 |
 |---|---|
-| [`02-co-creation/creator-management-system.md`](02-co-creation/creator-management-system.md) | **运营体系主档**（OWKV-CREATOR-SYS v2.3）：一个 Hub + 平台矩阵、同一事实源、决策表（D1-D7）、共创流水线、积分看板、公示四档；D2 报名站内注册表单（CF Worker→D1，主）自动建档观察者 + GitHub（熟手）/Discord（补充）辅助，创作者路A积分转正/路B直接申请；**已退出所有沟通职能、不列入平台矩阵** |
-| [`02-co-creation/contribution-data-spec.md`](02-co-creation/contribution-data-spec.md) | **贡献力数据规范**（OWKV-DATA-SPEC v1）：注入源站内表单(CF·主)/邮件/GitHub/Discord（已移除不列入）、C1-C4 单次计分规则、表结构契约（events_raw/contributors/ledger/tasks/v_dashboard）、快照 schema、容量演进；落地见 cf-owkv-deploy（CF D1 + Worker 已部署） |
+| [`02-co-creation/creator-management-system.md`](02-co-creation/creator-management-system.md) | **运营体系主档**（OWKV-CREATOR-SYS v2.4）：一个 Hub + 平台矩阵（Bluesky / Discord / Reddit）、同一事实源、决策表（D1-D7）、共创流水线、积分看板、公示四档；D2 报名站内注册表单（CF Worker→D1，主）自动建档观察者 + GitHub（熟手）/Discord（补充）辅助，创作者路A积分转正/路B直接申请 |
+| [`02-co-creation/contribution-data-spec.md`](02-co-creation/contribution-data-spec.md) | **贡献力数据规范**（OWKV-DATA-SPEC v1）：注入源站内表单(CF·主)/邮件/GitHub/Discord、C1-C4 单次计分规则、表结构契约（events_raw/contributors/ledger/tasks/v_dashboard）、快照 schema、容量演进；落地见 cf-owkv-deploy（CF D1 + Worker 已部署） |
 | [`02-co-creation/contribution-pool-design.md`](02-co-creation/contribution-pool-design.md) | **多池分润机制设计**（已拍板并入正典，当前基线=创作40%/运维20%/资产池20%挂起/回流20%） |
 | [`02-co-creation/roles-and-points-spec.md`](02-co-creation/roles-and-points-spec.md) | **社区角色权责与贡献积分规程**（OWKV-ROLES-POINTS-SPEC v1）：四层阶梯（观察者→正式共创者→架构评审团→首席架构师）+ 权责矩阵、晋升门槛与投票口径（均以维度积分 C1–C4 为唯一驱动）、C1–C4 计分细则与 E-Track、防刷/反女巫红线、C4→IP 资产池 + 生态岗 R 级运维积分分工、数据契约对齐（表结构以 contribution-data-spec 为准）；2026-09-10 由原大/小写两稿综合并回归卷3 正典重构 |
 | [`02-co-creation/proposal-template.md`](02-co-creation/proposal-template.md) | **共创提案模板**（OWKV-PROPOSAL-TPL）：一页可填、直接可报名提交的提案模板 + A12/B3/C7 三则示范填充 |
@@ -97,7 +97,7 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 
 ## HU（前端在仓库根 + 扩展目录 `06-hub/`）
 
-> 共用一套 URL，只做展示与入口，不建第二套系统、不建自建 DB。讨论区归平台矩阵（Discord 唯一讨论通道 / Reddit）。正典库本体就在本仓库（00-core 等）。
+> 统一门面站一套 URL，只做展示与入口，不建第二套系统、不建自建 DB。讨论区归平台矩阵（Discord 唯一讨论通道 / Reddit）。正典库本体就在本仓库（00-core 等）。
 
 | 文件 | 说明 |
 |---|---|

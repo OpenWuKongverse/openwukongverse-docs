@@ -251,7 +251,7 @@
 | `ACT_AST_ADD` | 设定资产（人物 / 法宝）入库 | C1 | `+150 ~ +300` | `01-canon/assets/` 入库 |
 | `ACT_REV_REP` | 深度评审报告签署 | C2, C4 | `+10 ~ +50` | GitHub PR Review 记录 |
 | `ACT_BUG_FIX` | 排查世界观核心冲突 | C2, C4 | `+30 ~ +200` | 架构师确认 Issue |
-| `ACT_TRN_DOC` | 官方正典文档英译 | C4 | `+50 ~ +250` | 化 PR Merge |
+| `ACT_TRN_DOC` | 官方正典文档英译 | C4 | `+50 ~ +250` | 翻译 PR Merge |
 | `ACT_REF_HIT` | 正典资产被后续引用 | C3 | `+20 / 次` | 自动化引用计数扫描 |
 
 > 各单值以 `contribution-data-spec.md` §2 单次计分规则为准；本表为速览，冲突时以数据契约为准。

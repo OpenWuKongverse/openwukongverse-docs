@@ -39,7 +39,7 @@
 | `PUBLIC-LAUNCH.md` | **本记录**：公开时间公示 + 试运行声明 + 全文件清单 |
 | `index.html` | 首页 / 公告（前端门面站入口） |
 | `worldview.html` | 世界观速览 |
-| `join.html` | 报名（D2 站内注册表单 CF 主入口→观察者；GitHub 熟手 / Discord 补充；已移除沟通职能） |
+| `join.html` | 报名（D2 站内注册表单 CF 主入口→观察者；GitHub 熟手 / Discord 补充） |
 | `proposals.html` | 提案 / 投票入口 |
 | `points.html` | 积分看板（只读展示） |
 | `assets/css/` 、 `assets/js/` | 前端共用样式与脚本 |
@@ -119,7 +119,7 @@
 
 ## 五、域名与部署方案（GitHub Pages 根发布）
 
-> 决策（2026-08-24 11:38，发起人定）：**GitHub Pages 为主站（根发布，域名 openwkv.xyz）**。统一一套 URL；加速不靠境外代理，留给后续阶段备案+ CDN（唯一正解）。
+> 决策（2026-08-24 11:38，发起人定）：**GitHub Pages 为主站（根发布，域名 openwkv.xyz）**，统一一套 URL，只做展示与入口。
 
 ### 5.1 发布方式（仓库根发布）
 

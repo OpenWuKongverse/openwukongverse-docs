@@ -28,8 +28,6 @@
 | **邮件**（创作者路B 申请辅助） | 半自动 | 报名邮箱站内公布 + 二次确认发放 → 人工转录/导入 `events_raw` | join / submit_proposal / review |
 | **GitHub**（熟手通道，非主入口） | 自动友好 | Repo Issue（报名）+ PR（提案/翻译入库）→ 可 webhook 自动进 `events_raw` | join / submit_proposal / merge / translation |
 | **Discord**（补充 / 领邀请码 / 路B 申请） | 半自动 | 报名频道人工核对 + Bot 抓取评议/讨论 → 导入 `events_raw`；也是站内表单邀请码的发放点 | join / review / discuss |
-| **** | **已移除** | 已退出所有沟通职能、不列入平台矩阵（2026-08-29 v2.3 定） | — |
-| **** | **不注入** | 仅作画师展示/触达，**不入数据流** | —（展示/视觉） |
 
 > **注入红线**：所有入口最终统一落 `events_raw` 一张表（唯一写入点），由 ETL 清洗归类；**人工只是兜底**（自动抓取失败才手工填通用 CSV 导入），不是每单都手工记。
 
