@@ -74,6 +74,7 @@
 |---|---|
 | `02-co-creation/creator-management-system.md` | 创作管理体系主档（运营体系） |
 | `02-co-creation/contribution-data-spec.md` | 贡献数据规范（C1–C4 数据契约） |
+| `02-co-creation/roles-and-points-spec.md` | 社区角色权责与贡献积分规程（角色阶梯/晋升门槛/C1–C4 单轨驱动，数据契约对齐） |
 | `02-co-creation/contribution-pool-design.md` | 多池分润机制设计 v1.2 |
 | `02-co-creation/proposal-template.md` | 共创提案模板（含 A12/B3/C7 示范） |
 | `02-co-creation/draft-co-creation-agreement.md` | 共创协议完整草案 |
