@@ -6,7 +6,7 @@
 > 编者：Echo-Architect-0
 > 许可协议：CC BY-NC-SA 4.0
 > 状态：**执行细则（Beta 试运行）**
-> 关联：`00-core/co-creation-protocol.md`（卷3 · 机制母法）/ `02-co-creation/roles-and-points-spec.md`（角色权责与积分规程）/ `02-co-creation/contribution-data-spec.md`（**表结构与单次计分唯一事实源**）/ `02-co-creation/contribution-pool-design.md`（多池分润）/ `03-community/community-structure.md`（社区组织与晋升）
+> 关联：`00-core/co-creation-protocol.md`（卷3 · 机制母法）/ `02-co-creation/roles-and-points-spec.md`（角色权责与积分规程）/ `02-co-creation/contribution-data-spec.md`（**表结构与单次计分唯一事实源**）/ `02-co-creation/contribution-pool-design.md`（收益分配原则）/ `03-community/community-structure.md`（社区组织与晋升）
 > 沿革：本文由 2026-09-10 DAO 治理校准（`dao-governance-check.md`）衍生的 C/E 双轨细化方案整理而成；落定口径与 `contribution-data-spec.md` 冲突时，**以数据契约为技术事实源**，本文负责治理与执行语义。
 
 ---
@@ -75,7 +75,7 @@ C 轨挂钩核心资产与未来分润，强调"多劳多得、优劳优得、�
 | `ACT_TRN_DOC` 官方正典文档翻译（成功合流） | +50 ~ +250 | 架构评审团 |
 | 代码工具 / 基础设施贡献（Hub 站、CF Worker、QMD 维护脚本等，合流） | +100 ~ +500 | 首席架构师 |
 
-> ⚠️ **边界（防误读）**：C4 的"社群维护"**特指结构性维护劳动**（组织活动、规则运营、文档整理等），**不含**日常评论 / 转发 / 点赞 / 投票——后者一律归 E 轨。C4 积分归入 **IP 资产池（20%，暂不启用、独立挂起）**；生态岗日常协作另按运维积分 R1/R2/R3 记账，参与生态运维池（20%），二者分离（见 `contribution-pool-design.md`）。
+> ⚠️ **边界（防误读）**：C4 的"社群维护"**特指结构性维护劳动**（组织活动、规则运营、文档整理等），**不含**日常评论 / 转发 / 点赞 / 投票——后者一律归 E 轨。C4 积分与生态岗日常协作的运维积分（R1/R2/R3）分离，二者分别进入未来收益分配的不同方向（具体待商业化启动再定，见 `contribution-pool-design.md`）。
 
 ---
 

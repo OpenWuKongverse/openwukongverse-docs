@@ -6,7 +6,7 @@
 > 编者：Echo-Architect-0
 > 许可协议：CC BY-NC-SA 4.0
 > 状态：**社区治理契约（Beta 试运行）**
-> 关联：`00-core/co-creation-protocol.md`（卷3 共创协议 · 机制母法）/ `02-co-creation/contribution-data-spec.md`（数据契约 · **表结构唯一事实源**）/ `03-community/community-structure.md`（社区组织 · 进入退出机制）/ `02-co-creation/contribution-pool-design.md`（多池分润）/ `02-co-creation/creator-management-system.md`（运营体系）/ `01-canon/intervention-index.md`（介入缝检索）/ `01-canon/assets/README.md`（设定资产库规范）
+> 关联：`00-core/co-creation-protocol.md`（卷3 共创协议 · 机制母法）/ `02-co-creation/contribution-data-spec.md`（数据契约 · **表结构唯一事实源**）/ `03-community/community-structure.md`（社区组织 · 进入退出机制）/ `02-co-creation/contribution-pool-design.md`（收益分配原则）/ `02-co-creation/creator-management-system.md`（运营体系）/ `01-canon/intervention-index.md`（介入缝检索）/ `01-canon/assets/README.md`（设定资产库规范）
 > 沿革：本规程由原 `ROLES-AND-POINTS-SPEC.md`（工程契约版）与 `roles-and-points-spec.md`（治理条款版）两稿综合而成（2026-09-10），并回归卷3 正典体系重构（剔除 Karma / 二次方治理等未并入正典的外部机制，统一以维度积分 C1–C4 为唯一驱动）。
 
 ---
@@ -99,7 +99,7 @@
 | **PR 审查与合并标记** | ❌ | ❌ | ✅（Approve 标记） | ✅（最终 Merge 权） |
 | **系统级设定一票否决** | ❌ | ❌ | ❌ | ✅ |
 
-> **生态岗**（翻译 / 社群 / 评审 / 治理 / 工具维护）为正式共创者的子类，按独立的运维积分体系（R1/R2/R3）计分、参与**生态运维池**分润（详见 §3.4 与 `contribution-pool-design.md`）。生态岗日常协作走独立运维积分，与维度积分 C1–C4 分离。
+> **生态岗**（翻译 / 社群 / 评审 / 治理 / 工具维护）为正式共创者的子类，按独立的运维积分体系（R1/R2/R3）计分、参与未来收益分配（详见 §3.4 与 `contribution-pool-design.md`）。生态岗日常协作走独立运维积分，与维度积分 C1–C4 分离。
 
 ---
 
@@ -165,11 +165,11 @@
 ```
 首席架构师由发起人固定担任；退出 / 降级 / 除名 / 任期机制见 `03-community/community-structure.md` 第 3 节。
 
-### 3.4 C4 生态贡献与生态岗的分工（对齐多池分润裁决）
+### 3.4 C4 生态贡献与生态岗的分工（对齐收益分配原则）
 
-- **C4 生态贡献积分** → 归入 **IP 资产池（20%，暂不启用、独立挂起）**；资产化启动时分配给生态建设者，回报与 IP 增值对齐。
-- **生态岗日常协作**（翻译 / 社群运营 / 评审 / 治理 / 工具维护）→ 按**独立的运维积分体系（R1 服务量 / R2 满意度 / R3 生态反馈）**记录，参与 **生态运维池（20%）** 分润。
-- 二者分离：C4 是"创作者的生态贡献维度积分"，R 级是"生态岗劳动运维积分"，不混算（详见 `contribution-pool-design.md` 二/四节）。
+- **C4 生态贡献积分** → 属创作者维度的生态贡献，与 R 级运维积分分离，二者分别进入未来收益分配的不同方向（具体方向与比例待商业化启动再定）。
+- **生态岗日常协作**（翻译 / 社群运营 / 评审 / 治理 / 工具维护）→ 按**独立的运维积分体系（R1 服务量 / R2 满意度 / R3 生态反馈）**记录，参与未来收益分配。
+- 二者分离：C4 是"创作者的生态贡献维度积分"，R 级是"生态岗劳动运维积分"，不混算（详见 `contribution-pool-design.md`）。
 
 ---
 
@@ -230,7 +230,7 @@
 | 表结构、字段、SQL、导出快照 schema | `contribution-data-spec.md`（数据契约） |
 | 进入 / 退出 / 任期 / 罢免 / 三阶段演进 | `03-community/community-structure.md`（社区组织） |
 | 报名 / 提交 / 公示 / 平台分工 / 决策记录 | `creator-management-system.md`（运营体系） |
-| 多池分润比例与 C4→资产池、生态岗 R 级运维积分 | `contribution-pool-design.md` + 卷3 第五板块 |
+| 收益分配原则与 C4/生态岗 R 级运维积分分工 | `contribution-pool-design.md` + 卷3 第五板块 |
 | 提案模板与示范 | `02-co-creation/proposal-template.md` |
 | 介入缝编号（A/B/C） | `01-canon/intervention-index.md` |
 | 设定资产入库规范 | `01-canon/assets/README.md` |
