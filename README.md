@@ -103,7 +103,7 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 | 文件 | 说明 |
 |---|---|
 | [`index.html`](index.html) | Hub 统一门面站首页（公告 / 世界观速览 / 报名 / 提案投票 / 积分看板展示） |
-| [`join.html`](join.html) / [`proposals.html`](proposals.html) / [`points.html`](points.html) / [`worldview.html`](worldview.html) | 报名 / 提案 / 积分 / 世界观 分页（均在仓库根） |
+| [`join.html`](join.html) / [`proposals.html`](proposals.html) / [`points.html`](points.html) / [`worldview.html`](worldview.html) | 报名 / 提案 / 积分 / 世界观 分页（均在仓库根）。**提案页含站内提交表单**：登录后直接填提案，后端自动开 GitHub Issue，不会用 GitHub 的创作者无需碰 Git |
 | [`assets/`](assets/) | 前端资源（css/style.css + js/i18n.js，仓库根） |
 | [`06-hub/README.md`](06-hub/README.md) | HU**扩展目录**：后期非入口前端文件存放处 |
 
@@ -127,6 +127,7 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 ## 社区共创机制速览
 
 - **共创流水线**：提案 → 评议 → 架构师审查 → 入正典（另有沙盒轨道）。
+- **提案提交双入口**：① 站内表单（`proposals.html`，登录后填，后端自动转 GitHub Issue）② 直接 GitHub PR/Issue（熟手）。
 - **三大沙盒定律**：正典兼容 / 局部自由 / 版权分润。
 - **贡献力（维度积分）**：C1 创作量 30% + C2 质量 30% + C3 采用率 20% + C4 生态 20%。
 - **分润原则**：衍生收益未来按贡献分配（创意与生态并重、奖励长期投入、透明可审计）；**具体比例与方向待商业化启动再定**。

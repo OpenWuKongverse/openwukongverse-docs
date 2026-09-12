@@ -110,7 +110,7 @@
 |---|---|---|
 | **挑介入缝** | 介入索引 `01-canon/intervention-index.md` | 按 A/B/C 三类找活干（新手 A 类） |
 | **填提案** | 提案模板 `02-co-creation/proposal-template.md` | 一页可填，附三类示范 |
-| **提交** | Hub 正典库（GitHub 仓库 PR / Issue）| 唯一正式提交通道，版本化留痕 |
+| **提交** | **双入口**：① 站内提案表单（`proposals.html`，登录后填，后端自动在 GitHub 开 Issue，不碰 Git）② 直接 GitHub 仓库 PR / Issue（熟手）| 唯一正式提交通道；站内表单由后端自动转 Issue 留痕，版本化 |
 | **展示** | Reddit（提案帖展示 + 原生投票）| 供观察者网络评议 |
 | **讨论** | Discord（评议频道）| 深度讨论、质疑、迭代 |
 | **投票** | Reddit 投票 + Hub 评审团加权 | 对齐卷3：质量分由社区加权（评审团+观察者投票）非单一点赞 |
@@ -118,6 +118,8 @@
 | **入库** | Hub 正典库 | 入正典标记贡献者 + 当次积分（卷3 4.1）|
 
 > 注意（对齐卷3 防刷）： 各平台上的"点赞"都只算观察者投票输入，须经 Hub 的**防刷/聚类复核**后才计入质量分 C2，防止跨平台刷（卷3 4.2）。
+
+> 站内提案表单（`proposals.html` 登录后）由 `join worker`(`POST /api/proposals`) 接收：Turnstile + 蜜罐 + JWT 登录三重防刷，校验后自动在正典仓库（`OpenWuKongVerse/openwukongverse-docs`）开 Issue 留痕，并写 `events_raw`（event_type=`submit_proposal`）供 C1 积分溯源。不会用 GitHub 的创作者全程不碰 Git。
 
 ---
 
