@@ -66,7 +66,7 @@
 | `01-canon/intervention-index.md` | 介入点索引（A/B/C 按类精选）v1.1 |
 | `01-canon/mode-collapse-table.md` | 三模态呈现对照表 v1.1 |
 | `01-canon/wukong-process-evolution.md` | 悟空多态演化模型 v1.0 |
-| `01-canon/assets/README.md` | 设定资产库规范（铁律 / 三条铁律待对齐） |
+| `01-canon/assets/README.md` | 设定资产库规范（创作约束 / 三条红线待对齐） |
 
 ### D · 共创管理（`02-co-creation/` · 卷3 配套）
 
