@@ -54,7 +54,7 @@
 | `00-core/concept-protocol.md` | 卷1 · 概念协议（元层）v1.1 |
 | `00-core/worldview-bible.md` | 卷2 · 世界观圣经（物理层）v1.2 |
 | `00-core/worldview-supplement.md` | 卷2 增补 v1.0 |
-| `00-core/co-creation-protocol.md` | 卷3 · 共创协议（机制层）v1.3 |
+| `00-core/co-creation-protocol.md` | 卷3 · 共创协议（机制层）v1.4 |
 | `00-core/content-directory.md` | 卷4 · 内容目录 v1.2 |
 | `00-core/patch-three-contradictions.md` | 白皮书三处逻辑矛盾修订补丁 v1.0 |
 
