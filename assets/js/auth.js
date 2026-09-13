@@ -106,8 +106,10 @@
     var t = getToken();
     if (!t || !me) {
       mount.innerHTML = '';
+      refreshJoinNav(false);
       return;
     }
+    refreshJoinNav(true);
     var prefix = (me.email_masked || me.anon_code || 'user');
     var points = (me.points && me.points.total != null) ? me.points.total : 0;
     var uid = String(me.id || '');
@@ -162,6 +164,33 @@
   function closeDrawer() {
     if (drawer) drawer.classList.remove('open');
   }
+  /* ---- 登录后导航置换：导航「报名/Join」→「创作中心/Center」，指向 personal.html ----
+     所有页面共用同一套 nav（<a href="join.html">报名</a>）。登录后把该链接的
+     文字换为「创作中心」，href 指向 personal.html，使站点在登录态下语义变为
+     「个人创作中心」入口。未登录则恢复「报名」。 */
+  function refreshJoinNav(loggedIn) {
+    var links = document.querySelectorAll('a[href="join.html"]');
+    for (var i = 0; i < links.length; i++) {
+      var a = links[i];
+      // 只置换导航内的报名链接；页内 CTA（如 index 的「注册报名」「开始创作」）不动
+      if (a.closest('.nav')) {
+        if (loggedIn) {
+          a.setAttribute('href', 'personal.html');
+          var zh = a.querySelector('.zhonly');
+          var en = a.querySelector('.enonly');
+          if (zh) zh.textContent = '创作中心';
+          if (en) en.textContent = 'Center';
+        } else {
+          a.setAttribute('href', 'join.html');
+          var zh2 = a.querySelector('.zhonly');
+          var en2 = a.querySelector('.enonly');
+          if (zh2) zh2.textContent = '报名';
+          if (en2) en2.textContent = 'Join';
+        }
+      }
+    }
+  }
+
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];

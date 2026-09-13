@@ -49,6 +49,17 @@
     <p class="lead dim enonly">This site has a <b>native registration form</b>: fill anon code / role / mode / email to <b>become an observer</b> (CF Worker → private DB, email hashed only). To become a co-creator: Path A accumulate C1–C4 points for auto-promotion, or Path B apply directly (intent field on the form / email / Discord, jury-verified).</p>
   </section>
 
+  <section class="block" id="joinLoggedIn" style="display:none">
+    <h2 class="zhonly">你已是观察者 · 进入个人创作中心</h2>
+    <h2 class="enonly">You are an observer · enter the Creation Center</h2>
+    <div class="panel ok">
+      <strong class="zhonly">已登录</strong><strong class="enonly">Logged in</strong>
+      <span class="zhonly">报名页在登录后升格为<b>个人创作中心</b>：账户信息、站内提交提案、已提交提案状态（规划中）都在那里。导航「报名/Join」登录后已自动变为「创作中心」。</span>
+      <span class="enonly">After login the Join page becomes the <b>Personal Creation Center</b>: account info, in-site proposal submission, proposal status (roadmap) all live there. The "Join" nav now reads "Center" once you are logged in.</span>
+      <p style="margin-top:.8rem"><a class="btn" href="personal.html"><span class="zhonly">进入个人创作中心 →</span><span class="enonly">Open Creation Center →</span></a></p>
+    </div>
+  </section>
+
   <section class="block">
     <h2 class="zhonly">报名 = 站内注册表单（观察者门槛，直接填）</h2>
     <h2 class="enonly">Join = In-site Registration Form (observer tier, fill directly)</h2>
@@ -470,6 +481,8 @@
   function onLoggedIn(j) {
     form.style.display = 'none';
     loggedIn.style.display = '';
+    var jli = document.getElementById('joinLoggedIn');
+    if (jli) jli.style.display = '';
     if (A && A.renderNavAuth) A.renderNavAuth();
     var usr = j.user || {};
     welcome.innerHTML =
@@ -500,6 +513,8 @@
     var m = A.getMe();
     form.style.display = 'none';
     loggedIn.style.display = '';
+    var jli = document.getElementById('joinLoggedIn');
+    if (jli) jli.style.display = '';
     welcome.innerHTML =
       '<span class="zhonly">已登录为' + escHtml(m.anon_code || m.email_masked || '观察者') + '(观察者)。右上角个人中心查看积分与账户。</span>' +
       '<span class="enonly">Logged in as ' + escHtml(m.anon_code || m.email_masked || 'observer') + ' (observer). See account/points in the top-right drawer.</span>';

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="OpenWuKongVerse 个人创作中心：账户信息、站内提交提案、已提交提案状态与积分。" data-preview-hidden>
+<title>个人创作中心 · OpenWuKongVerse</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="en">OpenWuKongVerse</span>
+      <span class="zh">开源悟空多维宇宙</span>
+      <span class="tag">OWKV · HUB</span>
+    </div>
+    <nav class="nav">
+      <a href="index.html"><span class="zhonly">首页</span><span class="enonly">Home</span></a>
+      <a href="worldview.html"><span class="zhonly">世界观</span><span class="enonly">Worldview</span></a>
+      <a href="gallery.html"><span class="zhonly">共创展示</span><span class="enonly">Gallery</span></a>
+      <a href="proposals.html"><span class="zhonly">提案 / 创作</span><span class="enonly">Create</span></a>
+      <a href="join.html"><span class="zhonly">报名</span><span class="enonly">Join</span></a>
+    </nav>
+    <span id="navAuth" class="navauth"></span>
+    <div class="langbar">
+      <button class="langbtn on" data-lang="zh">中文</button>
+      <button class="langbtn" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="previewbar">
+    <button class="previewbtn" data-preview data-off="机器翻译预览（仅供参考）" data-on="关闭预览">机器翻译预览（仅供参考）</button>
+  </div>
+
+  <!-- 未登录：需先登录为观察者 -->
+  <section class="block" id="pcNeedLogin" style="display:none">
+    <h1 class="zhonly">个人创作中心</h1>
+    <h1 class="enonly">Personal Creation Center</h1>
+    <div class="panel warn">
+      <strong class="zhonly">需要先登录为观察者</strong><strong class="enonly">Login as observer first</strong>
+      <span class="zhonly">个人创作中心对登录用户开放。请先登录（或注册），右上角「报名/Join」登录后自动变为「创作中心」入口。</span>
+      <span class="enonly">The Creation Center is for logged-in observers. Log in (or register) — the "Join" nav turns into "Creation Center" once you are logged in.</span>
+      <p style="margin-top:.8rem"><a class="btn ghost" href="join.html"><span class="zhonly">去报名 / 登录</span><span class="enonly">Join / Log in</span></a></p>
+    </div>
+  </section>
+
+  <!-- 已登录：个人创作中心 -->
+  <section class="block" id="pcMain" style="display:none">
+    <h1 class="zhonly">个人创作中心</h1>
+    <h1 class="enonly">Personal Creation Center</h1>
+
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); align-items:start">
+      <!-- ① 账户信息 -->
+      <div class="card">
+        <div class="tag">Account · 账户</div>
+        <h3 class="zhonly">个人账户</h3>
+        <h3 class="enonly">Account</h3>
+        <div id="pcAccount" class="pc-account">
+          <p class="dim">加载中…</p>
+        </div>
+      </div>
+
+      <!-- ② 提案状态骨架 -->
+      <div class="card">
+        <div class="tag">Proposals · 提案状态</div>
+        <h3 class="zhonly">已提交提案</h3>
+        <h3 class="enonly">My Proposals</h3>
+        <div id="pcProposals" class="pc-proposals">
+          <p class="dim">加载中…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ 站内提交提案 -->
+    <div class="grid" style="margin-top:1rem">
+      <div class="card" style="grid-column:1/-1">
+        <div class="tag">Submit · 站内提案</div>
+        <h3 class="zhonly">站内提交提案（不用 GitHub，直接填）</h3>
+        <h3 class="enonly">Submit In-site (no GitHub needed)</h3>
+        <p class="dim zhonly">在这里填一页提案，系统自动在正典仓库开 <strong>Issue</strong> 留痕，进入共创流水线：提案 → 评议 → 架构师审查 → 入正典/沙盒。</p>
+        <p class="dim enonly">Fill one page here — it auto-opens an <strong>Issue</strong> in the canon repo and enters the pipeline: Propose → Deliberate → Review → Canon/Sandbox.</p>
+
+        <form id="proposalForm" class="enroll-form" onsubmit="return false">
+          <label><span class="zhonly">提案标题</span><span class="enonly">Title</span><span class="req">*</span></label>
+          <input name="title" maxlength="120" placeholder="如：被逐期间·悟空独自纠错的七天" required>
+
+          <label><span class="zhonly">内容分类</span><span class="enonly">Category</span><span class="req">*</span></label>
+          <select name="category">
+            <option value="脑洞">脑洞 / 宇宙碎片</option>
+            <option value="剧情">剧情 / 故事</option>
+            <option value="角色">角色</option>
+            <option value="设定延伸">设定延伸</option>
+            <option value="模态延伸">模态延伸</option>
+          </select>
+
+          <label><span class="zhonly">介入缝编号</span><span class="enonly">Intervention slot</span><span class="dim-msg zhonly">选填，从《介入点索引》挑（A/B/C）</span><span class="dim-msg enonly">optional, from the Intervention Index</span></label>
+          <input name="seam_id" maxlength="40" placeholder="如 A12 / B3 / C7">
+
+          <label><span class="zhonly">所属节点</span><span class="enonly">Node</span><span class="dim-msg zhonly">选填（N 编号 + 节点名）</span><span class="dim-msg enonly">optional (N number + name)</span></label>
+          <input name="node" maxlength="200" placeholder="如 N16 三打白骨精">
+
+          <label><span class="zhonly">模态</span><span class="enonly">Mode</span></label>
+          <select name="mode_tag">
+            <option value="A">A · 赛博</option>
+            <option value="B">B · 高维玄幻</option>
+            <option value="C">C · 废土克苏鲁</option>
+            <option value="cross">跨模态</option>
+          </select>
+
+          <label><span class="zhonly">提案内容</span><span class="enonly">Proposal content</span><span class="req">*</span></label>
+          <textarea name="content" rows="10" maxlength="20000" placeholder="按三层红线自检后填写提案正文（可含剧情梗概/角色/设定延伸等）" required></textarea>
+
+          <fieldset>
+            <legend><span class="zhonly">三层红线自检（必勾前两层）</span><span class="enonly">Three red lines (first two required)</span></legend>
+            <label class="checkbox"><input type="checkbox" value="law"><span class="zhonly">法则自洽</span><span class="enonly">Law-consistency</span></label>
+            <label class="checkbox"><input type="checkbox" value="perm"><span class="zhonly">权限自洽</span><span class="enonly">Permission-consistency</span></label>
+            <label class="checkbox"><input type="checkbox" value="meta"><span class="zhonly">元层自洽</span><span class="enonly">Meta-layer-consistency</span></label>
+          </fieldset>
+
+          <label><span class="zhonly">目标轨道</span><span class="enonly">Target track</span></label>
+          <select name="track">
+            <option value="sandbox">沙盒轨道（推荐）</option>
+            <option value="canon">正典轨道</option>
+          </select>
+
+          <input type="text" name="hp" value="" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
+
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAAEfHyydWm8nvQ_zJ" data-theme="auto"></div>
+          <div id="propMsg" class="form-msg"></div>
+
+          <button type="button" class="enroll-submit" data-submit-proposal>
+            <span class="zhonly">提交提案</span><span class="enonly">Submit proposal</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="preview-tip">
+    <p class="zhonly">机器翻译预览仅供快速浏览大概，不构成正式语言版。正式多语言由人工认领并对照术语表把控口径（见「报名 · 多语言认领」）。</p>
+    <p class="enonly">Machine translation preview is for rough scanning only — not an official language. Official languages are human-claimed with terminology controlled against the alignment table (see Join · Language Claiming).</p>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="brand">OpenWuKongVerse · 开源悟空多维宇宙</div>
+  <p><span class="zhonly">文档许可 CC BY-NC-SA 4.0 · 社区共创 · 发起人匿名代号 Echo-Architect-0</span><span class="enonly">CC BY-NC-SA 4.0 · Community co-creation · Founder alias: Echo-Architect-0</span></p>
+</footer>
+
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+// OWKV · 个人创作中心 · 登录门槛 + 账户信息 + 提案状态骨架 + 站内提案
+(function () {
+  var A = window.owkvAuth;
+  var needLogin = document.getElementById('pcNeedLogin');
+  var main = document.getElementById('pcMain');
+  var accEl = document.getElementById('pcAccount');
+  var propEl = document.getElementById('pcProposals');
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+    });
+  }
+
+  /* ---- 登录门槛 ---- */
+  function refreshGate() {
+    var logged = !!(A && A.getToken && A.getToken());
+    needLogin.style.display = logged ? 'none' : '';
+    main.style.display = logged ? '' : 'none';
+    if (logged) {
+      renderAccount();
+      renderPropsSkeleton();
+    }
+  }
+
+  /* ---- ① 账户信息（/api/user/me） ---- */
+  function renderAccount() {
+    accEl.innerHTML = '<p class="dim">加载中…</p>';
+    var uid = (A.getMe && A.getMe()) || null;
+    if (!uid) { accEl.innerHTML = '<p class="dim">读取账户…</p>'; }
+    A.fetchMe().then(function (j) {
+      var u = j.user || {};
+      var p = j.points || {};
+      accEl.innerHTML =
+        '<div class="auth-row"><span class="dim zhonly">身份</span><span class="dim enonly">Status</span><strong>' + esc(u.status || '—') + '</strong></div>' +
+        '<div class="auth-row"><span class="dim zhonly">匿名代号</span><span class="dim enonly">Anon code</span><strong>' + esc(u.anon_code || '—') + '</strong></div>' +
+        '<div class="auth-row"><span class="dim zhonly">邮箱</span><span class="dim enonly">Email</span><strong>' + esc(u.email_masked || '—') + '</strong></div>' +
+        '<div class="auth-row"><span class="dim zhonly">主攻角色</span><span class="dim enonly">Role</span><strong>' + esc(u.role_tag || '—') + '</strong></div>' +
+        '<div class="auth-row"><span class="dim zhonly">主攻模态</span><span class="dim enonly">Mode</span><strong>' + esc(u.mode_tag || '—') + '</strong></div>' +
+        '<div class="auth-row"><span class="dim zhonly">累积积分</span><span class="dim enonly">Points</span><strong>' + esc(p.total || 0) + '</strong></div>' +
+        '<p class="dim" style="margin-top:.6rem;font-size:.8rem">' +
+          '<span class="zhonly">C1 创作 ' + esc(p.C1 || 0) + ' · C2 质量 ' + esc(p.C2 || 0) + ' · C3 采用 ' + esc(p.C3 || 0) + ' · C4 生态 ' + esc(p.C4 || 0) + '</span>' +
+          '<span class="enonly">C1 creation ' + esc(p.C1 || 0) + ' · C2 quality ' + esc(p.C2 || 0) + ' · C3 adoption ' + esc(p.C3 || 0) + ' · C4 ecosystem ' + esc(p.C4 || 0) + '</span>' +
+        '</p>';
+    }).catch(function () {
+      accEl.innerHTML = '<p class="dim">无法读取账户（会话可能已失效）。</p>';
+    });
+  }
+
+  /* ---- ② 提案状态骨架（A档：先给引导；列表待 B 档后端） ---- */
+  function renderPropsSkeleton() {
+    propEl.innerHTML =
+      '<div class="panel warn" style="border-left-color:var(--accent2)">' +
+        '<strong class="zhonly">提案状态追踪（规划中）</strong><strong class="enonly">Proposal status (roadmap)</strong>' +
+        '<span class="zhonly">已提交提案的流水线状态（审核中 / 投票中 / 入正典 / 积分）将在后续版本接入。当前：每次提交会自动在提案库开 <strong>Issue</strong> 留痕；评议与投票在 Discord / Reddit 进行，入正典由架构师核准并回流积分账本。</span>' +
+        '<span class="enonly">Pipeline status (under review / voting / into canon / points) lands in a later version. Today: each submit auto-opens an <strong>Issue</strong> in the proposal repo; deliberation &amp; voting happen on Discord / Reddit; canonization is architect-approved and flows points back to the ledger.</span>' +
+      '</div>' +
+      '<p class="dim" style="margin-top:.8rem">' +
+        '<span class="zhonly">· 提交后：查看提案库 Issue <a class="dim" href="https://github.com/OpenWuKongverse/openwukongverse-docs/issues" target="_blank" rel="noopener noreferrer">openwukongverse-docs/issues →</a></span>' +
+        '<span class="enonly">· After submitting: see the Issue in <a class="dim" href="https://github.com/OpenWuKongverse/openwukongverse-docs/issues" target="_blank" rel="noopener noreferrer">openwukongverse-docs/issues →</a></span>' +
+        '<br><span class="zhonly">· 申诉 / 澄清：Discord 讨论区，或经提案 Issue 内说明。</span>' +
+        '<span class="enonly">· Appeals / clarifications: Discord discussion, or explain in the Issue.</span>' +
+      '</p>';
+  }
+
+  /* ---- ③ 站内提案表单（复用 /api/proposals） ---- */
+  var form = document.getElementById('proposalForm');
+  var msg = document.getElementById('propMsg');
+  var submitBtn = form.querySelector('[data-submit-proposal]');
+  var API = 'https://join.openwkv.xyz';
+  var tsWidget = null, tsRetries = 0;
+  function renderTs() {
+    if (window.turnstile && !tsWidget) {
+      try {
+        var el = form.querySelector('.cf-turnstile');
+        if (el) tsWidget = window.turnstile.render(el, {
+          sitekey: '0x4AAAAAAEfHyydWm8nvQ_zJ',
+          callback: function (t) { form.dataset.tsToken = t; }
+        });
+      } catch (e) { /* retry */ }
+    }
+    if (!tsWidget && ++tsRetries <= 10) setTimeout(renderTs, 300);
+  }
+  renderTs();
+  function getTs() {
+    var t = form.dataset.tsToken;
+    if (!t && window.turnstile && tsWidget) t = (window.turnstile.getResponse(tsWidget) || '');
+    return t;
+  }
+  submitBtn.addEventListener('click', function () {
+    msg.textContent = '';
+    if (!(A && A.getToken && A.getToken())) { msg.textContent = '请先登录为观察者。'; return; }
+    var title = (form.title.value || '').trim();
+    var content = (form.content.value || '').trim();
+    if (!title) { msg.textContent = '请填写提案标题。'; return; }
+    if (!content) { msg.textContent = '请填写提案内容。'; return; }
+    var checks = [];
+    form.querySelectorAll('input[type=checkbox]:checked').forEach(function (c) { checks.push(c.value); });
+    if (!checks.includes('law') || !checks.includes('perm')) { msg.textContent = '请至少勾选「法则自洽」与「权限自洽」两层红线自检。'; return; }
+    var ts = getTs();
+    if (!ts) { msg.textContent = '请先完成人机验证（勾选右侧圆框）。'; return; }
+    if (form.hp.value) { msg.textContent = '已记录。'; return; }
+    submitBtn.disabled = true;
+    submitBtn.textContent = '提交中…';
+    fetch(API + '/api/proposals', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + A.getToken() },
+      body: JSON.stringify({
+        title: title, category: form.category.value || '脑洞',
+        seam_id: (form.seam_id.value || '').trim(), node: (form.node.value || '').trim(),
+        mode_tag: form.mode_tag.value || 'B', content: content,
+        canon_check: checks, track: form.track.value || 'sandbox',
+        hp: form.hp.value, 'cf-turnstile-response': ts
+      })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (j && j.ok) {
+        var url = (j.issue && j.issue.url) || '';
+        msg.textContent = url
+          ? ('✓ 提案已提交，已自动开 Issue ' + (j.issue.number || '') + '。评议与投票在 Discord / Reddit 进行。')
+          : '✓ 提案已提交！';
+        if (url) msg.innerHTML = '✓ 提案已提交，已自动在提案库开 Issue <a href="' + url + '" target="_blank" rel="noopener noreferrer">#' + j.issue.number + '</a>。评议与投票在 Discord / Reddit 进行。';
+        form.reset();
+        if (window.turnstile && tsWidget) window.turnstile.reset(tsWidget);
+        form.dataset.tsToken = '';
+      } else {
+        var e = (j && j.error) || 'unknown';
+        var hint = {
+          unauthorized: '登录已失效，请重新登录。', invalid_token: '登录已失效，请重新登录。',
+          missing_turnstile: '请完成人机验证。', turnstile_failed: '人机验证未通过，请重试。',
+          missing_title: '请填写提案标题。', missing_content: '请填写提案内容。',
+          missing_red_lines: '请勾选「法则自洽」与「权限自洽」两层红线自检。',
+          proposal_disabled: '提交通道正在维护，请稍后再试或改走邮件/Discord。',
+          github_create_failed: '提交到提案库失败，请稍后重试或改走邮件/Discord。',
+          github_network_failed: '网络错误，请稍后重试。'
+        }[e] || ('提交失败：' + e);
+        msg.textContent = hint;
+      }
+    })
+    .catch(function () { msg.textContent = '网络错误，请稍候重试。'; })
+    .finally(function () {
+      submitBtn.disabled = false;
+      if (A && A.getToken && A.getToken()) submitBtn.textContent = '提交提案';
+    });
+  });
+
+  /* ---- 启动 ---- */
+  refreshGate();
+  // 登录态变化时重查（auth.js 已监听 storage；此处补同页变更兜底）
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'owkv-token' || e.key === 'owkv-me' || e.key === null) refreshGate();
+  });
+})();
+</script>
+</body>
+</html>
