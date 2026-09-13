@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="OpenWuKongVerse 个人创作中心：账户信息、站内提交提案、已提交提案状态与积分。" data-preview-hidden>
+<meta name="description" content="OpenWuKongVerse 个人创作中心：账户信息与已提交提案状态与积分。" data-preview-hidden>
 <title>个人创作中心 · OpenWuKongVerse</title>
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -76,69 +76,6 @@
       </div>
     </div>
 
-    <!-- ③ 站内提交提案 -->
-    <div class="grid" style="margin-top:1rem">
-      <div class="card" style="grid-column:1/-1">
-        <div class="tag">Submit · 站内提案</div>
-        <h3 class="zhonly">站内提交提案（不用 GitHub，直接填）</h3>
-        <h3 class="enonly">Submit In-site (no GitHub needed)</h3>
-        <p class="dim zhonly">在这里填一页提案，系统自动在正典仓库开 <strong>Issue</strong> 留痕，进入共创流水线：提案 → 评议 → 架构师审查 → 入正典/沙盒。</p>
-        <p class="dim enonly">Fill one page here — it auto-opens an <strong>Issue</strong> in the canon repo and enters the pipeline: Propose → Deliberate → Review → Canon/Sandbox.</p>
-
-        <form id="proposalForm" class="enroll-form" onsubmit="return false">
-          <label><span class="zhonly">提案标题</span><span class="enonly">Title</span><span class="req">*</span></label>
-          <input name="title" maxlength="120" placeholder="如：被逐期间·悟空独自纠错的七天" required>
-
-          <label><span class="zhonly">内容分类</span><span class="enonly">Category</span><span class="req">*</span></label>
-          <select name="category">
-            <option value="脑洞">脑洞 / 宇宙碎片</option>
-            <option value="剧情">剧情 / 故事</option>
-            <option value="角色">角色</option>
-            <option value="设定延伸">设定延伸</option>
-            <option value="模态延伸">模态延伸</option>
-          </select>
-
-          <label><span class="zhonly">介入缝编号</span><span class="enonly">Intervention slot</span><span class="dim-msg zhonly">选填，从《介入点索引》挑（A/B/C）</span><span class="dim-msg enonly">optional, from the Intervention Index</span></label>
-          <input name="seam_id" maxlength="40" placeholder="如 A12 / B3 / C7">
-
-          <label><span class="zhonly">所属节点</span><span class="enonly">Node</span><span class="dim-msg zhonly">选填（N 编号 + 节点名）</span><span class="dim-msg enonly">optional (N number + name)</span></label>
-          <input name="node" maxlength="200" placeholder="如 N16 三打白骨精">
-
-          <label><span class="zhonly">模态</span><span class="enonly">Mode</span></label>
-          <select name="mode_tag">
-            <option value="A">A · 赛博</option>
-            <option value="B">B · 高维玄幻</option>
-            <option value="C">C · 废土克苏鲁</option>
-            <option value="cross">跨模态</option>
-          </select>
-
-          <label><span class="zhonly">提案内容</span><span class="enonly">Proposal content</span><span class="req">*</span></label>
-          <textarea name="content" rows="10" maxlength="20000" placeholder="按三层红线自检后填写提案正文（可含剧情梗概/角色/设定延伸等）" required></textarea>
-
-          <fieldset>
-            <legend><span class="zhonly">三层红线自检（必勾前两层）</span><span class="enonly">Three red lines (first two required)</span></legend>
-            <label class="checkbox"><input type="checkbox" value="law"><span class="zhonly">法则自洽</span><span class="enonly">Law-consistency</span></label>
-            <label class="checkbox"><input type="checkbox" value="perm"><span class="zhonly">权限自洽</span><span class="enonly">Permission-consistency</span></label>
-            <label class="checkbox"><input type="checkbox" value="meta"><span class="zhonly">元层自洽</span><span class="enonly">Meta-layer-consistency</span></label>
-          </fieldset>
-
-          <label><span class="zhonly">目标轨道</span><span class="enonly">Target track</span></label>
-          <select name="track">
-            <option value="sandbox">沙盒轨道（推荐）</option>
-            <option value="canon">正典轨道</option>
-          </select>
-
-          <input type="text" name="hp" value="" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
-
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAAEfHyydWm8nvQ_zJ" data-theme="auto"></div>
-          <div id="propMsg" class="form-msg"></div>
-
-          <button type="button" class="enroll-submit" data-submit-proposal>
-            <span class="zhonly">提交提案</span><span class="enonly">Submit proposal</span>
-          </button>
-        </form>
-      </div>
-    </div>
   </section>
 
   <div class="preview-tip">
@@ -155,9 +92,8 @@
 
 <script src="assets/js/i18n.js"></script>
 <script src="assets/js/auth.js"></script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
-// OWKV · 个人创作中心 · 登录门槛 + 账户信息 + 提案状态骨架 + 站内提案
+// OWKV · 个人创作中心 · 登录门槛 + 账户信息 + 提案状态骨架
 (function () {
   var A = window.owkvAuth;
   var needLogin = document.getElementById('pcNeedLogin');
@@ -222,87 +158,6 @@
       '</p>';
   }
 
-  /* ---- ③ 站内提案表单（复用 /api/proposals） ---- */
-  var form = document.getElementById('proposalForm');
-  var msg = document.getElementById('propMsg');
-  var submitBtn = form.querySelector('[data-submit-proposal]');
-  var API = 'https://join.openwkv.xyz';
-  var tsWidget = null, tsRetries = 0;
-  function renderTs() {
-    if (window.turnstile && !tsWidget) {
-      try {
-        var el = form.querySelector('.cf-turnstile');
-        if (el) tsWidget = window.turnstile.render(el, {
-          sitekey: '0x4AAAAAAEfHyydWm8nvQ_zJ',
-          callback: function (t) { form.dataset.tsToken = t; }
-        });
-      } catch (e) { /* retry */ }
-    }
-    if (!tsWidget && ++tsRetries <= 10) setTimeout(renderTs, 300);
-  }
-  renderTs();
-  function getTs() {
-    var t = form.dataset.tsToken;
-    if (!t && window.turnstile && tsWidget) t = (window.turnstile.getResponse(tsWidget) || '');
-    return t;
-  }
-  submitBtn.addEventListener('click', function () {
-    msg.textContent = '';
-    if (!(A && A.getToken && A.getToken())) { msg.textContent = '请先登录为观察者。'; return; }
-    var title = (form.title.value || '').trim();
-    var content = (form.content.value || '').trim();
-    if (!title) { msg.textContent = '请填写提案标题。'; return; }
-    if (!content) { msg.textContent = '请填写提案内容。'; return; }
-    var checks = [];
-    form.querySelectorAll('input[type=checkbox]:checked').forEach(function (c) { checks.push(c.value); });
-    if (!checks.includes('law') || !checks.includes('perm')) { msg.textContent = '请至少勾选「法则自洽」与「权限自洽」两层红线自检。'; return; }
-    var ts = getTs();
-    if (!ts) { msg.textContent = '请先完成人机验证（勾选右侧圆框）。'; return; }
-    if (form.hp.value) { msg.textContent = '已记录。'; return; }
-    submitBtn.disabled = true;
-    submitBtn.textContent = '提交中…';
-    fetch(API + '/api/proposals', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + A.getToken() },
-      body: JSON.stringify({
-        title: title, category: form.category.value || '脑洞',
-        seam_id: (form.seam_id.value || '').trim(), node: (form.node.value || '').trim(),
-        mode_tag: form.mode_tag.value || 'B', content: content,
-        canon_check: checks, track: form.track.value || 'sandbox',
-        hp: form.hp.value, 'cf-turnstile-response': ts
-      })
-    })
-    .then(function (r) { return r.json(); })
-    .then(function (j) {
-      if (j && j.ok) {
-        var url = (j.issue && j.issue.url) || '';
-        msg.textContent = url
-          ? ('✓ 提案已提交，已自动开 Issue ' + (j.issue.number || '') + '。评议与投票在 Discord / Reddit 进行。')
-          : '✓ 提案已提交！';
-        if (url) msg.innerHTML = '✓ 提案已提交，已自动在提案库开 Issue <a href="' + url + '" target="_blank" rel="noopener noreferrer">#' + j.issue.number + '</a>。评议与投票在 Discord / Reddit 进行。';
-        form.reset();
-        if (window.turnstile && tsWidget) window.turnstile.reset(tsWidget);
-        form.dataset.tsToken = '';
-      } else {
-        var e = (j && j.error) || 'unknown';
-        var hint = {
-          unauthorized: '登录已失效，请重新登录。', invalid_token: '登录已失效，请重新登录。',
-          missing_turnstile: '请完成人机验证。', turnstile_failed: '人机验证未通过，请重试。',
-          missing_title: '请填写提案标题。', missing_content: '请填写提案内容。',
-          missing_red_lines: '请勾选「法则自洽」与「权限自洽」两层红线自检。',
-          proposal_disabled: '提交通道正在维护，请稍后再试或改走邮件/Discord。',
-          github_create_failed: '提交到提案库失败，请稍后重试或改走邮件/Discord。',
-          github_network_failed: '网络错误，请稍后重试。'
-        }[e] || ('提交失败：' + e);
-        msg.textContent = hint;
-      }
-    })
-    .catch(function () { msg.textContent = '网络错误，请稍候重试。'; })
-    .finally(function () {
-      submitBtn.disabled = false;
-      if (A && A.getToken && A.getToken()) submitBtn.textContent = '提交提案';
-    });
-  });
 
   /* ---- 启动 ---- */
   refreshGate();
