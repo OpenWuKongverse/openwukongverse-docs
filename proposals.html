@@ -40,8 +40,8 @@
   <section class="block">
     <h1 class="zhonly">提案 / 创作</h1>
     <h1 class="enonly">Propose &amp; Create</h1>
-    <p class="lead dim zhonly">本站是指引和目录，不在此做原生表单。提案走共创流水线；<strong>投票全部引导外联盟平台（Discord + Reddit + Bluesky）</strong>，本站不承接投票交互。</p>
-    <p class="lead dim enonly">This site is a guide and directory — no native forms here. Proposals go through the co-creation pipeline; <strong>all voting routes to external platforms (Discord + Reddit + Bluesky)</strong> — no voting UI on this site.</p>
+    <p class="lead dim zhonly">本站是指引和目录，不在此放表单；<strong>登录后可在「个人创作中心」站内直接提交提案</strong>（无需 GitHub）。提案走共创流水线；<strong>投票全部引导外联盟平台（Discord + Reddit + Bluesky）</strong>，本站不承接投票交互。</p>
+    <p class="lead dim enonly">This site is a guide and directory — no forms here; <strong>after login you can submit a proposal directly in the Creation Center</strong> (no GitHub needed). Proposals go through the co-creation pipeline; <strong>all voting routes to external platforms (Discord + Reddit + Bluesky)</strong> — no voting UI on this site.</p>
   </section>
 
   <section class="block">
@@ -100,7 +100,7 @@
     <table>
       <thead><tr><th><span class="zhonly">动作</span><span class="enonly">Action</span></th><th><span class="zhonly">入口</span><span class="enonly">Entry</span></th><th><span class="zhonly">备注</span><span class="enonly">Note</span></th></tr></thead>
       <tbody>
-        <tr><td class="zhonly">提案提交</td><td class="enonly">Proposal submission</td><td class="zhonly">邮件 / Discord / GitHub</td><td class="enonly">email / Discord / GitHub</td><td class="zhonly">不在此做原生表单</td><td class="enonly">no native form here</td></tr>
+        <tr><td class="zhonly">提案提交</td><td class="enonly">Proposal submission</td><td class="zhonly">登录后·个人创作中心（站内）/ 邮件 / Discord / GitHub</td><td class="enonly">Creation Center after login (in-site) / email / Discord / GitHub</td><td class="zhonly">站内提交唯一入口在个人创作中心（无需 GitHub）</td><td class="enonly">in-site submission lives solely in the Creation Center (no GitHub needed)</td></tr>
         <tr><td class="zhonly">提案投票</td><td class="enonly">Proposal voting</td><td class="zhonly">Discord / Reddit / Bluesky（外联盟平台）</td><td class="enonly">Discord / Reddit / Bluesky (external)</td><td class="zhonly">全部引导外联盟平台，本站不承接投票</td><td class="enonly">all votes route out; no on-site voting</td></tr>
         <tr><td class="zhonly">评议 / 答疑</td><td class="enonly">Deliberation / Q&amp;A</td><td class="zhonly">Discord（讨论区）</td><td class="enonly">Discord (discussion)</td><td class="zhonly">唯一讨论通道</td><td class="enonly">sole discussion channel</td></tr>
         <tr><td class="zhonly">管理动作（审查/积分/仲裁）</td><td class="enonly">Admin (review/points/arbitration)</td><td class="zhonly">GitHub 仓库（issue / PR）</td><td class="enonly">GitHub repo (issue / PR)</td><td class="zhonly">正典与记账的官方通道</td><td class="enonly">official channel for canon &amp; ledger</td></tr>
@@ -108,74 +108,6 @@
     </table>
   </section>
 
-  <section class="block" id="propose">
-    <h2 class="zhonly">站内提交提案（不用 GitHub，直接填）</h2>
-    <h2 class="enonly">Submit In-site (no GitHub needed)</h2>
-    <p class="lead dim zhonly">不会用 GitHub 也能提交：在这里填一页提案，系统自动在正典仓库开 <strong>Issue</strong> 留痕并进入共创流水线（提案 → 评议 → 架构师审查 → 入正典/沙盒）。无需 Git、无需分支、无需 PR。</p>
-    <p class="lead dim enonly">No GitHub needed: fill one page here, and it automatically opens an <strong>Issue</strong> in the canon repo and enters the pipeline (Propose → Deliberate → Review → Canon/Sandbox). No Git, no branch, no PR.</p>
-
-    <div class="card">
-      <div class="tag">Proposal form</div>
-      <div id="proposeNeedLogin" class="panel warn" style="display:none">
-        <strong class="zhonly">需要先登录为观察者</strong><strong class="enonly">Login as observer first</strong>
-        <span class="zhonly">提交通道对登录用户开放（防匿名刷）。先在右上角登录，或在 <a href="join.html">报名页</a> 注册。</span>
-        <span class="enonly">Submission is open to logged-in observers (anti-spam). Log in top-right, or register on the <a href="join.html">Join</a> page.</span>
-      </div>
-
-      <form id="proposalForm" class="enroll-form" onsubmit="return false">
-        <label><span class="zhonly">提案标题</span><span class="enonly">Title</span><span class="req">*</span></label>
-        <input name="title" maxlength="120" placeholder="如：被逐期间·悟空独自纠错的七天" required>
-
-        <label><span class="zhonly">内容分类</span><span class="enonly">Category</span><span class="req">*</span></label>
-        <select name="category">
-          <option value="脑洞">脑洞 / 宇宙碎片</option>
-          <option value="剧情">剧情 / 故事</option>
-          <option value="角色">角色</option>
-          <option value="设定延伸">设定延伸</option>
-          <option value="模态延伸">模态延伸</option>
-        </select>
-
-        <label><span class="zhonly">介入缝编号</span><span class="enonly">Intervention slot</span><span class="dim-msg zhonly">选填，从《介入点索引》挑（A/B/C）</span><span class="dim-msg enonly">optional, from the Intervention Index</span></label>
-        <input name="seam_id" maxlength="40" placeholder="如 A12 / B3 / C7">
-
-        <label><span class="zhonly">所属节点</span><span class="enonly">Node</span><span class="dim-msg zhonly">选填（N 编号 + 节点名）</span><span class="dim-msg enonly">optional (N number + name)</span></label>
-        <input name="node" maxlength="200" placeholder="如 N16 三打白骨精">
-
-        <label><span class="zhonly">模态</span><span class="enonly">Mode</span></label>
-        <select name="mode_tag">
-          <option value="A">A · 赛博</option>
-          <option value="B">B · 高维玄幻</option>
-          <option value="C">C · 废土克苏鲁</option>
-          <option value="cross">跨模态</option>
-        </select>
-
-        <label><span class="zhonly">提案内容</span><span class="enonly">Proposal content</span><span class="req">*</span></label>
-        <textarea name="content" rows="10" maxlength="20000" placeholder="按三层红线自检后填写提案正文（可含剧情梗概/角色/设定延伸等）" required></textarea>
-
-        <fieldset>
-          <legend><span class="zhonly">三层红线自检（必勾前两层）</span><span class="enonly">Three red lines (first two required)</span></legend>
-          <label class="checkbox"><input type="checkbox" value="law"><span class="zhonly">法则自洽</span><span class="enonly">Law-consistency</span></label>
-          <label class="checkbox"><input type="checkbox" value="perm"><span class="zhonly">权限自洽</span><span class="enonly">Permission-consistency</span></label>
-          <label class="checkbox"><input type="checkbox" value="meta"><span class="zhonly">元层自洽</span><span class="enonly">Meta-layer-consistency</span></label>
-        </fieldset>
-
-        <label><span class="zhonly">目标轨道</span><span class="enonly">Target track</span></label>
-        <select name="track">
-          <option value="sandbox">沙盒轨道（推荐入门）</option>
-          <option value="canon">正典轨道</option>
-        </select>
-
-        <input type="text" name="hp" value="" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
-
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAAEfHyydWm8nvQ_zJ" data-theme="auto"></div>
-        <div id="propMsg" class="form-msg"></div>
-
-        <button type="button" class="enroll-submit" data-submit-proposal>
-          <span class="zhonly">提交提案</span><span class="enonly">Submit proposal</span>
-        </button>
-      </form>
-    </div>
-  </section>
 
   <section class="block">
     <div class="panel warn">
@@ -199,139 +131,5 @@
 
 <script src="assets/js/i18n.js"></script>
 <script src="assets/js/auth.js"></script>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-<script>
-// OWKV · 站内提案提交（不用 GitHub：表单 → /api/proposals → 自动开 Issue）
-(function () {
-  var A = window.owkvAuth;
-  var form = document.getElementById('proposalForm');
-  var needLogin = document.getElementById('proposeNeedLogin');
-  var msg = document.getElementById('propMsg');
-  if (!form) return;
-
-  var API = 'https://join.openwkv.xyz';
-
-  // 未登录 → 显示提示并禁用提交
-  function refreshGate() {
-    var logged = !!(A && A.getToken && A.getToken());
-    if (!logged) {
-      needLogin.style.display = '';
-      submitBtn.disabled = true;
-      submitBtn.textContent = '登录后提交';
-    } else {
-      needLogin.style.display = 'none';
-      submitBtn.disabled = false;
-      submitBtn.textContent = '提交提案';
-    }
-  }
-  var submitBtn = form.querySelector('[data-submit-proposal]');
-
-  // Turnstile 显式渲染（同 join 页）
-  var tsWidget = null, tsRetries = 0;
-  function renderTs() {
-    if (window.turnstile && !tsWidget) {
-      try {
-        var el = form.querySelector('.cf-turnstile');
-        if (el) tsWidget = window.turnstile.render(el, {
-          sitekey: '0x4AAAAAAEfHyydWm8nvQ_zJ',
-          callback: function (t) { form.dataset.tsToken = t; }
-        });
-      } catch (e) { /* retry */ }
-    }
-    if (!tsWidget && ++tsRetries <= 10) setTimeout(renderTs, 300);
-  }
-  renderTs();
-
-  function getTs() {
-    var t = form.dataset.tsToken;
-    if (!t && window.turnstile && tsWidget) t = (window.turnstile.getResponse(tsWidget) || '');
-    return t;
-  }
-
-  submitBtn.addEventListener('click', function () {
-    msg.textContent = '';
-    if (!(A && A.getToken && A.getToken())) { msg.textContent = '请先登录为观察者。'; return; }
-
-    var title = (form.title.value || '').trim();
-    var content = (form.content.value || '').trim();
-    if (!title) { msg.textContent = '请填写提案标题。'; return; }
-    if (!content) { msg.textContent = '请填写提案内容。'; return; }
-
-    var checks = [];
-    form.querySelectorAll('input[type=checkbox]:checked').forEach(function (c) { checks.push(c.value); });
-    if (!checks.includes('law') || !checks.includes('perm')) {
-      msg.textContent = '请至少勾选「法则自洽」与「权限自洽」两层红线自检。'; return;
-    }
-
-    var ts = getTs();
-    if (!ts) { msg.textContent = '请先完成人机验证（勾选右侧圆框）。'; return; }
-    if (form.hp.value) { msg.textContent = '已记录。'; return; }
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = '提交中…';
-
-    fetch(API + '/api/proposals', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + A.getToken()
-      },
-      body: JSON.stringify({
-        title: title,
-        category: form.category.value || '脑洞',
-        seam_id: (form.seam_id.value || '').trim(),
-        node: (form.node.value || '').trim(),
-        mode_tag: form.mode_tag.value || 'B',
-        content: content,
-        canon_check: checks,
-        track: form.track.value || 'sandbox',
-        hp: form.hp.value,
-        'cf-turnstile-response': ts
-      })
-    })
-    .then(function (r) { return r.json(); })
-    .then(function (j) {
-      if (j && j.ok) {
-        msg.textContent = '✓ 提案已提交！';
-        var url = (j.issue && j.issue.url) || '';
-        if (url) {
-          msg.innerHTML = '✓ 提案已提交，已自动在提案库开 Issue ' +
-            '<a href="' + url + '" target="_blank" rel="noopener noreferrer">#' + j.issue.number + '</a>。' +
-            '评议与投票在 Discord / Reddit 进行。';
-        }
-        form.reset();
-        if (window.turnstile && tsWidget) window.turnstile.reset(tsWidget);
-        form.dataset.tsToken = '';
-      } else {
-        var e = (j && j.error) || 'unknown';
-        var hint = {
-          unauthorized: '登录已失效，请重新登录。',
-          invalid_token: '登录已失效，请重新登录。',
-          missing_turnstile: '请完成人机验证。',
-          turnstile_failed: '人机验证未通过，请重试。',
-          missing_title: '请填写提案标题。',
-          missing_content: '请填写提案内容。',
-          missing_red_lines: '请勾选「法则自洽」与「权限自洽」两层红线自检。',
-          proposal_disabled: '提交通道正在维护，请稍后再试或改走邮件/Discord。',
-          github_create_failed: '提交到提案库失败，请稍后重试或改走邮件/Discord。',
-          github_network_failed: '网络错误，请稍后重试。'
-        }[e] || ('提交失败：' + e);
-        msg.textContent = hint;
-      }
-    })
-    .catch(function () { msg.textContent = '网络错误，请稍候重试。'; })
-    .finally(function () {
-      submitBtn.disabled = false;
-      if (A && A.getToken && A.getToken()) submitBtn.textContent = '提交提案';
-    });
-  });
-
-  if (A && A.getToken) refreshGate();
-
-  // 登录态变化时重查门槛（auth.js 已监听 localStorage）
-  window.addEventListener('storage', function (e) {
-    if (e.key === 'owkv-token') refreshGate();
-  });
-})();
-</script></body>
+</body>
 </html>
