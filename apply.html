@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="OpenWuKongVerse 申请成为创作者：观察者在站内填写创作意向与样本，待首席架构师手动审批，通过后升级为「观察者+创作者」并获提案权限。">
+<title>申请成为创作者 · OpenWuKongVerse</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="en">OpenWuKongVerse</span>
+      <span class="zh">开源悟空多维宇宙</span>
+      <span class="tag">OWKV · HUB</span>
+    </div>
+    <nav class="nav">
+      <a href="index.html"><span class="zhonly">首页</span><span class="enonly">Home</span></a>
+      <a href="worldview.html"><span class="zhonly">世界观</span><span class="enonly">Worldview</span></a>
+      <a href="gallery.html"><span class="zhonly">共创展示</span><span class="enonly">Gallery</span></a>
+      <a href="proposals.html"><span class="zhonly">提案 / 创作</span><span class="enonly">Create</span></a>
+      <a href="join.html"><span class="zhonly">报名</span><span class="enonly">Join</span></a>
+    </nav>
+    <span id="navAuth" class="navauth"></span>
+    <div class="langbar">
+      <button class="langbtn on" data-lang="zh">中文</button>
+      <button class="langbtn" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="previewbar">
+    <button class="previewbtn" data-preview data-off="机器翻译预览（仅供参考）" data-on="关闭预览">机器翻译预览（仅供参考）</button>
+  </div>
+
+  <!-- 未登录：需先成为观察者 -->
+  <section class="block" id="apNeedLogin" style="display:none">
+    <h1 class="zhonly">申请成为创作者</h1>
+    <h1 class="enonly">Apply to be a Co-creator</h1>
+    <div class="panel warn">
+      <strong class="zhonly">需要先成为观察者</strong><strong class="enonly">Become an observer first</strong>
+      <span class="zhonly">申请成为创作者需先以<b>观察者</b>身份登录。请先报名（注册），然后即可在此申请。</span>
+      <span class="enonly">To apply as a co-creator you must first log in as an <b>observer</b>. Register first, then apply here.</span>
+      <p style="margin-top:.8rem"><a class="btn ghost" href="join.html"><span class="zhonly">去报名 / 登录</span><span class="enonly">Join / Log in</span></a></p>
+    </div>
+  </section>
+
+  <!-- 纯观察者：可申请 -->
+  <section class="block" id="apCanApply" style="display:none">
+    <h1 class="zhonly">申请成为创作者</h1>
+    <h1 class="enonly">Apply to be a Co-creator</h1>
+
+    <div class="panel ok">
+      <strong class="zhonly">你已是观察者</strong><strong class="enonly">You are an observer</strong>
+      <span class="zhonly">填一页申请（创作意向 + 样本/代表作）→ 提交 → 待<b>首席架构师手动审批</b> → 通过后升级为「观察者 + 创作者」，即可在创作中心提交提案。</span>
+      <span class="enonly">Fill a one-page application (intent + portfolio/sample) → submit → await <b>manual approval by the Chief Architect</b> → once approved you become "observer + co-creator" and can submit proposals in the Creation Center.</span>
+    </div>
+
+    <div class="card">
+      <div class="tag">Apply · Co-creator</div>
+      <h3 class="zhonly">创作者申请表（一页）</h3>
+      <h3 class="enonly">Co-creator Application (one page)</h3>
+
+      <form id="applyForm" class="enroll-form" onsubmit="return false">
+        <label><span class="zhonly">创作意向说明</span><span class="enonly">Intent</span><span class="req">*</span><span class="dim-msg zhonly">你为何想成为创作者 / 想参与哪类介入缝</span><span class="dim-msg enonly">why you want to create / which intervention slots</span></label>
+        <textarea name="intent" rows="5" maxlength="4000" placeholder="如：想参与 A 支线缝合，补完被逐期间的细节…" required></textarea>
+
+        <label><span class="zhonly">代表作品 / 样本</span><span class="enonly">Portfolio / sample</span><span class="dim-msg zhonly">选填；可给链接（repo / 文档 / 页面）</span><span class="dim-msg enonly">optional; links (repo / doc / page)</span></label>
+        <textarea name="portfolio" rows="3" maxlength="2000" placeholder="https://… 或 简述"></textarea>
+
+        <label><span class="zhonly">主攻模态</span><span class="enonly">Primary mode</span></label>
+        <select name="mode_tag">
+          <option value="">—</option>
+          <option value="A">A · 赛博</option>
+          <option value="B">B · 高维玄幻</option>
+          <option value="C">C · 废土克苏鲁</option>
+          <option value="cross">跨模态</option>
+        </select>
+
+        <label><span class="zhonly">目标轨道</span><span class="enonly">Target track</span></label>
+        <select name="track">
+          <option value="sandbox">沙盒轨道（推荐）</option>
+          <option value="canon">正典轨道</option>
+        </select>
+
+        <input type="text" name="hp" value="" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off">
+
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAAEfHyydWm8nvQ_zJ" data-theme="auto"></div>
+        <div id="apMsg" class="form-msg"></div>
+
+        <button type="button" class="enroll-submit" data-submit-apply>
+          <span class="zhonly">提交申请</span><span class="enonly">Submit application</span>
+        </button>
+      </form>
+      <p class="dim zhonly">提交后进入「待审批」状态，由<b>首席架构师</b>手动核准。审批通过即升级为「观察者 + 创作者」；驳回会附审批意见，可修改后重新申请。</p>
+      <p class="dim enonly">After submitting your request enters "pending" status, manually reviewed by the <b>Chief Architect</b>. Approval upgrades you to "observer + co-creator"; a rejection comes with a review note and you may revise and re-apply.</p>
+    </div>
+  </section>
+
+  <!-- 申请中 / 已通过 / 已驳回 -->
+  <section class="block" id="apStatus" style="display:none">
+    <h1 class="zhonly">申请成为创作者</h1>
+    <h1 class="enonly">Apply to be a Co-creator</h1>
+    <div id="apStatusBody" class="panel"></div>
+  </section>
+
+  <div class="preview-tip">
+    <p class="zhonly">机器翻译预览仅供快速浏览大概，不构成正式语言版。正式多语言由人工认领并对照术语表把控口径（见「报名 · 多语言认领」）。</p>
+    <p class="enonly">Machine translation preview is for rough scanning only — not an official language. Official languages are human-claimed with terminology controlled against the alignment table (see Join · Language Claiming).</p>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="brand">OpenWuKongVerse · 开源悟空多维宇宙</div>
+  <p><span class="zhonly">文档许可 CC BY-NC-SA 4.0 · 社区共创 · 发起人匿名代号 Echo-Architect-0</span><span class="enonly">CC BY-NC-SA 4.0 · Community co-creation · Founder alias: Echo-Architect-0</span></p>
+</footer>
+
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+// OWKV · 申请成为创作者
+// 状态机: creator_apply = none(可申请) | pending(待审批) | approved(观察者+创作者) | rejected(驳回可重申请)
+(function () {
+  var A = window.owkvAuth;
+  var needLogin = document.getElementById('apNeedLogin');
+  var canApply = document.getElementById('apCanApply');
+  var statusSec = document.getElementById('apStatus');
+  var statusBody = document.getElementById('apStatusBody');
+  var form = document.getElementById('applyForm');
+  var msg = document.getElementById('apMsg');
+  var API = 'https://join.openwkv.xyz';
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+    });
+  }
+
+  /* ---- 登录 / 申请状态门槛 ---- */
+  function refreshGate() {
+    var logged = !!(A && A.getToken && A.getToken());
+    if (!logged) {
+      needLogin.style.display = '';
+      canApply.style.display = 'none';
+      statusSec.style.display = 'none';
+      if (A && A.renderNavAuth) A.renderNavAuth();
+      return;
+    }
+    // 拉 me 拿 creator_apply 状态
+    (A.fetchMe ? A.fetchMe() : Promise.resolve(null)).then(function (j) {
+      var u = (j && j.user) || {};
+      var st = u.creator_apply || 'none'; // none | pending | approved | rejected
+      var isCreator = !!u.creator;
+      needLogin.style.display = 'none';
+      if (isCreator || st === 'approved') {
+        // 已是创作者：显示已通过
+        canApply.style.display = 'none';
+        statusSec.style.display = '';
+        statusBody.className = 'panel ok';
+        statusBody.innerHTML =
+          '<strong class="zhonly">✓ 你已是「观察者 + 创作者」</strong><strong class="enonly">You are "observer + co-creator"</strong>' +
+          '<span class="zhonly">首席架构师已批准你的申请。你现在可在 <a href="personal.html">个人创作中心</a> 提交提案，走流程：提案 → 评议 → 架构师审查 → 入正典/沙盒。</span>' +
+          '<span class="enonly">Your application was approved by the Chief Architect. You can now submit proposals in the <a href="personal.html">Creation Center</a>: Propose → Deliberate → Review → Canon/Sandbox.</span>' +
+          '<p style="margin-top:.8rem"><a class="btn" href="personal.html"><span class="zhonly">进入个人创作中心 →</span><span class="enonly">Open Creation Center →</span></a></p>';
+      } else if (st === 'pending') {
+        canApply.style.display = 'none';
+        statusSec.style.display = '';
+        statusBody.className = 'panel warn';
+        statusBody.innerHTML =
+          '<strong class="zhonly">⏳ 申请审核中</strong><strong class="enonly">Application under review</strong>' +
+          '<span class="zhonly">你的申请已提交，正在等待<b>首席架构师</b>手动审批。审批通过后你会自动升级为「观察者 + 创作者」。请留意邮箱 / Discord 通知。</span>' +
+          '<span class="enonly">Your application is pending <b>manual review by the Chief Architect</b>. Once approved you will be upgraded to "observer + co-creator". Watch your email / Discord.</span>';
+      } else if (st === 'rejected') {
+        canApply.style.display = '';
+        statusSec.style.display = '';
+        statusBody.className = 'panel warn';
+        statusBody.innerHTML =
+          '<strong class="zhonly">申请未通过</strong><strong class="enonly">Application not approved</strong>' +
+          '<span class="zhonly">你的申请被驳回。<b>审批意见</b>：' + esc(u.apply_note || '（未附意见）') + '。可参考意见修改后，在下方重新提交申请。</span>' +
+          '<span class="enonly">Your application was rejected. <b>Review note</b>: ' + esc(u.apply_note || '(none)') + '. You may revise per the note and re-apply below.</span>';
+      } else {
+        // none：可申请
+        canApply.style.display = '';
+        statusSec.style.display = 'none';
+      }
+      if (A && A.renderNavAuth) A.renderNavAuth();
+    }).catch(function () {
+      // me 拉取失败：保守显示需登录
+      needLogin.style.display = '';
+      canApply.style.display = 'none';
+      statusSec.style.display = 'none';
+      if (A && A.renderNavAuth) A.renderNavAuth();
+    });
+  }
+
+  /* ---- Turnstile ---- */
+  var tsWidget = null, tsRetries = 0;
+  function renderTs() {
+    if (window.turnstile && !tsWidget) {
+      try {
+        var el = form.querySelector('.cf-turnstile');
+        if (el) tsWidget = window.turnstile.render(el, {
+          sitekey: '0x4AAAAAAEfHyydWm8nvQ_zJ',
+          callback: function (t) { form.dataset.tsToken = t; }
+        });
+      } catch (e) { /* retry */ }
+    }
+    if (!tsWidget && ++tsRetries <= 10) setTimeout(renderTs, 300);
+  }
+  renderTs();
+  function getTs() {
+    var t = form.dataset.tsToken;
+    if (!t && window.turnstile && tsWidget) t = (window.turnstile.getResponse(tsWidget) || '');
+    return t;
+  }
+
+  var submitBtn = (form && form.querySelector('[data-submit-apply]')) || null;
+  if (submitBtn) submitBtn.addEventListener('click', function () {
+    msg.textContent = '';
+    if (!(A && A.getToken && A.getToken())) { msg.textContent = '请先登录为观察者。'; return; }
+    var intent = (form.intent.value || '').trim();
+    var portfolio = (form.portfolio.value || '').trim();
+    if (!intent) { msg.textContent = '请填写创作意向说明。'; return; }
+    if (form.hp.value) { msg.textContent = '已记录。'; return; }
+    var ts = getTs();
+    if (!ts) { msg.textContent = '请先完成人机验证（勾选右侧圆框）。'; return; }
+    submitBtn.disabled = true;
+    submitBtn.textContent = '提交中…';
+    fetch(API + '/api/creators/apply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + A.getToken() },
+      body: JSON.stringify({
+        intent: intent,
+        portfolio: portfolio,
+        mode_tag: form.mode_tag.value || '',
+        track: form.track.value || 'sandbox',
+        hp: form.hp.value,
+        'cf-turnstile-response': ts
+      })
+    })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (j && j.ok) {
+        msg.textContent = '✓ 申请已提交，等待首席架构师审批。';
+        // 刷新 me 缓存并切到「审批中」视图
+        if (A && A.fetchMe) { A.fetchMe().catch(function () {}); }
+        refreshGate();
+      } else {
+        var e = (j && j.error) || 'unknown';
+        var hint = {
+          unauthorized: '登录已失效，请重新登录。', invalid_token: '登录已失效，请重新登录。',
+          not_observer: '当前身份不是观察者，无法申请。', already_pending: '已有申请正在审批中，请勿重复提交。',
+          already_creator: '你已是创作者，无需重复申请。',
+          missing_turnstile: '请完成人机验证。', turnstile_failed: '人机验证未通过，请重试。',
+          missing_intent: '请填写创作意向说明。',
+          apply_disabled: '申请通道正在维护，请稍后再试或改走邮件/Discord。'
+        }[e] || ('提交失败：' + e);
+        msg.textContent = hint;
+      }
+    })
+    .catch(function () { msg.textContent = '网络错误，请稍候重试。'; })
+    .finally(function () {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '提交申请';
+    });
+  });
+
+  /* ---- 启动 ---- */
+  refreshGate();
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'owkv-token' || e.key === 'owkv-me' || e.key === null) refreshGate();
+  });
+})();
+</script>
+</body>
+</html>

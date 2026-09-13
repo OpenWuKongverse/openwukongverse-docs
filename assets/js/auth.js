@@ -106,17 +106,20 @@
     var t = getToken();
     if (!t || !me) {
       mount.innerHTML = '';
-      refreshJoinNav(false);
+      refreshJoinNav(null);
       return;
     }
-    refreshJoinNav(true);
+    refreshJoinNav(me);
     var prefix = (me.email_masked || me.anon_code || 'user');
     var points = (me.points && me.points.total != null) ? me.points.total : 0;
     var uid = String(me.id || '');
+    var isCreator = !!me.creator || me.creator_apply === 'approved';
+    var identityZh = isCreator ? '观察者+创作者' : '观察者';
+    var identityEn = isCreator ? 'Observer+Creator' : 'Observer';
     mount.innerHTML =
       '<button class="auth-chip" data-auth-open>' +
-        '<span class="zhonly">观察者: ' + esc(prefix) + '</span>' +
-        '<span class="enonly">Observer: ' + esc(prefix) + '</span>' +
+        '<span class="zhonly">' + identityZh + ': ' + esc(prefix) + '</span>' +
+        '<span class="enonly">' + identityEn + ': ' + esc(prefix) + '</span>' +
         '<span class="auth-pts">' + ' ' + esc(points) + '</span>' +
       '</button>' +
       '<button class="auth-logout" data-auth-logout>' +
@@ -164,29 +167,30 @@
   function closeDrawer() {
     if (drawer) drawer.classList.remove('open');
   }
-  /* ---- 登录后导航置换：导航「报名/Join」→「创作中心/Center」，指向 personal.html ----
-     所有页面共用同一套 nav（<a href="join.html">报名</a>）。登录后把该链接的
-     文字换为「创作中心」，href 指向 personal.html，使站点在登录态下语义变为
-     「个人创作中心」入口。未登录则恢复「报名」。 */
-  function refreshJoinNav(loggedIn) {
+  /* ---- 登录后导航置换：按身份分叉 ----
+     导航「报名/Join」在登录态下语义切换：
+       · 未登录    → 报名/Join    → join.html
+       · 观察者    → 个人中心/Profile → join.html（观察者驻地仍是报名页）
+       · 创作者    → 创作中心/Center → personal.html
+     「创作者」判定沿用 renderDrawerBody 的 isCreator 口径。
+     ⚠ 架构师批准的完整后端子逻辑(creator_apply 状态机 / 审批)后续补充——
+       本处仅做前端判据占位，后端返回 creator=true 即视为创作者。 */
+  function refreshJoinNav(user) {
     var links = document.querySelectorAll('a[href="join.html"]');
+    var loggedIn = !!user;
+    var isCreator = loggedIn && (!!user.creator || user.creator_apply === 'approved');
+    var href = isCreator ? 'personal.html' : 'join.html';
+    var zh   = isCreator ? '创作中心' : (loggedIn ? '个人中心' : '报名');
+    var en   = isCreator ? 'Center' : (loggedIn ? 'Profile' : 'Join');
     for (var i = 0; i < links.length; i++) {
       var a = links[i];
       // 只置换导航内的报名链接；页内 CTA（如 index 的「注册报名」「开始创作」）不动
       if (a.closest('.nav')) {
-        if (loggedIn) {
-          a.setAttribute('href', 'personal.html');
-          var zh = a.querySelector('.zhonly');
-          var en = a.querySelector('.enonly');
-          if (zh) zh.textContent = '创作中心';
-          if (en) en.textContent = 'Center';
-        } else {
-          a.setAttribute('href', 'join.html');
-          var zh2 = a.querySelector('.zhonly');
-          var en2 = a.querySelector('.enonly');
-          if (zh2) zh2.textContent = '报名';
-          if (en2) en2.textContent = 'Join';
-        }
+        a.setAttribute('href', href);
+        var zhEl = a.querySelector('.zhonly');
+        var enEl = a.querySelector('.enonly');
+        if (zhEl) zhEl.textContent = zh;
+        if (enEl) enEl.textContent = en;
       }
     }
   }
@@ -200,9 +204,18 @@
     points = points || { total: 0 };
     var role = user.role_tag || '—';
     var mode = user.mode_tag || '—';
-    var status = user.status || 'observer';
+    var isCreator = !!user.creator || user.creator_apply === 'approved';
+    var identityZh = isCreator ? '观察者 + 创作者' : '观察者';
+    var identityEn = isCreator ? 'Observer + Co-creator' : 'Observer';
+    // 申请状态行文案
+    var applyZh, applyEn;
+    if (user.creator) { applyZh = '已获创作者权限'; applyEn = 'Creator rights granted'; }
+    else if (user.creator_apply === 'pending') { applyZh = '创作者申请审核中'; applyEn = 'Creator application pending'; }
+    else if (user.creator_apply === 'rejected') { applyZh = '创作者申请未通过'; applyEn = 'Creator application declined'; }
+    else { applyZh = '未申请（可申请）'; applyEn = 'Not applied (apply available)'; }
     body.innerHTML =
-      '<div class="auth-row"><span class="zhonly dim">身份</span><span class="enonly dim">Status</span><strong>' + esc(status) + '</strong></div>' +
+      '<div class="auth-row"><span class="zhonly dim">身份</span><span class="enonly dim">Status</span><strong>' + esc(identityZh) + '</strong></div>' +
+      '<div class="auth-row"><span class="zhonly dim">创作申请</span><span class="enonly dim">Creator apply</span><strong>' + esc(applyZh) + '</strong></div>' +
       '<div class="auth-row"><span class="zhonly dim">匿名代号</span><span class="enonly dim">Anon code</span><strong>' + esc(user.anon_code || '—') + '</strong></div>' +
       '<div class="auth-row"><span class="zhonly dim">邮箱</span><span class="enonly dim">Email</span><strong>' + esc(user.email_masked || '—') + '</strong></div>' +
       '<div class="auth-row"><span class="zhonly dim">主攻角色</span><span class="enonly dim">Role</span><strong>' + esc(role) + '</strong></div>' +

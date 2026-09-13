@@ -76,8 +76,23 @@
       </div>
     </div>
 
-    <!-- ③ 站内提交提案 -->
-    <div class="grid" style="margin-top:1rem">
+    <!-- ☇ 门禁卡：personal.html 是创作者专属页；观察者直达访问时显示此卡（不与观察者强关联，仅兜底引导） -->
+    <div id="pcObserverView" style="display:none">
+      <div class="grid" style="margin-top:1rem">
+        <div class="card" style="grid-column:1/-1">
+          <div class="tag">Co-creator only · 创作者专属</div>
+          <h3 class="zhonly">这里是个人创作中心，创作者专属</h3>
+          <h3 class="enonly">This is the Creation Center — for co-creators only</h3>
+          <p class="dim zhonly">你当前是<strong>观察者</strong>身份。个人创作中心是<strong>创作者</strong>的页面（站内提交提案等创作能力在这里）。被批准成为创作者之前，请回<strong>报名页</strong>查看观察者引导、申请成为创作者。</p>
+          <p class="dim enonly">You are currently an <strong>observer</strong>. The Creation Center is the <strong>co-creator</strong> page (in-site proposal submission &amp; creation capabilities live here). Until you are approved as a co-creator, go back to the <strong>join page</strong> for observer guidance and to apply.</p>
+          <p style="margin-top:1rem"><a class="btn" href="join.html"><span class="zhonly">回报名页（观察者）→</span><span class="enonly">Back to Join (observer) →</span></a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ 站内提交提案（仅创作者可见） -->
+    <!-- ③ 站内提交提案（仅创作者可见；默认隐藏，由 JS 按身份显示） -->
+    <div class="grid" id="pcProposalCard" style="display:none;margin-top:1rem">
       <div class="card" style="grid-column:1/-1">
         <div class="tag">Submit · 站内提案</div>
         <h3 class="zhonly">站内提交提案（不用 GitHub，直接填）</h3>
@@ -171,7 +186,9 @@
     });
   }
 
-  /* ---- 登录门槛 ---- */
+  /* ---- 登录门槛 + 身份视图切换（观察者整块视图 vs 创作者提案表单） ---- */
+  var observerView = document.getElementById('pcObserverView');
+  var proposalCard = document.getElementById('pcProposalCard');
   function refreshGate() {
     var logged = !!(A && A.getToken && A.getToken());
     needLogin.style.display = logged ? 'none' : '';
@@ -179,7 +196,33 @@
     if (logged) {
       renderAccount();
       renderPropsSkeleton();
+      renderIdentityView();
     }
+  }
+
+  // 身份视图：纯观察者整块显示观察者视图（隐藏提案表单）；创作者显示提案表单
+  function renderIdentityView() {
+    function show(showObs, showForm) {
+      if (observerView) observerView.style.display = showObs ? '' : 'none';
+      if (proposalCard) proposalCard.style.display = showForm ? '' : 'none';
+    }
+    // 乐观默认：fetchMe 返回前先按“观察者”处理（隐藏表单、显示观察者视图），
+    // 避免异步窗口期提案表单短暂可见，也防止后端字段缺失时表单漏出。
+    show(true, false);
+    (A.fetchMe ? A.fetchMe() : Promise.resolve(null)).then(function (j) {
+      var u = (j && j.user) || {};
+      var isCreator = !!u.creator || u.creator_apply === 'approved';
+      if (isCreator) {
+        show(false, true);   // 创作者：显示提案表单，隐藏观察者视图
+        var submit_el = proposalCard && proposalCard.querySelector('[data-submit-proposal]');
+        if (submit_el) submit_el.disabled = false;
+      } else {
+        show(true, false);   // 观察者：隐藏提案表单，整块显示观察者视图
+      }
+    }).catch(function () {
+      // me 拉取失败：保守处理——隐藏提案表单，只显示观察者视图（含重新登录入口）
+      show(true, false);
+    });
   }
 
   /* ---- ① 账户信息（/api/user/me） ---- */
@@ -190,8 +233,12 @@
     A.fetchMe().then(function (j) {
       var u = j.user || {};
       var p = j.points || {};
+      var isCreator = !!u.creator || u.creator_apply === 'approved';
+      var identityZh = isCreator ? '观察者 + 创作者' : '观察者';
+      var applyZh = u.creator ? '已获创作者权限' : (u.creator_apply === 'pending' ? '创作者申请审核中' : (u.creator_apply === 'rejected' ? '创作者申请未通过' : '未申请'));
       accEl.innerHTML =
-        '<div class="auth-row"><span class="dim zhonly">身份</span><span class="dim enonly">Status</span><strong>' + esc(u.status || '—') + '</strong></div>' +
+        '<div class="auth-row"><span class="dim zhonly">身份</span><span class="dim enonly">Status</span><strong>' + esc(identityZh) + '</strong></div>' +
+        '<div class="auth-row"><span class="dim zhonly">创造申请</span><span class="dim enonly">Creator apply</span><strong>' + esc(applyZh) + '</strong></div>' +
         '<div class="auth-row"><span class="dim zhonly">匿名代号</span><span class="dim enonly">Anon code</span><strong>' + esc(u.anon_code || '—') + '</strong></div>' +
         '<div class="auth-row"><span class="dim zhonly">邮箱</span><span class="dim enonly">Email</span><strong>' + esc(u.email_masked || '—') + '</strong></div>' +
         '<div class="auth-row"><span class="dim zhonly">主攻角色</span><span class="dim enonly">Role</span><strong>' + esc(u.role_tag || '—') + '</strong></div>' +
@@ -249,6 +296,14 @@
   submitBtn.addEventListener('click', function () {
     msg.textContent = '';
     if (!(A && A.getToken && A.getToken())) { msg.textContent = '请先登录为观察者。'; return; }
+    // 创作者权限校验：非创作者不可提交（后端同样拦截，这里先体验兜底）
+    var me = (A.getMe && A.getMe()) || null;
+    if (!me || !(me.creator || me.creator_apply === 'approved')) {
+      msg.innerHTML = '<span class="zhonly">当前仅观察者身份，暂不能提交提案。请先 <a href="apply.html">申请成为创作者</a>（待首席架构师批准）。</span><span class="enonly">You are an observer only — proposals are locked. <a href="apply.html">Apply to be a co-creator</a>&nbsp;first.</span>';
+      if (observerView) observerView.style.display = '';
+      if (proposalCard) proposalCard.style.display = 'none';
+      return;
+    }
     var title = (form.title.value || '').trim();
     var content = (form.content.value || '').trim();
     if (!title) { msg.textContent = '请填写提案标题。'; return; }

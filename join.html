@@ -50,13 +50,33 @@
   </section>
 
   <section class="block" id="joinLoggedIn" style="display:none">
-    <h2 class="zhonly">你已是观察者 · 进入个人创作中心</h2>
-    <h2 class="enonly">You are an observer · enter the Creation Center</h2>
+    <h2 id="jliTitle" class="zhonly">你已是观察者</h2>
+    <h2 id="jliTitleEn" class="enonly">You are an observer</h2>
     <div class="panel ok">
       <strong class="zhonly">已登录</strong><strong class="enonly">Logged in</strong>
-      <span class="zhonly">报名页在登录后升格为<b>个人创作中心</b>：账户信息、站内提交提案、已提交提案状态（规划中）都在那里。导航「报名/Join」登录后已自动变为「创作中心」。</span>
-      <span class="enonly">After login the Join page becomes the <b>Personal Creation Center</b>: account info, in-site proposal submission, proposal status (roadmap) all live there. The "Join" nav now reads "Center" once you are logged in.</span>
-      <p style="margin-top:.8rem"><a class="btn" href="personal.html"><span class="zhonly">进入个人创作中心 →</span><span class="enonly">Open Creation Center →</span></a></p>
+      <span id="jliDesc" class="zhonly"></span>
+      <span id="jliDescEn" class="enonly"></span>
+      <p style="margin-top:.8rem" id="jliCta"></p>
+    </div>
+    <!-- 联盟平台引导：观察者常驻（discussion/voting 引导回外联盟平台，本站不承接） -->
+    <div class="panel" style="margin-top:1rem">
+      <div class="card">
+        <div class="tag">Alliance platforms · 联盟平台</div>
+        <h3 class="zhonly">加入联盟平台，参与评议与投票</h3>
+        <h3 class="enonly">Join the alliance platforms for deliberation & voting</h3>
+        <p class="zhonly dim">本站只做注册与引导，<b>不承接讨论和投票交互</b>。提案评议与投票都在外联盟平台进行：讨论回 Discord，投票在 Discord + Reddit + Bluesky。</p>
+        <p class="enonly dim">This site only handles registration & guidance — <b>no forum or voting UI here</b>. Deliberation & voting happen on external alliance platforms: discussion on Discord, voting on Discord + Reddit + Bluesky.</p>
+        <p class="zhonly" id="allianceLinks" style="margin-top:.9rem">
+          <a class="btn ghost" href="#" rel="noopener"><span>Discord</span></a>
+          <a class="btn ghost" href="#" rel="noopener" style="margin-left:.4rem"><span>Reddit</span></a>
+          <a class="btn ghost" href="#" rel="noopener" style="margin-left:.4rem"><span>Bluesky</span></a>
+        </p>
+        <p class="enonly" id="allianceLinksEn" style="margin-top:.9rem">
+          <a class="btn ghost" href="#" rel="noopener"><span>Discord</span></a>
+          <a class="btn ghost" href="#" rel="noopener" style="margin-left:.4rem"><span>Reddit</span></a>
+          <a class="btn ghost" href="#" rel="noopener" style="margin-left:.4rem"><span>Bluesky</span></a>
+        </p>
+      </div>
     </div>
   </section>
 
@@ -485,6 +505,7 @@
     if (jli) jli.style.display = '';
     if (A && A.renderNavAuth) A.renderNavAuth();
     var usr = j.user || {};
+    renderJli(usr);
     welcome.innerHTML =
       '<span class="zhonly">欢迎, ' + escHtml(usr.anon_code || usr.email_masked || '观察者') + '。你的邮箱已验证,自动成为观察者。' +
       '可在 <a href="index.html">首页</a> 浏览,或参与提案/投票。积分与账户见 <strong>右上角个人中心</strong>。</span>' +
@@ -492,6 +513,46 @@
       'Browse <a href="index.html">Home</a> or join Proposals/Votes. Points & account live in the <strong>account drawer</strong> (top-right).</span>';
     A.renderNavAuth();
   }
+
+  // 已登录区块渲染：按 creator_apply 状态分叉（none→申请 / pending→审核中 / approved→进创作中心）
+  function renderJli(usr) {
+    var title = document.getElementById('jliTitle');
+    var titleEn = document.getElementById('jliTitleEn');
+    var desc = document.getElementById('jliDesc');
+    var descEn = document.getElementById('jliDescEn');
+    var cta = document.getElementById('jliCta');
+    if (!title) return;
+    var st = usr.creator_apply || 'none';
+    var isCreator = !!usr.creator;
+    var prefix = escHtml(usr.anon_code || usr.email_masked || '观察者');
+    if (isCreator || st === 'approved') {
+      title.textContent = '你已是观察者 + 创作者';
+      titleEn.textContent = 'You are observer + co-creator';
+      desc.innerHTML = '首席架构师已批准你的创作者申请。现在可 <b>进入个人创作中心</b> 提交提案，走流程：提案 → 评议 → 架构师审查 → 入正典/沙盒。<br/>你仍然保有观察者身份（阅读、投票、点赞、影响模态坍缩权重）。';
+      descEn.innerHTML = 'Your co-creator application was approved by the Chief Architect. You can now <b>open the Creation Center</b> to submit proposals: Propose → Deliberate → Review → Canon/Sandbox.<br/>You keep your observer identity (read, vote, like, influence mode-collapse weights).';
+      cta.innerHTML = '<a class="btn" href="personal.html"><span class="zhonly">进入个人创作中心 →</span><span class="enonly">Open Creation Center →</span></a>';
+    } else if (st === 'pending') {
+      title.textContent = '你已是观察者 · 申请审核中';
+      titleEn.textContent = 'You are an observer · application pending';
+      desc.innerHTML = '你的创作者申请已提交，正等待 <b>首席架构师手动审批</b>。通过后自动升级为「观察者 + 创作者」；请留意邮箱 / Discord 通知。此期间暂不能进入创作中心提交提案。';
+      descEn.innerHTML = 'Your co-creator application is pending <b>manual approval by the Chief Architect</b>. Once approved you will be upgraded to "observer + co-creator"; watch your email / Discord. Until then you cannot submit proposals in the Creation Center.';
+      cta.innerHTML = '<span class="btn ghost" style="cursor:not-allowed;opacity:.6"><span class="zhonly">申请审核中 ⏳</span><span class="enonly">Under review ⏳</span></span>';
+    } else if (st === 'rejected') {
+      title.textContent = '你已是观察者 · 申请未通过';
+      titleEn.textContent = 'You are an observer · application declined';
+      desc.innerHTML = '你的创作者申请曾被驳回。审批意见：' + escHtml(usr.apply_note || '（未附）') + '。可参考意见修改后<b>重新申请</b>，或先通过积累 C1–C4 积分自动转正（路A）。';
+      descEn.innerHTML = 'Your co-creator application was declined. Review note: ' + escHtml(usr.apply_note || '(none)') + '. You may revise and <b>re-apply</b>, or earn auto-promotion via C1–C4 points (Path A).';
+      cta.innerHTML = '<a class="btn" href="apply.html"><span class="zhonly">重新申请成为创作者 →</span><span class="enonly">Re-apply as co-creator →</span></a>';
+    } else {
+      // none：可申请
+      title.textContent = '你已是观察者 · 申请成为创作者';
+      titleEn.textContent = 'You are an observer · apply to be a co-creator';
+      desc.innerHTML = '想升级创作权限？<b>申请成为创作者</b>：填一页创作意向 + 样本 → 待 <b>首席架构师手动审批</b> → 通过后升级为「观察者 + 创作者」，即可进入创作中心提交提案。审批前，保持观察者身份（阅读 / 投票 / 点赞）。';
+      descEn.innerHTML = 'Want creation rights? <b>Apply to be a co-creator</b>: fill a one-page intent + portfolio → await <b>manual approval by the Chief Architect</b> → once approved you become "observer + co-creator" and can submit proposals. Until then you stay an observer (read / vote / like).';
+      cta.innerHTML = '<a class="btn" href="apply.html"><span class="zhonly">申请成为创作者 →</span><span class="enonly">Apply as co-creator →</span></a>';
+    }
+  }
+
 
   function escHtml(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
@@ -508,17 +569,39 @@
     showStep(1); form.otp.value=''; otpMsg.textContent=''; msg.textContent='';
   });
 
-  // 已在登录状态：直接显示欢迎
-  if (A && A.getToken && A.getToken() && A.getMe()) {
-    var m = A.getMe();
+  // 已在登录状态：直接拉最新 me（含 creator_apply）再渲染，避免用旧缓存导致身份/申请状态不刷新
+  if (A && A.getToken && A.getToken()) {
     form.style.display = 'none';
     loggedIn.style.display = '';
     var jli = document.getElementById('joinLoggedIn');
     if (jli) jli.style.display = '';
-    welcome.innerHTML =
-      '<span class="zhonly">已登录为' + escHtml(m.anon_code || m.email_masked || '观察者') + '(观察者)。右上角个人中心查看积分与账户。</span>' +
-      '<span class="enonly">Logged in as ' + escHtml(m.anon_code || m.email_masked || 'observer') + ' (observer). See account/points in the top-right drawer.</span>';
+    function showWelcome(u) {
+      renderJli(u);
+      welcome.innerHTML =
+        '<span class="zhonly">已登录为' + escHtml(u.anon_code || u.email_masked || '观察者') + '（观察者）。右上角个人中心查看积分与账户。</span>' +
+        '<span class="enonly">Logged in as ' + escHtml(u.anon_code || u.email_masked || 'observer') + ' (observer). See account/points in the top-right drawer.</span>';
+    }
+    (A.fetchMe ? A.fetchMe() : Promise.resolve({ user: (A.getMe && A.getMe()) || {} }))
+      .then(function (j) { showWelcome((j && j.user) || {}); })
+      .catch(function () { showWelcome((A.getMe && A.getMe()) || {}); if (A && A.renderNavAuth) A.renderNavAuth(); });
+    if (A && A.renderNavAuth) A.renderNavAuth();
   }
+
+  // 跨标签页兜底：其他窗口登录/身份变更（如创作者申请获准）时，重拉最新 me 重新渲染已登录区
+  window.addEventListener('storage', function (e) {
+    if (e.key === 'owkv-token' || e.key === 'owkv-me' || e.key === null) {
+      if (!(A && A.getToken && A.getToken())) return;
+      (A.fetchMe ? A.fetchMe() : Promise.resolve(null)).then(function (j) {
+        var u = (j && j.user) || {};
+        renderJli(u);
+        var w = document.getElementById('welcome');
+        if (w) w.innerHTML =
+          '<span class="zhonly">已登录为' + escHtml(u.anon_code || u.email_masked || '观察者') + '（观察者）。右上角个人中心查看积分与账户。</span>' +
+          '<span class="enonly">Logged in as ' + escHtml(u.anon_code || u.email_masked || 'observer') + ' (observer). See account/points in the top-right drawer.</span>';
+        if (A && A.renderNavAuth) A.renderNavAuth();
+      }).catch(function () {});
+    }
+  });
 })();
 </script>
 </body>
