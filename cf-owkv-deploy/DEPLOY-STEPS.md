@@ -140,3 +140,27 @@ export CLOUDFLARE_ACCOUNT_ID='<accid>'
 - **前端文案「提交到提案库失败」= 后端 502 github_create_failed / github_network_failed**；「人机验证未通过」= 400 turnstile_failed（两码可区分）
 
 **部署纪律**：本地 wrangler.toml 的 `[vars]`（GH_REPO/GH_PROPOSAL_LABEL）+ `wrangler secret`（GH_TOKEN/JWT_SECRET/RESEND_API_KEY/TURNSTILE_SECRET，不入文件）。`wrangler deploy` 不删远程 secrets（已实测 4 个 secret 部署后仍在）。
+
+## 2026-09-14 创作者审批闭环（/api/creators/apply + /api/creators/review）
+
+**已部署**（Worker `owkv-enroll`，Version `5293899a-e6f9-4b17-943b-715b543b0f18`）：
+- 新增 `POST /api/creators/apply` — 观察者提交创作者申请（JWT 校验 + 已创/已提拦截 + 驳回冷却硬校验 + 推 Discord Webhook）
+- 新增 `GET /api/creators/review` — 架构师点 Discord 签名链接（HMAC 验签）→ 写 D1 → 发审批通知邮件 → 极简结果页
+- schema 增量：`schema-creator-approval.sql`（`contributors` 加 7 列：`email_plaintext` / `creator` / `creator_apply` / `apply_at` / `reviewed_at` / `next_apply_at` / `apply_note`）
+- 内部通知通道（方案B）：`verify-otp` 建/更新用户时写入 `email_plaintext`（仅后端发信用，不下发前端、不进公开账本）
+
+**新增环境变量（只在 CF 后台配置，值绝不入库、不入前端）**：
+
+| 变量 | 类型 | 用途 |
+|---|---|---|
+| `REVIEW_SIG_SECRET` | Secret | 审批链接 HMAC-SHA256 签名密钥（≥32 字符），防伪造审批 |
+| `CREATOR_REVIEW_WEBHOOK_URL` | Secret | Discord 审核频道 Webhook URL，接收「申请待审批」Embed |
+| `REVIEW_COOLDOWN_MS` | Text（可选） | 驳回后冷却时长（毫秒），默认 `86400000` = 24h |
+
+**schema 增量执行**（一次性；SQLite/D1 无 `ADD COLUMN IF NOT EXISTS`，重复执行报 duplicate column 可忽略）：
+```bash
+wrangler d1 execute owkv-events --remote --file=schema-creator-approval.sql
+```
+
+**⚠️ Discord Webhook 同样需 `User-Agent` 头**（与 GitHub 同坑）：worker.js 推 Webhook 时已显式带 `User-Agent`，否则可能被拒。
+
