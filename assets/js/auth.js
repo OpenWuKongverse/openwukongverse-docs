@@ -244,7 +244,11 @@
 
   /* ---- 页面加载即渲染导航登录态 ---- */
   document.addEventListener('DOMContentLoaded', function () {
+    // 先用本地缓存渲染(避免闪烁), 再拉服务器最新身份刷新(审批通过后各页导航即更新)
     renderNavAuth();
+    if (getToken()) {
+      fetchMe().then(function () { renderNavAuth(); }).catch(function () {});
+    }
     // 监听 storage 跨标签同步(可选)
     if (window.addEventListener) {
       window.addEventListener('storage', function (e) {

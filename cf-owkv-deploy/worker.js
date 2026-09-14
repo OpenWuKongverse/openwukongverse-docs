@@ -73,8 +73,8 @@ export default {
       return handleCreatorApply(request, env);
     }
 
-    // ── 创作者审批(架构师点 Discord 签名链接 → 核准/驳回) ──
-    if (request.method === 'GET' && path === '/api/creators/review') {
+    // ── 创作者审批(架构师点签名链接: GET=确认页, POST=执行) ──
+    if ((request.method === 'GET' || request.method === 'POST') && path === '/api/creators/review') {
       return handleCreatorReview(request, env);
     }
 
@@ -302,7 +302,7 @@ async function handleUserMe(request, env) {
   if (!payload) return json(401, { ok: false, error: 'invalid_token' });
 
   const user = await env.DB.prepare(
-    'SELECT id, anon_code, role_tag, mode_tag, status, email_hash FROM contributors WHERE id = ?'
+    'SELECT id, anon_code, role_tag, mode_tag, status, email_hash, creator, creator_apply, apply_at, reviewed_at, apply_note, next_apply_at FROM contributors WHERE id = ?'
   ).bind(payload.sub).first();
   if (!user) return json(404, { ok: false, error: 'user_not_found' });
 
@@ -326,7 +326,13 @@ async function handleUserMe(request, env) {
       role_tag: user.role_tag,
       mode_tag: user.mode_tag,
       status: user.status,
-      email_masked: user.email_hash ? maskHash(user.email_hash) : null
+      email_masked: user.email_hash ? maskHash(user.email_hash) : null,
+      creator: !!user.creator,
+      creator_apply: user.creator_apply || 'none',
+      apply_at: user.apply_at || '',
+      reviewed_at: user.reviewed_at || '',
+      apply_note: user.apply_note || '',
+      next_apply_at: user.next_apply_at || ''
     },
     points
   });
@@ -809,13 +815,25 @@ async function handleCreatorApply(request, env) {
   return json(200, { ok: true, creator_apply: 'pending' });
 }
 
-/* ═══════════ 创作者审批 /api/creators/review ═══════════ */
-// 架构师点 Discord 签名链接(GET: user_id + decision + sig) → 验签 → 写库 → 邮件 → 结果页
+/* ═══════════ 创作者审批 /api/creators/review ═══════════
+ * 两步式(防 Discord 链接抓取自动触发副作用):
+ *   GET  → 验签后只渲染确认页(零副作用, 被抓取无害)
+ *   POST → 验签 + 原子条件更新(仅 pending 可改) + 发信 + 结果页
+ */
 async function handleCreatorReview(request, env) {
   const url = new URL(request.url);
-  const userId = url.searchParams.get('user_id') || '';
-  const decision = (url.searchParams.get('decision') || '').toLowerCase();
-  const sig = url.searchParams.get('sig') || '';
+  let userId, decision, sig;
+
+  if (request.method === 'POST') {
+    const body = await readBody(request) || {};
+    userId = String(body.user_id || '');
+    decision = String(body.decision || '').toLowerCase();
+    sig = String(body.sig || '');
+  } else {
+    userId = url.searchParams.get('user_id') || '';
+    decision = (url.searchParams.get('decision') || '').toLowerCase();
+    sig = url.searchParams.get('sig') || '';
+  }
 
   if (decision !== 'approve' && decision !== 'reject') {
     return reviewResultPage(400, '审批链接参数错误(decision 必须是 approve 或 reject)');
@@ -830,28 +848,63 @@ async function handleCreatorReview(request, env) {
   ).bind(userId).first();
   if (!row) return reviewResultPage(404, '该用户不存在');
 
-  // 幂等: 已处理过则不重复写库/发信
-  if (row.creator_apply !== 'pending') {
-    const already = row.creator ? '核准' : '驳回';
-    return reviewResultPage(409, `该申请已处理(${already})，未重复操作`);
+  // GET: 只显示确认页, 不写库不发信(链接预览/抓取不会产生副作用)
+  if (request.method !== 'POST') {
+    if (row.creator_apply !== 'pending') {
+      const already = row.creator ? '已核准' : '已驳回';
+      return reviewResultPage(409, `该申请已处理(${already})，无需重复操作`);
+    }
+    return reviewConfirmPage(userId, decision, sig, row);
   }
 
+  // POST: 原子条件更新(WHERE creator_apply='pending'), 并发/重复提交只会有一次 changes=1
   const nowTs = new Date().toISOString();
   if (decision === 'approve') {
-    await env.DB.prepare(
-      'UPDATE contributors SET creator = 1, creator_apply = ?, reviewed_at = ?, next_apply_at = NULL WHERE id = ?'
-    ).bind('approved', nowTs, userId).run();
+    const res = await env.DB.prepare(
+      "UPDATE contributors SET creator = 1, creator_apply = 'approved', reviewed_at = ?, next_apply_at = NULL WHERE id = ? AND creator_apply = 'pending'"
+    ).bind(nowTs, userId).run();
+    if (!res.meta || res.meta.changes !== 1) {
+      return reviewResultPage(409, '该申请已处理或状态已变更，未重复操作');
+    }
     await sendCreatorDecisionEmail(env, row.email_plaintext || '', 'approved');
     return reviewResultPage(200, '已核准该用户的创作者权限，已邮件通知');
   } else {
     const cooldownMs = Number(env.REVIEW_COOLDOWN_MS) || 86400000; // 默认 24h
     const nextAt = new Date(Date.now() + cooldownMs).toISOString();
-    await env.DB.prepare(
-      'UPDATE contributors SET creator_apply = ?, reviewed_at = ?, next_apply_at = ? WHERE id = ?'
-    ).bind('rejected', nowTs, nextAt, userId).run();
+    const res = await env.DB.prepare(
+      "UPDATE contributors SET creator_apply = 'rejected', reviewed_at = ?, next_apply_at = ? WHERE id = ? AND creator_apply = 'pending'"
+    ).bind(nowTs, nextAt, userId).run();
+    if (!res.meta || res.meta.changes !== 1) {
+      return reviewResultPage(409, '该申请已处理或状态已变更，未重复操作');
+    }
     await sendCreatorDecisionEmail(env, row.email_plaintext || '', 'rejected', nextAt);
     return reviewResultPage(200, '已驳回，申请人稍后可重新申请（24小时冷却）');
   }
+}
+
+/* ═══════════ 审批确认页(GET, 零副作用) ═══════════ */
+function reviewConfirmPage(userId, decision, sig, row) {
+  const isApprove = decision === 'approve';
+  const anon = row.anon_code || ('#' + userId);
+  const label = isApprove ? '核准' : '驳回';
+  const color = isApprove ? '#2e7d32' : '#c62828';
+  const esc = (s) => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return new Response(
+    `<!doctype html><html lang="zh"><meta charset="utf-8"><title>创作者审批确认</title>` +
+    `<body style="font-family:sans-serif;max-width:560px;margin:64px auto;line-height:1.7">` +
+    `<h2 style="color:${color}">确认${label}该创作者申请？</h2>` +
+    `<p>申请人代号：<strong>${esc(anon)}</strong></p>` +
+    `<p style="color:#666;font-size:.92rem">此操作将写入审批结果并发送通知邮件，确认后不可撤销。</p>` +
+    `<form method="POST" action="/api/creators/review" style="margin-top:1.4rem">` +
+      `<input type="hidden" name="user_id" value="${esc(userId)}">` +
+      `<input type="hidden" name="decision" value="${esc(decision)}">` +
+      `<input type="hidden" name="sig" value="${esc(sig)}">` +
+      `<button type="submit" style="background:${color};color:#fff;border:0;border-radius:8px;padding:.7rem 1.4rem;font-size:1rem;cursor:pointer">确认${label}</button>` +
+    `</form>` +
+    `</body></html>`,
+    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+  );
 }
 
 /* ═══════════ HMAC-SHA256(审批链接签名) ═══════════ */
@@ -882,7 +935,7 @@ function safeEqual(a, b) {
 async function notifyDiscord(env, info) {
   const url = env.CREATOR_REVIEW_WEBHOOK_URL;
   if (!url) return; // 未配置则跳过(不阻塞申请)
-  const content =
+  const rawContent =
     '**创作者申请待审批**\n' +
     `申请人代号：${info.anon}\n` +
     `邮箱：${info.email}\n` +
@@ -891,6 +944,9 @@ async function notifyDiscord(env, info) {
     `作品样本：${info.sample || '（未附）'}\n` +
     `\n🟢 核准：${await reviewLink('approve', info.userId, env)}\n` +
     `🔴 驳回：${await reviewLink('reject', info.userId, env)}`;
+  // 用 <...> 包裹链接抑制 Discord 链接预览(避免抓取触发副作用)
+  const content = rawContent
+    .replace(/(https:\/\/[^\s]+)/g, '<$1>');
   try {
     await fetch(url, {
       method: 'POST',

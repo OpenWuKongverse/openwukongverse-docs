@@ -83,11 +83,15 @@ sig = hex( HMAC-SHA256( key = REVIEW_SIG_SECRET,
 
 ---
 
-## 5. 审批接口 `GET /api/creators/review`
+## 5. 审批接口 `GET/POST /api/creators/review`
 
 **不是登录态 API**（架构师通过签名链接访问，无需 JWT），鉴权靠 `sig`。
 
-**请求**（Query）：
+**两步式（关键安全设计）**：审批链接由 Discord Webhook 推送，而 Discord 会抓取（unfurl）消息中的链接。若点链接即产生副作用，抓取会在架构师点击前自动审批、且并发抓取会重复触发。故拆为：
+- **`GET`**：验签后**只渲染确认页**（显示申请人代号 + 「确认核准/驳回」按钮），**零副作用**。被抓取无害。
+- **`POST`**：架构师在确认页点按钮提交 → 验签 → **原子条件更新** → 发信 → 结果页。
+
+**请求参数**（GET 走 Query，POST 走表单体 `user_id` + `decision` + `sig`）：
 
 | 参数 | 必填 | 说明 |
 |---|---|---|
@@ -95,21 +99,22 @@ sig = hex( HMAC-SHA256( key = REVIEW_SIG_SECRET,
 | `decision` | 是 | `approve` 或 `reject` |
 | `sig` | 是 | HMAC 签名，见第 4 节 |
 
-**处理流程**：
+**`GET` 处理流程**：
 1. **验签**：`sig` 不合法 → `401`，页面显示「审批链接无效或已过期」。
-2. **查用户**：`user_id` 不存在，或当前 `creator_apply !== 'pending'`（已审过/已创）→ `409`，页面提示「该申请已处理或不存在」。
-3. **写 D1**（与 `api-contract_creator-apply.md` 的 `POST /api/creators/review` 动作一致）：
-   - `approve`：置 `creator=true`、`creator_apply=approved`、`reviewed_at=now`（`apply_note` 可留架构师寄语）。
-   - `reject`：置 `creator_apply=rejected`、`reviewed_at=now`（`creator` 保持 false）。**驳回理由如何提交见下**。
-4. **写冷却期**（防刷，驳回时）：置 `next_apply_at = now + REVIEW_COOLDOWN`（冷却时长后端配置，见第 8 节）。`approve` 时清空 `next_apply_at`。
-5. **通知申请人**：发邮件（见第 6 节）。
-6. **返回结果页**：一个极简 HTML 页「已核准 悟空001 的创作者权限，已发信通知」/「已驳回，申请人稍后可重新申请」。
+2. **查用户**：`user_id` 不存在 → `404`；`creator_apply !== 'pending'`（已审过）→ `409`，提示「该申请已处理」。
+3. **渲染确认页**：显示「确认核准/驳回该创作者申请？」+ 申请人代号 + 带 `sig` 的确认表单。**不写库、不发信**。
 
-**驳回理由（note）的输入**：签名链接是 `GET`，不便带长文本。两种后端做法（后端自选）：
-- **只点在 Discord 里附带「驳回原因」占位**：驳回邮件里注明「架构师未附书面意见，请通过 Discord 讨论区了解原因」。
-- **后续升级**（可选）：链接指向一个极简表单页，架构师在页面上填驳回意见后再 POST 提交（属于后端自定页，非契约硬性要求）。
+**`POST` 处理流程**：
+1. **验签** + 查用户（同上）。
+2. **原子条件更新**：`UPDATE ... WHERE id=? AND creator_apply='pending'`，检查 `meta.changes === 1`。并发/重复提交时只有一个能成功，其余返回 `409`，杜绝重复发信。
+   - `approve`：置 `creator=1`、`creator_apply='approved'`、`reviewed_at=now`、清空 `next_apply_at`。
+   - `reject`：置 `creator_apply='rejected'`、`reviewed_at=now`、`next_apply_at = now + REVIEW_COOLDOWN`（`creator` 保持 false）。
+3. **通知申请人**：发邮件（见第 6 节）。
+4. **返回结果页**：极简 HTML「已核准该用户的创作者权限，已邮件通知」/「已驳回，申请人稍后可重新申请」。
 
-> 推荐：**首版驳回可先不带意见**（邮件引导回 Discord），保持「一键审批」零负担；意见字段 (`apply_note`) 契约里保留，等升级版表单页接入。
+> **副作用防护三层**：① GET 无副作用（抓取无害）；② POST 原子条件更新（并发只生效一次）；③ `notifyDiscord` 中链接用 `<...>` 包裹抑制 Discord 链接预览。
+
+**驳回理由（note）的输入**：首版确认页只做「确认/取消」二值，不带长文本（保持零负担）；`apply_note` 字段契约保留，后续可升级确认页为带备注输入的极简表单。
 
 ---
 
