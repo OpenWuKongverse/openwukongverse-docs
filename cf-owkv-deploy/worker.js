@@ -18,6 +18,9 @@
  *   GH_TOKEN         — 提案提交通道: GitHub PAT(仅需 issues:write 权限)
  *   GH_REPO          — 提案提交通道: 目标仓库, 如 OpenWuKongverse/openwukongverse-docs
  *   GH_PROPOSAL_LABEL— 可选提案标签, 如 proposal
+ *   REVIEW_SIG_SECRET   — 审批链接 HMAC 签名密钥（防伪造，>=32字符）
+ *   REVIEW_COOLDOWN_MS  — 驳回后冷却时长(毫秒),默认 86400000 = 24h
+ *   CREATOR_REVIEW_WEBHOOK_URL — Discord 审核频道 Webhook URL(secret 注入,勿入库)
  *
  * 前端(join.html)需: turnstile_token(或cf-turnstile-response), email,
  *                    anon_code/role_tag/mode_tag(可选), hp(蜜罐隐藏字段)
@@ -63,6 +66,16 @@ export default {
     // ── 提案提交(站内表单 → 自动转 GitHub Issue) ─────────
     if (request.method === 'POST' && path === '/api/proposals') {
       return handleSubmitProposal(request, env);
+    }
+
+    // ── 创作者申请提交(观察者→申请; 驳回后冷却期硬校验) ───
+    if (request.method === 'POST' && path === '/api/creators/apply') {
+      return handleCreatorApply(request, env);
+    }
+
+    // ── 创作者审批(架构师点 Discord 签名链接 → 核准/驳回) ──
+    if (request.method === 'GET' && path === '/api/creators/review') {
+      return handleCreatorReview(request, env);
     }
 
     // ── 兼容旧报名表单(写 events_raw) ─────────────────
@@ -246,14 +259,15 @@ async function handleVerifyOtp(request, env) {
     // 若角色/模态此前为空, 现在补上
     await env.DB.prepare(
       `UPDATE contributors SET status='observer',
+        email_plaintext = ?,
         role_tag = COALESCE(role_tag, ?), mode_tag = COALESCE(mode_tag, ?)
        WHERE id = ?`
-    ).bind(roleTag, modeTag, contributorId).run();
+    ).bind(email, roleTag, modeTag, contributorId).run();
   } else {
     const ins = await env.DB.prepare(
-      `INSERT INTO contributors (anon_code, email_hash, role_tag, mode_tag, join_ts, status)
-       VALUES (?, ?, ?, ?, datetime('now'), 'observer')`
-    ).bind(anonCode, emailHash, roleTag, modeTag).run();
+      `INSERT INTO contributors (anon_code, email_hash, email_plaintext, role_tag, mode_tag, join_ts, status)
+       VALUES (?, ?, ?, ?, ?, datetime('now'), 'observer')`
+    ).bind(anonCode, emailHash, email, roleTag, modeTag).run();
     contributorId = ins.meta.last_row_id;
   }
 
@@ -734,4 +748,206 @@ function json(code, obj) {
       'Access-Control-Allow-Headers': 'Content-Type, Authorization'
     }
   });
+}
+
+/* ═══════════ 创作者申请提交 /api/creators/apply ═══════════ */
+// 观察者提交申请; 驳回后冷却期硬校验; 通过则置 pending + 推 Discord Webhook
+async function handleCreatorApply(request, env) {
+  const body = await readBody(request);
+  if (!body) return json(400, { ok: false, error: 'bad_body' });
+
+  // 1) 登录态校验(带 JWT, 防匿名滥用)
+  const authz = request.headers.get('Authorization') || '';
+  const token = authz.startsWith('Bearer ') ? authz.slice(7) : '';
+  if (!token) return json(401, { ok: false, error: 'unauthorized' });
+  const payload = await verifyJWT(env, token);
+  if (!payload) return json(401, { ok: false, error: 'invalid_token' });
+  const userId = payload.sub;
+
+  // 2) 查用户现状(需含新 5 列, 由 schema-creator-approval.sql 提供)
+  const row = await env.DB.prepare(
+    'SELECT * FROM contributors WHERE id = ?'
+  ).bind(userId).first();
+  if (!row) return json(404, { ok: false, error: 'user_not_found' });
+
+  // 3) 已创/已提 → 拒绝
+  if (row.creator) return json(409, { ok: false, error: 'already_creator' });
+  if (row.creator_apply === 'pending' || row.creator_apply === 'approved') {
+    return json(409, { ok: false, error: 'already_pending' });
+  }
+
+  // 4) 驳回冷却硬校验(后端权限边界, 不靠前端禁用)
+  if (row.creator_apply === 'rejected' && row.next_apply_at) {
+    const now = Date.now();
+    const canAt = Date.parse(row.next_apply_at);
+    if (!isNaN(canAt) && now < canAt) {
+      return json(429, {
+        ok: false, error: 'apply_cooling',
+        next_apply_at: row.next_apply_at
+      });
+    }
+  }
+
+  // 5) 写库: 置 pending + apply_at + 清冷却(新一轮重置)
+  const nowTs = new Date().toISOString();
+  await env.DB.prepare(
+    'UPDATE contributors SET creator_apply = ?, apply_at = ?, next_apply_at = NULL, apply_note = NULL WHERE id = ?'
+  ).bind('pending', nowTs, userId).run();
+
+  // 6) 推 Discord Webhook(架构师审核频道), 失败不阻塞提交
+  const intent = cleanStr(body.intent, 300) || '';
+  const sample = cleanStr(body.sample, 600) || '';
+  await notifyDiscord(env, {
+    anon: row.anon_code || '',
+    email: maskEmail(row.email_plaintext || ''),
+    at: nowTs,
+    intent,
+    sample,
+    userId
+  });
+
+  return json(200, { ok: true, creator_apply: 'pending' });
+}
+
+/* ═══════════ 创作者审批 /api/creators/review ═══════════ */
+// 架构师点 Discord 签名链接(GET: user_id + decision + sig) → 验签 → 写库 → 邮件 → 结果页
+async function handleCreatorReview(request, env) {
+  const url = new URL(request.url);
+  const userId = url.searchParams.get('user_id') || '';
+  const decision = (url.searchParams.get('decision') || '').toLowerCase();
+  const sig = url.searchParams.get('sig') || '';
+
+  if (decision !== 'approve' && decision !== 'reject') {
+    return reviewResultPage(400, '审批链接参数错误(decision 必须是 approve 或 reject)');
+  }
+  const expect = await hmacHex(env, `user_id=${userId}&decision=${decision}`);
+  if (!expect || !safeEqual(sig, expect)) {
+    return reviewResultPage(401, '审批链接无效或已过期');
+  }
+
+  const row = await env.DB.prepare(
+    'SELECT * FROM contributors WHERE id = ?'
+  ).bind(userId).first();
+  if (!row) return reviewResultPage(404, '该用户不存在');
+
+  // 幂等: 已处理过则不重复写库/发信
+  if (row.creator_apply !== 'pending') {
+    const already = row.creator ? '核准' : '驳回';
+    return reviewResultPage(409, `该申请已处理(${already})，未重复操作`);
+  }
+
+  const nowTs = new Date().toISOString();
+  if (decision === 'approve') {
+    await env.DB.prepare(
+      'UPDATE contributors SET creator = 1, creator_apply = ?, reviewed_at = ?, next_apply_at = NULL WHERE id = ?'
+    ).bind('approved', nowTs, userId).run();
+    await sendCreatorDecisionEmail(env, row.email_plaintext || '', 'approved');
+    return reviewResultPage(200, '已核准该用户的创作者权限，已邮件通知');
+  } else {
+    const cooldownMs = Number(env.REVIEW_COOLDOWN_MS) || 86400000; // 默认 24h
+    const nextAt = new Date(Date.now() + cooldownMs).toISOString();
+    await env.DB.prepare(
+      'UPDATE contributors SET creator_apply = ?, reviewed_at = ?, next_apply_at = ? WHERE id = ?'
+    ).bind('rejected', nowTs, nextAt, userId).run();
+    await sendCreatorDecisionEmail(env, row.email_plaintext || '', 'rejected', nextAt);
+    return reviewResultPage(200, '已驳回，申请人稍后可重新申请（24小时冷却）');
+  }
+}
+
+/* ═══════════ HMAC-SHA256(审批链接签名) ═══════════ */
+async function hmacHex(env, msg) {
+  const key = env.REVIEW_SIG_SECRET;
+  if (!key) return '';
+  const enc = new TextEncoder();
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw', enc.encode(key), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+  );
+  const sig = await crypto.subtle.sign('HMAC', cryptoKey, enc.encode(msg));
+  const bytes = new Uint8Array(sig);
+  let hex = '';
+  for (const b of bytes) hex += b.toString(16).padStart(2, '0');
+  return hex;
+}
+
+// 常量时间比较(防时序侧信道)
+function safeEqual(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string') return false;
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+/* ═══════════ Discord Webhook 推送 ═══════════ */
+async function notifyDiscord(env, info) {
+  const url = env.CREATOR_REVIEW_WEBHOOK_URL;
+  if (!url) return; // 未配置则跳过(不阻塞申请)
+  const content =
+    '**创作者申请待审批**\n' +
+    `申请人代号：${info.anon}\n` +
+    `邮箱：${info.email}\n` +
+    `申请时间：${info.at}\n` +
+    `创作意向：${info.intent || '—'}\n` +
+    `作品样本：${info.sample || '（未附）'}\n` +
+    `\n🟢 核准：${await reviewLink('approve', info.userId, env)}\n` +
+    `🔴 驳回：${await reviewLink('reject', info.userId, env)}`;
+  try {
+    await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'owkv-hub-worker/1.0 (openwkv.xyz)' // Discord 同样必须有 UA(踩坑教训)
+      },
+      body: JSON.stringify({ content })
+    });
+  } catch (_) { /* 推送失败不阻塞主流程 */ }
+}
+
+async function reviewLink(decision, userId, env) {
+  const sig = await hmacHex(env, `user_id=${userId}&decision=${decision}`);
+  return `https://join.openwkv.xyz/api/creators/review?user_id=${encodeURIComponent(userId)}&decision=${decision}&sig=${sig}`;
+}
+
+/* ═══════════ 审批结果 HTML 页 ═══════════ */
+function reviewResultPage(code, msg) {
+  const ok = code === 200;
+  return new Response(
+    `<!doctype html><html lang="zh"><meta charset="utf-8"><title>创作者审批</title>` +
+    `<body style="font-family:sans-serif;max-width:560px;margin:80px auto;line-height:1.7">` +
+    `<h2 style="color:${ok ? '#2e7d32' : '#c62828'}">${msg}</h2>` +
+    (ok
+      ? '<p>申请人已收到邮件通知。回到 Discord 讨论区继续。</p>'
+      : '<p>如有疑问请联系架构师/管理员，通过 Discord 讨论区沟通。</p>') +
+    `</body></html>`,
+    { status: code, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+  );
+}
+
+/* ═══════════ 审批结果邮件(核准/驳回, 独立内联 Resend) ═══════════ */
+async function sendCreatorDecisionEmail(env, to, decision, nextAt) {
+  if (!to) return; // 无内部通知邮箱则跳过(不阻塞审批结果页)
+  const apiKey = env.RESEND_API_KEY;
+  if (!apiKey) { console.error('RESEND_API_KEY not configured'); return; }
+  const subject = decision === 'approved'
+    ? '【OpenWuKongVerse】你的创作者申请已核准通过'
+    : '【OpenWuKongVerse】你的创作者申请暂未通过';
+  const text = decision === 'approved'
+    ? '你的创作者申请已被首席架构师核准，身份已升级为「观察者 + 创作者」。\n\n下一步：\n1. 登录 openwkv.xyz（已登录则强刷页面）\n2. 顶部导航已由「个人中心」变为「创作中心」\n3. 进入创作中心（personal.html）即可在站内直接提交提案\n\n—— OpenWuKongVerse 评审团'
+    : `你的申请本次未通过核准，你仍保持观察者身份。\n\n可修改申请后重新提交；驳回后需等待冷却期${nextAt ? `（${nextAt} 后）` : ''}。\n也可通过积累 C1–C4 积分自动转正（路A）。\n\n—— OpenWuKongVerse 评审团`;
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'User-Agent': 'owkv-hub-worker/1.0 (openwkv.xyz)'
+      },
+      body: JSON.stringify({
+        from: 'OWKV HUB <noreply@openwkv.xyz>',
+        to: [to],
+        subject,
+        text
+      })
+    });
+  } catch (_) { /* 发信失败不阻塞结果页 */ }
 }
