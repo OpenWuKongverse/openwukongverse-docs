@@ -30,7 +30,7 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 
 ```
 ├── 00-core/          ① 基本世界观 & 法典：白皮书四卷全集（卷1-卷4）+ 修订补丁（唯一"律法"，改动需提案级流程）
-├── 01-canon/         ② 创作故事正典：主线事件地图 + 介入索引 + 模态坍缩表 + 演化模型 + 设定资产库(assets/)
+├── 01-canon/         ② 创作故事正典：主线事件地图 + 介入索引 + 模态坍缩表 + 演化模型 + 设定资产库(assets/) + 沙盒落点(sandbox/)
 ├── 02-co-creation/   ③ 共创管理：卷3 的配套（运营体系/数据规范/分润/提案模板/协议草案）
 ├── 03-community/     ④ 社区运营管理：社区基础结构
 ├── 04-commercial/    ⑤ 商业化体系：（骨架，待规划：IP授权/衍生/通证化）
@@ -68,6 +68,7 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 | **正典·模态** | [`01-canon/mode-collapse-table.md`](01-canon/mode-collapse-table.md) | **三模态呈现对照表**（OWKV-MODETABLE）：10 关键节点 × A赛博/B高维玄幻/C废土克苏鲁 对照：模态介入参考 |
 | **正典·演化** | [`01-canon/wukong-process-evolution.md`](01-canon/wukong-process-evolution.md) | **悟空多态演化模型**（OWKV-WUKONG-EVOL）：可分裂异常体 → 多形态演化设定讨论稿（已并入正典） |
 | **资产库** | [`01-canon/assets/README.md`](01-canon/assets/README.md) | **设定资产库**（OVWK-ASSETS）：人物/法术/法宝/隧道 独立条目库，可检索可增量（详见库内规范） |
+| **沙盒落点** | [`01-canon/sandbox/README.md`](01-canon/sandbox/README.md) | **沙盒内容落点**（OWKV-SANDBOX）：已核准入沙盒的提案正文沉淀目录（未入正典）；命名沿用 `slug_vN.md`，详见库内规范 |
 
 ---
 
@@ -126,7 +127,7 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 
 ## 社区共创机制速览
 
-- **共创流水线**：提案 → 评议 → 架构师审查 → 入正典（另有沙盒轨道）。
+- **共创流水线**：提案 → 评议 → 架构师审查 → 入正典（另有沙盒轨道，落点 `01-canon/sandbox/`）。
 - **提案提交双入口**：① 站内表单（`proposals.html`，登录后填，后端自动转 GitHub Issue）② 直接 GitHub PR/Issue（熟手）。
 - **三大沙盒定律**：正典兼容 / 局部自由 / 版权分润。
 - **贡献力（维度积分）**：C1 创作量 30% + C2 质量 30% + C3 采用率 20% + C4 生态 20%。

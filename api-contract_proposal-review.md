@@ -199,6 +199,7 @@ Query/表单参数：
 4. **驳回是否需附意见**：首版确认页只做二值确认（无备注输入）；如要求「驳回必带意见」，需把确认页升级为带备注输入框的极简表单。
 5. **`GET /api/proposals` 是否需要防刷/缓存**：公开接口，建议加 D1 查询上限 + 短时缓存（CF cache），避免高频拉取。
 6. **提案者改动**：`POST /api/proposals` 现有实现只写 `events_raw`（不落 `proposals` 表）——本契约要求**新增写 `proposals` 表**（含 `github_issue_number`），见第 9 节。
+7. ~~沙盒内容落点~~ **已定**：落 `01-canon/sandbox/`，见第 10 节（首版人工落盘，自动化列为该节待议项）。
 
 ---
 
@@ -213,3 +214,41 @@ Query/表单参数：
 | `DEPLOY-STEPS.md` | 补新环境变量说明（仅名字+用途，不写值）|
 | 前端 `personal.html` / `proposals.html` | 新增「活跃提案看板」组件（外导）|
 | 契约 `api-contract_proposal-review.md` | **本文档** |
+
+---
+
+## 10. 沙盒内容落点（Sandbox Landing）
+
+> 承接第 1 节链路：核准入沙盒后，提案**正文**从 GitHub Issue 沉淀到仓库实体目录。
+
+**落点**：`01-canon/sandbox/`（与资产库 `01-canon/assets/` 并列的子树）。
+
+**命名**：**沿用资产库规范 `slug_vN.md`**（如 `wukong-self-correct-3d_v1.md`），N 为递增版本。
+
+**条目头部字段**（对齐 `01-canon/assets/` 体例）：
+
+```
+# <标题>
+> 归属块：sandbox · 版本：vN · 编者：<提案者 anon_code> · 日期：YYYY-MM-DD
+> 正典锚点：介入缝 <A/B/C 编号> · 节点 <N 编号> · 模态 <A/B/C/跨模态>
+> 状态：沙盒（未入正典）
+> 来源：GitHub Issue #<n> · D1 proposal id=<n>
+```
+
+**落盘时机与责任**：
+
+| 审批结果 | 落点 | 时机 |
+|---|---|---|
+| 核准**入沙盒** | `01-canon/sandbox/` | 架构师核准后（首版**人工落盘**；自动化见「待议」） |
+| 核准**入正典** | `01-canon/` 既有位置（本契约不另定） | 同上 |
+| 驳回 | 不落盘（仅留 GitHub Issue 留痕） | — |
+
+**不变量**：
+
+1. 沙盒内容**不得改写正典**；对正典仅为只读引用，冲突以正典为准。
+2. 沙盒条目**不自动升格**正典；须经模态坍缩评估后重走正典流程（卷3 沙盒轨道定义）。
+3. `gallery.html` 可按状态标签展示沙盒条目（对齐第 7 节 Gallery 纯净度原则）。
+
+**待议**：是否新增后端自动化（核准入沙盒时经 GitHub Contents API 自动 commit `01-canon/sandbox/<slug>_vN.md`）。首版维持**人工落盘**，与「人工回填 `discord_thread_url`」同一策略。
+
+目录自述与入库规范见 `01-canon/sandbox/README.md`（本契约管「落哪/何时」，README 管「怎么写」）。
