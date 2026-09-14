@@ -1034,7 +1034,7 @@ async function sendCreatorDecisionEmail(env, to, decision, nextAt) {
     ? '你的创作者申请已被首席架构师核准，身份已升级为「观察者 + 创作者」。\n\n下一步：\n1. 登录 openwkv.xyz（已登录则强刷页面）\n2. 顶部导航已由「个人中心」变为「创作中心」\n3. 进入创作中心（personal.html）即可在站内直接提交提案\n\n—— OpenWuKongVerse 评审团'
     : `你的申请本次未通过核准，你仍保持观察者身份。\n\n可修改申请后重新提交；驳回后需等待冷却期${nextAt ? `（${nextAt} 后）` : ''}。\n也可通过积累 C1–C4 积分自动转正（路A）。\n\n—— OpenWuKongVerse 评审团`;
   try {
-    await fetch('https://api.resend.com/emails', {
+    const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
@@ -1048,7 +1048,11 @@ async function sendCreatorDecisionEmail(env, to, decision, nextAt) {
         text
       })
     });
-  } catch (_) { /* 发信失败不阻塞结果页 */ }
+    if (!r.ok) {
+      const j = await r.json().catch(() => ({}));
+      console.error('Resend error:', r.status, JSON.stringify(j).slice(0, 300));
+    }
+  } catch (e) { console.error('Resend fetch error:', e); /* 发信失败不阻塞结果页 */ }
 }
 
 /* ═══════════ 提案审批 /api/proposals/review (两步式) ═══════════
@@ -1267,7 +1271,7 @@ async function sendProposalDecisionEmail(env, to, decision, row) {
     text = `你的提案《${title}》本次未通过核准。\n\n可修订后重新提交，或到 Discord 讨论区了解原因。\n\n—— OpenWuKongVerse 评审团`;
   }
   try {
-    await fetch('https://api.resend.com/emails', {
+    const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${apiKey}`,
@@ -1281,5 +1285,9 @@ async function sendProposalDecisionEmail(env, to, decision, row) {
         text
       })
     });
-  } catch (_) { /* 发信失败不阻塞结果页 */ }
+    if (!r.ok) {
+      const j = await r.json().catch(() => ({}));
+      console.error('Resend error:', r.status, JSON.stringify(j).slice(0, 300));
+    }
+  } catch (e) { console.error('Resend fetch error:', e); /* 发信失败不阻塞结果页 */ }
 }
