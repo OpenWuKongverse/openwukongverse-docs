@@ -1,0 +1,34 @@
+# OWKV · 报名表单 Worker 配置 (Wrangler v4)
+# 部署方式二(本地 CLI) 用这个; 方式一(控制台在线编辑器) 则不需要此文件,
+# 直接在控制台设 Variables/Bindings。
+
+name = "owkv-enroll"
+main = "worker.js"
+compatibility_date = "2026-08-28"
+
+# ── 自定义路由: 绑定到 openwkv.xyz 子域(该域在本账户中) ──
+# Worker 将可通过 https://join.openwkv.xyz 访问(需先为该子域配 DNS)
+routes = [
+  { pattern = "join.openwkv.xyz", custom_domain = true }
+]
+
+# ── D1 绑定 (Variable 名 = DB, Worker 里用 env.DB) ──────────
+# 在控制台: Worker → Settings → Bindings → Add → D1 → 选 owkv-events, 变量名 DB
+# 或本地 CLI 跑: 部署后 wrangler d1 migrations 关联
+
+[[d1_databases]]
+binding = "DB"
+database_name = "owkv-events"
+database_id = "562b4459-24ed-4ec9-af62-a33c61b65237"
+
+# ── 环境变量(可放 vars; 密钥用 wrangler secret put, 不入本文件) ──
+[vars]
+GH_REPO = "OpenWuKongVerse/openwukongverse-docs"  # 提案提交目标仓库
+GH_PROPOSAL_LABEL = "proposal"                    # 可选: 提案标签
+# APP_TOKEN = ""   # 可选内部口令
+# GH_TOKEN 用 secret put(仅需 issues:write), 勿放此处。
+
+# ── 预留: 可选 KV 限流(worker.js 检测到 env.rateKV 才启用, 不绑则跳过) ──
+# [[kv_namespaces]]
+# binding = "rateKV"
+# id = "你的-KV-id(可选)"

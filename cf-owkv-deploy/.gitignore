@@ -1,0 +1,13 @@
+# OWKV · CF Worker 部署目录 .gitignore
+# 排除本地缓存 / 构建产物 / 旧备份 / 源码map —— 这些不入公开仓库
+# （密钥一律走 CF 控制台 secret，见 DEPLOY-STEPS.md，绝不入此目录）
+
+# Wrangler 本地缓存（可能含 secrets 副本）
+.wrangler/
+
+# 构建产物 / sourcemap（含源码，冗余，不入仓）
+dist-tmp/
+*.map
+
+# 旧配置备份
+wrangler.toml.bak
