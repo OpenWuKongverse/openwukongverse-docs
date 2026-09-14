@@ -156,6 +156,17 @@
     </div>
   </section>
 
+  <!-- ④ 社区活跃提案看板（公开，展示索引级元数据，评议/投票一律外导） -->
+  <section class="block" id="pcLiveProposalsBlock" style="display:none">
+    <h2 class="zhonly">社区活跃提案看板</h2>
+    <h2 class="enonly">Live Proposals Board</h2>
+    <p class="dim zhonly">站内只做展示与引导，评议在 <strong>Discord</strong>、投票在 <strong>Reddit</strong>；站点不承接评论与投票。</p>
+    <p class="dim enonly">This board lists and routes only — deliberation on <strong>Discord</strong>, voting on <strong>Reddit</strong>; no on-site comments or voting.</p>
+    <div id="liveProposals" class="grid" style="margin-top:1rem">
+      <p class="dim" style="grid-column:1/-1">加载中… / Loading…</p>
+    </div>
+  </section>
+
   <div class="preview-tip">
     <p class="zhonly">机器翻译预览仅供快速浏览大概，不构成正式语言版。正式多语言由人工认领并对照术语表把控口径（见「报名 · 多语言认领」）。</p>
     <p class="enonly">Machine translation preview is for rough scanning only — not an official language. Official languages are human-claimed with terminology controlled against the alignment table (see Join · Language Claiming).</p>
@@ -170,6 +181,7 @@
 
 <script src="assets/js/i18n.js"></script>
 <script src="assets/js/auth.js"></script>
+<script src="assets/js/live-proposals.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
 // OWKV · 个人创作中心 · 登录门槛 + 账户信息 + 提案状态骨架 + 站内提案
@@ -189,10 +201,12 @@
   /* ---- 登录门槛 + 身份视图切换（观察者整块视图 vs 创作者提案表单） ---- */
   var observerView = document.getElementById('pcObserverView');
   var proposalCard = document.getElementById('pcProposalCard');
+  var liveProposalsBlock = document.getElementById('pcLiveProposalsBlock');
   function refreshGate() {
     var logged = !!(A && A.getToken && A.getToken());
     needLogin.style.display = logged ? 'none' : '';
     main.style.display = logged ? '' : 'none';
+    if (liveProposalsBlock) liveProposalsBlock.style.display = logged ? '' : 'none';
     if (logged) {
       renderAccount();
       renderPropsSkeleton();

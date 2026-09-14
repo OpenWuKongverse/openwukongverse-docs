@@ -78,6 +78,16 @@ export default {
       return handleCreatorReview(request, env);
     }
 
+    // ── 提案审批(架构师点签名链接: GET=确认页, POST=执行) ──
+    if ((request.method === 'GET' || request.method === 'POST') && path === '/api/proposals/review') {
+      return handleProposalReview(request, env);
+    }
+
+    // ── 活跃提案看板(公开, 无需登录) ─────────────────
+    if (request.method === 'GET' && path === '/api/proposals') {
+      return handleListProposals(request, env);
+    }
+
     // ── 兼容旧报名表单(写 events_raw) ─────────────────
     if (request.method === 'POST' && (path === '/join' || path === '/register')) {
       return handleLegacyJoin(request, env);
@@ -519,9 +529,38 @@ async function handleSubmitProposal(request, env) {
     // Issue 已开, 事件记录失败不阻塞返回
   }
 
+  // ── 写 proposals 表(活跃提案看板数据源) + 推 Discord 评议区 ──
+  let proposalId = null;
+  try {
+    const insP = await env.DB.prepare(
+      `INSERT INTO proposals
+        (user_id, anon_code, title, category, seam_id, node, mode_tag, track, content,
+         github_issue_number, github_issue_url, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`
+    ).bind(
+      payload.sub, anonCode, title, category, seamId || null, node || null,
+      modeTag || null, (track === 'canon' ? 'canon' : 'sandbox'), content,
+      issue.number, issue.html_url
+    ).run();
+    proposalId = insP.meta.last_row_id;
+  } catch (e) {
+    console.error('D1 insert proposals row failed:', e);
+    // 开门失败不阻塞返回
+  }
+
+  // 推 Discord 评议区(含架构师两步式签名审批链接); 失败不阻塞
+  if (proposalId) {
+    await notifyProposalDiscord(env, {
+      proposalId, title, anonCode, category,
+      track: (track === 'canon' ? 'canon' : 'sandbox'),
+      seamId: seamId || '', issueUrl: issue.html_url, issueNumber: issue.number
+    });
+  }
+
   return json(200, {
     ok: true, status: 'submitted',
     issue: { number: issue.number, url: issue.html_url },
+    proposal_id: proposalId,
     event_id: eventId
   });
 }
@@ -838,7 +877,7 @@ async function handleCreatorReview(request, env) {
   if (decision !== 'approve' && decision !== 'reject') {
     return reviewResultPage(400, '审批链接参数错误(decision 必须是 approve 或 reject)');
   }
-  const expect = await hmacHex(env, `user_id=${userId}&decision=${decision}`);
+  const expect = await hmacHex(env.REVIEW_SIG_SECRET, `user_id=${userId}&decision=${decision}`);
   if (!expect || !safeEqual(sig, expect)) {
     return reviewResultPage(401, '审批链接无效或已过期');
   }
@@ -908,8 +947,7 @@ function reviewConfirmPage(userId, decision, sig, row) {
 }
 
 /* ═══════════ HMAC-SHA256(审批链接签名) ═══════════ */
-async function hmacHex(env, msg) {
-  const key = env.REVIEW_SIG_SECRET;
+async function hmacHex(key, msg) {
   if (!key) return '';
   const enc = new TextEncoder();
   const cryptoKey = await crypto.subtle.importKey(
@@ -960,19 +998,24 @@ async function notifyDiscord(env, info) {
 }
 
 async function reviewLink(decision, userId, env) {
-  const sig = await hmacHex(env, `user_id=${userId}&decision=${decision}`);
+  const sig = await hmacHex(env.REVIEW_SIG_SECRET, `user_id=${userId}&decision=${decision}`);
   return `https://join.openwkv.xyz/api/creators/review?user_id=${encodeURIComponent(userId)}&decision=${decision}&sig=${sig}`;
 }
 
 /* ═══════════ 审批结果 HTML 页 ═══════════ */
-function reviewResultPage(code, msg) {
+function reviewResultPage(code, msg, scope) {
   const ok = code === 200;
+  const isProposal = scope === 'proposal';
+  const title = isProposal ? '提案审批' : '创作者审批';
+  const okTip = isProposal
+    ? '<p>提案者已收到邮件通知。回到 Discord 讨论区继续。</p>'
+    : '<p>申请人已收到邮件通知。回到 Discord 讨论区继续。</p>';
   return new Response(
-    `<!doctype html><html lang="zh"><meta charset="utf-8"><title>创作者审批</title>` +
+    `<!doctype html><html lang="zh"><meta charset="utf-8"><title>${title}</title>` +
     `<body style="font-family:sans-serif;max-width:560px;margin:80px auto;line-height:1.7">` +
     `<h2 style="color:${ok ? '#2e7d32' : '#c62828'}">${msg}</h2>` +
     (ok
-      ? '<p>申请人已收到邮件通知。回到 Discord 讨论区继续。</p>'
+      ? okTip
       : '<p>如有疑问请联系架构师/管理员，通过 Discord 讨论区沟通。</p>') +
     `</body></html>`,
     { status: code, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
@@ -990,6 +1033,239 @@ async function sendCreatorDecisionEmail(env, to, decision, nextAt) {
   const text = decision === 'approved'
     ? '你的创作者申请已被首席架构师核准，身份已升级为「观察者 + 创作者」。\n\n下一步：\n1. 登录 openwkv.xyz（已登录则强刷页面）\n2. 顶部导航已由「个人中心」变为「创作中心」\n3. 进入创作中心（personal.html）即可在站内直接提交提案\n\n—— OpenWuKongVerse 评审团'
     : `你的申请本次未通过核准，你仍保持观察者身份。\n\n可修改申请后重新提交；驳回后需等待冷却期${nextAt ? `（${nextAt} 后）` : ''}。\n也可通过积累 C1–C4 积分自动转正（路A）。\n\n—— OpenWuKongVerse 评审团`;
+  try {
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'User-Agent': 'owkv-hub-worker/1.0 (openwkv.xyz)'
+      },
+      body: JSON.stringify({
+        from: 'OWKV HUB <noreply@openwkv.xyz>',
+        to: [to],
+        subject,
+        text
+      })
+    });
+  } catch (_) { /* 发信失败不阻塞结果页 */ }
+}
+
+/* ═══════════ 提案审批 /api/proposals/review (两步式) ═══════════
+ * GET  → 验签后只渲染确认页(零副作用, 防 Discord 抓取自动触发)
+ * POST → 验签 + 原子条件更新(仅 pending 可改) + GitHub 打标关闭 + 发信 + 结果页
+ * decision: canon | sandbox | reject
+ */
+async function handleProposalReview(request, env) {
+  const url = new URL(request.url);
+  let proposalId, decision, sig;
+  if (request.method === 'POST') {
+    const body = await readBody(request) || {};
+    proposalId = String(body.proposal_id || '');
+    decision = String(body.decision || '').toLowerCase();
+    sig = String(body.sig || '');
+  } else {
+    proposalId = url.searchParams.get('proposal_id') || '';
+    decision = (url.searchParams.get('decision') || '').toLowerCase();
+    sig = url.searchParams.get('sig') || '';
+  }
+
+  const DECISIONS = ['canon', 'sandbox', 'reject'];
+  if (!DECISIONS.includes(decision)) {
+    return reviewResultPage(400, '审批链接参数错误(decision 必须是 canon/sandbox/reject)', 'proposal');
+  }
+  const expect = await hmacHex(env.PROPOSAL_SIG_SECRET, `proposal_id=${proposalId}&decision=${decision}`);
+  if (!expect || !safeEqual(sig, expect)) {
+    return reviewResultPage(401, '审批链接无效或已过期', 'proposal');
+  }
+
+  const row = await env.DB.prepare('SELECT * FROM proposals WHERE id = ?').bind(proposalId).first();
+  if (!row) return reviewResultPage(404, '该提案不存在', 'proposal');
+
+  // GET: 只渲染确认页(含三个可选动作), 不写库不改 GitHub 不发信
+  if (request.method !== 'POST') {
+    if (row.status !== 'pending') {
+      return reviewResultPage(409, '该提案已处理，无需重复操作', 'proposal');
+    }
+    return await reviewProposalConfirmPage(proposalId, row, env);
+  }
+
+  // POST: 原子条件更新(WHERE status='pending'), 并发/重复提交只生效一次
+  const nowTs = new Date().toISOString();
+  const newStatus = decision === 'canon' ? 'approved_canon'
+    : (decision === 'sandbox' ? 'approved_sandbox' : 'rejected');
+  const res = await env.DB.prepare(
+    "UPDATE proposals SET status = ?, reviewed_at = ? WHERE id = ? AND status = 'pending'"
+  ).bind(newStatus, nowTs, proposalId).run();
+  if (!res.meta || res.meta.changes !== 1) {
+    return reviewResultPage(409, '该提案已处理或状态已变更，未重复操作', 'proposal');
+  }
+
+  // GitHub 协同(贴状态标签 + 关闭 Issue); 失败不阻塞结果页
+  await syncProposalToGitHub(env, row, decision);
+
+  // 通知提案者(内部通知通道 email_plaintext)
+  const owner = await env.DB.prepare(
+    'SELECT email_plaintext FROM contributors WHERE id = ?'
+  ).bind(row.user_id).first();
+  await sendProposalDecisionEmail(env, (owner && owner.email_plaintext) || '', decision, row);
+
+  const label = decision === 'canon' ? '已核准入正典'
+    : (decision === 'sandbox' ? '已核准入沙盒' : '已驳回');
+  return reviewResultPage(200, `${label}，已通知提案者`, 'proposal');
+}
+
+/* ═══════════ 提案审批确认页(GET, 零副作用) ═══════════ */
+async function reviewProposalConfirmPage(proposalId, row, env) {
+  const esc = (s) => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const mk = (d) => hmacHex(env.PROPOSAL_SIG_SECRET, `proposal_id=${proposalId}&decision=${d}`);
+  const [sCanon, sSandbox, sReject] = await Promise.all([mk('canon'), mk('sandbox'), mk('reject')]);
+  const btn = (d, s, text, color) =>
+    `<form method="POST" action="/api/proposals/review" style="display:inline-block;margin:0 .4rem .6rem 0">` +
+      `<input type="hidden" name="proposal_id" value="${esc(proposalId)}">` +
+      `<input type="hidden" name="decision" value="${d}">` +
+      `<input type="hidden" name="sig" value="${esc(s)}">` +
+      `<button type="submit" style="background:${color};color:#fff;border:0;border-radius:8px;padding:.7rem 1.3rem;font-size:.98rem;cursor:pointer">${text}</button>` +
+    `</form>`;
+  return new Response(
+    `<!doctype html><html lang="zh"><meta charset="utf-8"><title>提案审批确认</title>` +
+    `<body style="font-family:sans-serif;max-width:620px;margin:64px auto;line-height:1.7">` +
+    `<h2>确认该提案的审批结果？</h2>` +
+    `<p>提案标题：<strong>${esc(row.title)}</strong></p>` +
+    `<p>提案者：<strong>${esc(row.anon_code || ('#' + proposalId))}</strong>　内容分类：${esc(row.category || '—')}　目标轨道：${esc(row.track === 'canon' ? '正典轨道' : '沙盒轨道')}</p>` +
+    `<p style="color:#666;font-size:.92rem">此操作将写入审批结果、更新 GitHub Issue 状态并发送通知邮件，确认后不可撤销。</p>` +
+    `<div style="margin-top:1.2rem">` +
+      btn('canon', sCanon, '🟢 核准入正典', '#2e7d32') +
+      btn('sandbox', sSandbox, '🔵 核准入沙盒', '#1565c0') +
+      btn('reject', sReject, '🔴 驳回', '#c62828') +
+    `</div>` +
+    `</body></html>`,
+    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+  );
+}
+
+/* ═══════════ 活跃提案看板 /api/proposals (公开) ═══════════ */
+async function handleListProposals(request, env) {
+  const url = new URL(request.url);
+  const status = url.searchParams.get('status') || 'pending';
+  const limitRaw = parseInt(url.searchParams.get('limit') || '20', 10);
+  const limit = Math.min(Math.max(isNaN(limitRaw) ? 20 : limitRaw, 1), 100);
+  const cols = 'id, anon_code, title, category, seam_id, node, mode_tag, track, status, ' +
+    'github_issue_url, discord_thread_url, reddit_poll_url, created_at, reviewed_at';
+  let rows;
+  try {
+    if (status === 'all') {
+      rows = await env.DB.prepare(
+        `SELECT ${cols} FROM proposals ORDER BY id DESC LIMIT ?`
+      ).bind(limit).all();
+    } else {
+      rows = await env.DB.prepare(
+        `SELECT ${cols} FROM proposals WHERE status = ? ORDER BY id DESC LIMIT ?`
+      ).bind(status, limit).all();
+    }
+  } catch (e) {
+    console.error('list proposals failed:', e);
+    return json(500, { ok: false, error: 'list_failed' });
+  }
+  return json(200, { ok: true, proposals: rows.results || [] });
+}
+
+/* ═══════════ 提案评议区 Discord 推送 ═══════════ */
+async function notifyProposalDiscord(env, info) {
+  const url = env.PROPOSAL_REVIEW_WEBHOOK_URL;
+  if (!url) return; // 未配置则跳过
+  const linkCanon = await proposalReviewLink('canon', info.proposalId, env);
+  const linkSandbox = await proposalReviewLink('sandbox', info.proposalId, env);
+  const linkReject = await proposalReviewLink('reject', info.proposalId, env);
+  const rawContent =
+    '**新共创提案待评审**\n' +
+    `提案标题：${info.title}\n` +
+    `提案者：${info.anonCode}\n` +
+    `内容分类：${info.category || '—'}\n` +
+    `目标轨道：${info.track === 'canon' ? '正典轨道' : '沙盒轨道'}\n` +
+    `介入缝：${info.seamId || '待定'}\n` +
+    `GitHub Issue：#${info.issueNumber}\n` +
+    `\n🟢 核准入正典：${linkCanon}\n🔵 核准入沙盒：${linkSandbox}\n🔴 驳回：${linkReject}\n` +
+    `查看提案全文：${info.issueUrl}`;
+  // 用 <...> 包裹链接抑制 Discord 链接预览(避免抓取触发副作用)
+  const content = rawContent.replace(/(https:\/\/[^\s]+)/g, '<$1>');
+  try {
+    await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'owkv-hub-worker/1.0 (openwkv.xyz)'
+      },
+      body: JSON.stringify({ content })
+    });
+  } catch (_) { /* 推送失败不阻塞提案提交 */ }
+}
+
+async function proposalReviewLink(decision, proposalId, env) {
+  const sig = await hmacHex(env.PROPOSAL_SIG_SECRET, `proposal_id=${proposalId}&decision=${decision}`);
+  return `https://join.openwkv.xyz/api/proposals/review?proposal_id=${encodeURIComponent(proposalId)}&decision=${decision}&sig=${sig}`;
+}
+
+/* ═══════════ GitHub 协同: 提案审批后打标 + 关闭 Issue ═══════════ */
+async function syncProposalToGitHub(env, row, decision) {
+  if (!env.GH_TOKEN || !env.GH_REPO || !row.github_issue_number) return;
+  const headers = {
+    'Authorization': `Bearer ${env.GH_TOKEN}`,
+    'User-Agent': 'owkv-hub-worker/1.0 (openwkv.xyz)',
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'Content-Type': 'application/json'
+  };
+  const labelName = decision === 'canon' ? 'status/approved-canon'
+    : (decision === 'sandbox' ? 'status/approved-sandbox' : 'status/rejected');
+  const color = decision === 'canon' ? '2e7d32' : (decision === 'sandbox' ? '1565c0' : 'c62828');
+  // 尽力创建状态标签(已存在返回 422, 忽略)
+  try {
+    await fetch(`https://api.github.com/repos/${env.GH_REPO}/labels`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ name: labelName, color, description: 'OWKV 提案审批状态' })
+    });
+  } catch (_) { /* 忽略 */ }
+  // 追加标签(不覆盖原有 proposal 标签)
+  try {
+    await fetch(`https://api.github.com/repos/${env.GH_REPO}/issues/${row.github_issue_number}/labels`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ labels: [labelName] })
+    });
+  } catch (e) { console.error('GitHub add label failed:', e); }
+  // 关闭 Issue
+  try {
+    await fetch(`https://api.github.com/repos/${env.GH_REPO}/issues/${row.github_issue_number}`, {
+      method: 'PATCH',
+      headers,
+      body: JSON.stringify({
+        state: 'closed',
+        state_reason: decision === 'reject' ? 'not_planned' : 'completed'
+      })
+    });
+  } catch (e) { console.error('GitHub close issue failed:', e); }
+}
+
+/* ═══════════ 提案审批结果邮件(独立内联 Resend) ═══════════ */
+async function sendProposalDecisionEmail(env, to, decision, row) {
+  if (!to) return;
+  const apiKey = env.RESEND_API_KEY;
+  if (!apiKey) { console.error('RESEND_API_KEY not configured'); return; }
+  const title = row.title || '';
+  let subject, text;
+  if (decision === 'canon') {
+    subject = '【OpenWuKongVerse】你的提案已核准入正典';
+    text = `你的提案《${title}》已被首席架构师核准，并入正典（Canon）。\n\n后续：内容将进入 01-canon/ 正典库，并在 HUB 共创展示页对外展示。\n\n—— OpenWuKongVerse 评审团`;
+  } else if (decision === 'sandbox') {
+    subject = '【OpenWuKongVerse】你的提案已核准入沙盒';
+    text = `你的提案《${title}》已被首席架构师核准，并入沙盒轨道（Sandbox）。\n\n后续：内容进入沙盒，可继续自由演化，待模态坍缩时再评估并入正典。\n\n—— OpenWuKongVerse 评审团`;
+  } else {
+    subject = '【OpenWuKongVerse】你的提案暂未通过';
+    text = `你的提案《${title}》本次未通过核准。\n\n可修订后重新提交，或到 Discord 讨论区了解原因。\n\n—— OpenWuKongVerse 评审团`;
+  }
   try {
     await fetch('https://api.resend.com/emails', {
       method: 'POST',

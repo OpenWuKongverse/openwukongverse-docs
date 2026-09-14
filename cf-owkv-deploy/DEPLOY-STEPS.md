@@ -164,3 +164,27 @@ wrangler d1 execute owkv-events --remote --file=schema-creator-approval.sql
 
 **⚠️ Discord Webhook 同样需 `User-Agent` 头**（与 GitHub 同坑）：worker.js 推 Webhook 时已显式带 `User-Agent`，否则可能被拒。
 
+
+## 2026-09-14 提案审批与分流（/api/proposals/review + /api/proposals）
+
+**新增能力**：创作者站内提交提案 → 自动开 GitHub Issue + 写 D1 `proposals` 表 + 推 Discord 评议区（含架构师两步式签名审批链接）→ 架构师一键核准入正典/沙盒或驳回 → GitHub Issue 打标关闭 + 邮件通知 → HUB 活跃提案看板外导评议（Discord）与投票（Reddit）。
+
+**新增环境变量（只在 CF 后台配置，值绝不入库、不入前端）**：
+
+| 变量 | 类型 | 用途 |
+|---|---|---|
+| `PROPOSAL_REVIEW_WEBHOOK_URL` | Secret | 提案评议频道 Discord Webhook URL，接收「新提案待评审」通知（**与创作者审批 Webhook 分开，隔离泄密面**）|
+| `PROPOSAL_SIG_SECRET` | Secret | 提案审批链接 HMAC-SHA256 签名密钥（≥32 字符）；**与 `REVIEW_SIG_SECRET` 分开** |
+
+未配置时：提案提交仍成功（不推 Discord）；审批链接无法生成/验签（端点返回 401，行为安全无副作用）。
+
+**schema 增量执行**（一次性；`proposals` 表）：
+```bash
+wrangler d1 execute owkv-events --remote --file=schema-proposals.sql
+```
+
+**新增端点**：
+- `GET /api/proposals/review`（确认页，零副作用）/ `POST /api/proposals/review`（原子执行 + GitHub 协同）
+- `GET /api/proposals`（公开看板数据；**不返回正文**，正文只留 GitHub Issue 留痕）
+
+**关键设计**：两步式审批（GET 确认页零副作用 / POST 原子条件更新 `WHERE status='pending'` + `meta.changes===1`）+ Discord 链接 `<...>` 包裹抑制抓取（与创作者审批同一防副作用模型）。
