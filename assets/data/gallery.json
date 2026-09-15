@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "updated": "2026-09-15",
+  "note": "共创展示清单（手工维护起步）。字段口径对齐 02-co-creation/content-hosting-and-display.md（不存原图·只出 WebP 展示版）。新增作品 = 往 pieces 数组加一条。",
+  "reader": "reader.html?piece=<id>",
+
+  "enums": {
+    "section": {
+      "sparks": "① 脑洞精选",
+      "stories": "② 故事与脚本",
+      "comics": "③ 连续动漫",
+      "art": "④ 其他美术"
+    },
+    "kind": {
+      "text": "文字类（小说 / 脚本）",
+      "image": "图像类（美术 / 长条漫）"
+    },
+    "format": {
+      "prose": "小说 · 连续段落阅读",
+      "script": "脚本 · 场次 / 对白排版",
+      "single": "单张美术 · 点开看放大档",
+      "longstrip": "长条漫 · 纵向连滚 + 连载切集"
+    },
+    "status": {
+      "canon": "已入正典",
+      "sandbox": "已入沙盒",
+      "review": "评议中"
+    },
+    "mode": {
+      "A": "赛博 · Cyber",
+      "B": "高维玄幻 · High-Fantasy",
+      "C": "废土克苏鲁 · Wasteland-Cthulhu"
+    }
+  },
+
+  "pieces": [
+    {
+      "id": "n4-wukong-appears",
+      "demo": true,
+      "section": "stories",
+      "title": { "zh": "N4 · 悟空出世", "en": "N4 · Wukong Appears" },
+      "kind": "text",
+      "format": "prose",
+      "status": "canon",
+      "anchor": { "node": "N4", "act": 2, "seams": ["B1", "C8"] },
+      "modes": ["A", "B", "C"],
+      "body": {
+        "type": "markdown",
+        "path": "01-canon/mode-collapse-table.md",
+        "anchor": "N4",
+        "note": "示例来源：三模态呈现对照表 §2 的 N4 小节（三模态摘要，非完整正文）"
+      },
+      "links": { "discord": null, "vote": [], "github": null },
+      "credits": []
+    },
+    {
+      "id": "n6-bodhi-initiation",
+      "demo": true,
+      "section": "stories",
+      "title": { "zh": "N6 · 拜师菩提", "en": "N6 · Bodhi Initiation" },
+      "kind": "text",
+      "format": "prose",
+      "status": "canon",
+      "anchor": { "node": "N6", "act": 2, "seams": ["C1"] },
+      "modes": ["A", "B", "C"],
+      "body": {
+        "type": "markdown",
+        "path": "01-canon/mode-collapse-table.md",
+        "anchor": "N6",
+        "note": "示例来源：三模态呈现对照表 §2 的 N6 小节（钩子节点·建议留白）"
+      },
+      "links": { "discord": null, "vote": [], "github": null },
+      "credits": []
+    },
+    {
+      "id": "n7-havoc-in-heaven",
+      "demo": true,
+      "section": "stories",
+      "title": { "zh": "N7 · 大闹天宫", "en": "N7 · Havoc in Heaven" },
+      "kind": "text",
+      "format": "prose",
+      "status": "canon",
+      "anchor": { "node": "N7", "act": 2, "seams": ["B2"] },
+      "modes": ["A", "B", "C"],
+      "body": {
+        "type": "markdown",
+        "path": "01-canon/mode-collapse-table.md",
+        "anchor": "N7",
+        "note": "示例来源：三模态呈现对照表 §2 的 N7 小节"
+      },
+      "links": { "discord": null, "vote": [], "github": null },
+      "credits": []
+    }
+  ]
+}

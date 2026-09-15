@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="OpenWuKongVerse 沉浸式阅读器：小说 / 脚本 / 长条漫 / 美术，支持三模态（A赛博 / B高维玄幻 / C废土克苏鲁）切换。讨论引导回 Discord，投票在 Discord + Reddit + Bluesky。">
+<title>阅读器 · OpenWuKongVerse</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="reader-page">
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="en">OpenWuKongVerse</span>
+      <span class="zh">开源悟空多维宇宙</span>
+      <span class="tag">OWKV · HUB</span>
+    </div>
+        <nav class="nav">
+      <a href="index.html"><span class="zhonly">首页</span><span class="enonly">Home</span></a>
+      <a href="worldview.html"><span class="zhonly">世界观</span><span class="enonly">Worldview</span></a>
+      <a href="gallery.html" class="on"><span class="zhonly">共创展示</span><span class="enonly">Gallery</span></a>
+      <a href="proposals.html"><span class="zhonly">提案 / 创作</span><span class="enonly">Create</span></a>
+      <a href="join.html"><span class="zhonly">报名</span><span class="enonly">Join</span></a>
+    </nav>
+    <span id="navAuth" class="navauth"></span>
+    <div class="langbar">
+      <button class="langbtn on" data-lang="zh">中文</button>
+      <button class="langbtn" data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap reader-wrap">
+
+  <div class="previewbar">
+    <button class="previewbtn" data-preview data-off="机器翻译预览（仅供参考）" data-on="关闭预览">机器翻译预览（仅供参考）</button>
+  </div>
+
+  <!-- 顶部工具条：返回 + 三模态切换 -->
+  <div class="reader-bar">
+    <a class="reader-back" href="gallery.html">
+      <span class="zhonly">← 共创展示</span><span class="enonly">← Gallery</span>
+    </a>
+    <div class="reader-modes" id="readerModes" role="group" aria-label="三模态切换"></div>
+  </div>
+
+  <!-- 未找到作品 -->
+  <div class="panel warn reader-missing" id="readerMissing" hidden>
+    <strong class="zhonly">未找到该作品</strong><strong class="enonly">Work not found</strong>
+    <p class="zhonly">链接里的 <code>?piece=</code> 参数无效或作品已下架。请从 <a href="gallery.html">共创展示</a> 进入。</p>
+    <p class="enonly">The <code>?piece=</code> id is invalid or the work was removed. Enter from <a href="gallery.html">Gallery</a>.</p>
+  </div>
+
+  <article class="reader-main" id="readerMain" hidden>
+
+    <header class="reader-head">
+      <h1 class="reader-title" id="readerTitle"></h1>
+      <div class="reader-meta" id="readerMeta"></div>
+    </header>
+
+    <div class="reader-body" id="readerBody" aria-live="polite"></div>
+
+    <footer class="reader-foot">
+      <div class="reader-links" id="readerLinks"></div>
+      <nav class="reader-pager" id="readerPager" aria-label="上下篇"></nav>
+    </footer>
+
+  </article>
+
+  <div class="preview-tip">
+    <p class="zhonly">机器翻译预览仅供快速浏览大概，不构成正式语言版。正式多语言由人工认领并对照术语表把控口径（见「报名 · 多语言认领」）。</p>
+    <p class="enonly">Machine translation preview is for rough scanning only — not an official language. Official languages are human-claimed with terminology controlled against the alignment table (see Join · Language Claiming).</p>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="brand">OpenWuKongVerse · 开源悟空多维宇宙</div>
+  <p><span class="zhonly">文档许可 CC BY-NC-SA 4.0 · 社区共创 · 发起人匿名代号 Echo-Architect-0</span><span class="enonly">CC BY-NC-SA 4.0 · Community co-creation · Founder alias: Echo-Architect-0</span></p>
+</footer>
+
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/reader.js"></script>
+</body>
+</html>
