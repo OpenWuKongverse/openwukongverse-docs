@@ -373,6 +373,26 @@
     });
   });
 
+  /* ---- 地铁星图「一键创作」预填（?seam=A12&node=N16&nname=三打白骨精） ---- */
+  (function prefillFromQuery() {
+    var q;
+    try { q = new URLSearchParams(location.search); } catch (e) { return; }
+    var seam = (q.get('seam') || '').trim();
+    var node = (q.get('node') || '').trim();
+    var nname = (q.get('nname') || '').trim();
+    if (!seam && !node) return;
+    if (seam && form.seam_id) form.seam_id.value = seam;
+    if (node && form.node) form.node.value = node + (nname ? ' ' + nname : '');
+    // 预填提示条（让创作者知道字段是自动带过来的，可改）
+    var tip = document.createElement('p');
+    tip.className = 'form-msg';
+    tip.style.color = 'var(--accent2)';
+    tip.innerHTML =
+      '<span class="zhonly">已从主线地图预填：介入缝 <strong>' + esc(seam || '—') + '</strong> · 节点 <strong>' + esc(node + (nname ? ' ' + nname : '')) + '</strong>（可自行修改）。</span>' +
+      '<span class="enonly">Pre-filled from the map: slot <strong>' + esc(seam || '—') + '</strong> · node <strong>' + esc(node + (nname ? ' ' + nname : '')) + '</strong> (editable).</span>';
+    if (form.parentNode) form.parentNode.insertBefore(tip, form);
+  })();
+
   /* ---- 启动 ---- */
   refreshGate();
   // 登录态变化时重查（auth.js 已监听 storage；此处补同页变更兜底）

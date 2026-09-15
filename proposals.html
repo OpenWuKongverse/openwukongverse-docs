@@ -82,16 +82,29 @@
   </section>
 
   <section class="block">
-    <h2 class="zhonly">三类型介入缝（按类找活干）</h2>
-    <h2 class="enonly">Three Slot Types (find work by type)</h2>
-    <table>
-      <thead><tr><th><span class="zhonly">类</span><span class="enonly">Type</span></th><th><span class="zhonly">定位</span><span class="enonly">Role</span></th><th><span class="zhonly">适合</span><span class="enonly">Suits</span></th></tr></thead>
-      <tbody>
-        <tr><td><strong class="zhonly">A · 支线缝合</strong><strong class="enonly">A· Branch-sewing</strong></td><td class="zhonly">节点之间/内部未被记录的细节、因果、前史</td><td class="enonly">unrecorded details, causality, prehistory between/below nodes</td><td class="zhonly">新手首选（安全区，易出亮点）</td><td class="enonly">beginners (safe zone, easy wins)</td></tr>
-        <tr><td><strong class="zhonly">B · 三模态</strong><strong class="enonly">B· Three Modes</strong></td><td class="zhonly">同一节点在三种模态下的呈现差异</td><td class="enonly">how one node presents across three modes</td><td class="zhonly">进阶（价值最高，参与模态坍缩）</td><td class="enonly">advanced (highest value, joins mode-collapse)</td></tr>
-        <tr><td><strong class="zhonly">C · 前史/后传</strong><strong class="enonly">C· Prequel/Sequel</strong></td><td class="zhonly">系统建立、悟空起源、取经后的循环</td><td class="enonly">system founding, Wukong origin, post-pilgrimage cycle</td><td class="zhonly">专家/架构师（想象力天花板）</td><td class="enonly">experts/architects (imagination ceiling)</td></tr>
-      </tbody>
-    </table>
+    <h2 class="zhonly">悟空宇宙主线地图（地铁星图）</h2>
+    <h2 class="enonly">Wukong Universe Mainline Map</h2>
+    <p class="dim zhonly">下面是主线 <strong>20 个节点（N1–N20）</strong>的「地铁图」。点击任一节点，查看该节点的正典概要、可认领的<strong>介入缝</strong>与<strong>接续点</strong>；点击空闲介入缝可<strong>一键预填创作表单</strong>。</p>
+    <p class="dim enonly">Below is the "metro map" of the <strong>20 mainline nodes (N1–N20)</strong>. Click a node to see its canon brief, open <strong>intervention slots</strong> and <strong>continuation points</strong>; click an open slot to <strong>pre-fill the creation form</strong>.</p>
+
+    <div class="map-legend">
+      <span class="lg"><i class="dot dot-free"></i><span class="zhonly">空闲 · 待认领</span><span class="enonly">Open</span></span>
+      <span class="lg"><i class="dot dot-pending"></i><span class="zhonly">评议中</span><span class="enonly">In Deliberation</span></span>
+      <span class="lg"><i class="dot dot-canon"></i><span class="zhonly">已入正典</span><span class="enonly">In Canon</span></span>
+      <span class="lg"><i class="dot dot-sandbox"></i><span class="zhonly">已入沙盒</span><span class="enonly">In Sandbox</span></span>
+    </div>
+
+    <div id="mainmap" class="mainmap">
+      <p class="dim" style="padding:1rem 0"><span class="zhonly">加载中…</span><span class="enonly">Loading…</span></p>
+    </div>
+
+    <div id="mainmapDrawer" class="mainmap-drawer" hidden></div>
+
+    <div class="panel ok">
+      <strong class="zhonly">介入缝三类型</strong><strong class="enonly">Three slot types</strong>
+      <span class="zhonly">：<strong>A · 支线缝合</strong>（入门，安全区，易出亮点）／ <strong>B · 三模态</strong>（进阶，价值最高，参与模态坍缩）／ <strong>C · 前史/后传</strong>（专家，想象力天花板）。全量标签以主线事件地图为准，写稿须过三层红线。</span>
+      <span class="enonly">: <strong>A · Branch-sewing</strong> (entry, safe zone, easy wins) / <strong>B · Three Modes</strong> (advanced, highest value, joins mode-collapse) / <strong>C · Prequel/Sequel</strong> (expert, imagination ceiling). Full tags follow the Mainline Event Map; all writing must pass the three red lines.</span>
+    </div>
   </section>
 
   <section class="block">
@@ -142,5 +155,6 @@
 <script src="assets/js/i18n.js"></script>
 <script src="assets/js/auth.js"></script>
 <script src="assets/js/live-proposals.js"></script>
+<script src="assets/js/mainmap.js"></script>
 </body>
 </html>

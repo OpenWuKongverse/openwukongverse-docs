@@ -351,3 +351,148 @@ code {
 @media (max-width: 640px) {
   .navauth { margin-left: 0; width: 100%; justify-content: flex-end; }
 }
+
+/* =========================================================
+   主线地图（地铁星图）· mainmap.js 配套
+   纯追加，不改动上方既有规则
+   ========================================================= */
+
+/* 状态色统一走 --dotc 变量（图例 / 站点 / 缝状态共用一个口径） */
+.dot-free    { --dotc: var(--ok); }
+.dot-pending { --dotc: var(--warn); }
+.dot-canon   { --dotc: var(--ok); }
+.dot-sandbox { --dotc: var(--accent); }
+.dot-rejected{ --dotc: var(--txt-dim); }
+
+/* ---- 图例 ---- */
+.map-legend {
+  display: flex; flex-wrap: wrap; gap: 1.1rem;
+  margin: .9rem 0 .2rem; font-size: .82rem; color: var(--txt-dim);
+}
+.map-legend .lg { display: inline-flex; align-items: center; gap: .4rem; }
+i.dot {
+  display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--dotc, var(--txt-dim)); flex: 0 0 auto;
+}
+
+/* ---- 地图容器 ---- */
+.mainmap { margin-top: 1rem; }
+.mm-act { margin-bottom: 1.2rem; }
+.mm-actlabel {
+  font-size: .76rem; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent2); margin-bottom: .3rem;
+}
+.mm-line {
+  display: flex; align-items: flex-start; gap: .4rem;
+  overflow-x: auto; padding: .8rem .2rem 1.1rem;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+/* 金色主线（穿过站点圆点，纯装饰） */
+.mm-line::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 1.42rem;
+  height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, transparent 0, var(--accent2) 4%, var(--accent2) 96%, transparent 100%);
+  opacity: .35; pointer-events: none;
+}
+
+/* ---- 站点 ---- */
+.mm-station {
+  flex: 0 0 auto; width: 104px;
+  display: flex; flex-direction: column; align-items: center; gap: .18rem;
+  background: none; border: none; cursor: pointer; font: inherit;
+  color: var(--txt-dim); text-align: center;
+  padding: .1rem .2rem .35rem; border-radius: 8px;
+  transition: background .16s ease, color .16s ease;
+  position: relative; z-index: 1;
+}
+.mm-station:hover { background: rgba(88,166,255,.08); color: var(--txt); }
+.mm-station:hover .mm-dot { box-shadow: 0 0 0 4px rgba(88,166,255,.18); }
+.mm-dot {
+  width: 13px; height: 13px; border-radius: 50%;
+  background: var(--dotc, var(--txt-dim));
+  border: 2px solid var(--bg);
+  transition: box-shadow .16s ease;
+}
+.mm-idx { font-size: .74rem; font-weight: 700; color: var(--accent2); letter-spacing: .03em; }
+.mm-name { font-size: .78rem; line-height: 1.25; color: inherit; }
+.mm-seams { font-size: .68rem; color: var(--txt-dim); opacity: .85; }
+
+/* ---- 抽屉 ---- */
+.mainmap-drawer { position: fixed; inset: 0; z-index: 60; }
+.mainmap-drawer[hidden] { display: none; }
+.mm-drawer-backdrop {
+  position: absolute; inset: 0; background: rgba(0,0,0,.55);
+  opacity: 0; transition: opacity .22s ease;
+}
+.mainmap-drawer.open .mm-drawer-backdrop { opacity: 1; }
+.mm-drawer-panel {
+  position: absolute; top: 0; right: 0; bottom: 0;
+  width: min(460px, 94vw);
+  background: var(--bg-soft); border-left: 1px solid var(--line);
+  padding: 1.2rem 1.3rem 2rem; overflow-y: auto;
+  transform: translateX(100%); transition: transform .24s ease;
+}
+.mainmap-drawer.open .mm-drawer-panel { transform: translateX(0); }
+.mm-drawer-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 1rem; padding-bottom: .7rem; border-bottom: 1px solid var(--line);
+}
+.mm-drawer-idx {
+  font-size: .74rem; color: var(--accent2); letter-spacing: .05em;
+  display: inline-flex; align-items: center; gap: .4rem; margin-bottom: .2rem;
+}
+.mm-drawer-head h3 { font-size: 1.15rem; line-height: 1.3; margin: 0; }
+.mm-drawer-sys { font-size: .78rem; margin-top: .25rem; }
+.mm-drawer-close {
+  cursor: pointer; background: none; border: none;
+  color: var(--txt-dim); font-size: 1.5rem; line-height: 1; flex: 0 0 auto;
+}
+.mm-drawer-close:hover { color: var(--txt); }
+
+.mm-sec { margin-top: 1.05rem; }
+.mm-sec h4 {
+  font-size: .78rem; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: .45rem;
+}
+.mm-sec p { font-size: .9rem; }
+
+/* ---- 介入缝行 ---- */
+.mm-seamrow {
+  display: flex; align-items: flex-start; gap: .55rem; flex-wrap: wrap;
+  padding: .55rem 0; border-bottom: 1px dashed var(--line);
+}
+.mm-seamcls {
+  flex: 0 0 auto; width: 20px; height: 20px; border-radius: 5px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: .72rem; font-weight: 700; color: #0d1117; margin-top: .1rem;
+}
+.mm-seamcls.cls-A { background: var(--ok); }
+.mm-seamcls.cls-B { background: var(--accent); }
+.mm-seamcls.cls-C { background: var(--accent2); }
+.mm-seamtxt { flex: 1 1 60%; font-size: .86rem; line-height: 1.5; }
+.mm-seamst {
+  display: inline-flex; align-items: center; gap: .35rem;
+  font-size: .74rem; color: var(--txt-dim); white-space: nowrap;
+}
+.mm-seamst > i {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--dotc, var(--txt-dim)); flex: 0 0 auto;
+}
+.mm-hook { font-size: .7rem; color: var(--accent2); border: 1px solid var(--accent2); border-radius: 4px; padding: 0 .3rem; }
+.mm-claim.btn {
+  font-size: .78rem; padding: .22rem .6rem; white-space: nowrap;
+  background: var(--accent2); color: #0d1117; border-radius: 6px;
+}
+.mm-claim.btn:hover { filter: brightness(1.08); text-decoration: none; }
+
+/* ---- 接续点 ---- */
+.mm-controw { padding: .55rem 0; border-bottom: 1px dashed var(--line); }
+.mm-conttitle { font-size: .9rem; font-weight: 600; }
+.mm-contmeta { font-size: .76rem; margin: .15rem 0 .3rem; }
+
+/* ---- 响应式 ---- */
+@media (max-width: 640px) {
+  .mm-station { width: 84px; }
+  .mm-drawer-panel { width: 100%; }
+}

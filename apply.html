@@ -271,6 +271,31 @@
     });
   });
 
+  /* ---- 地铁星图「一键创作」预填（观察者/未登录先到本页） ---- */
+  (function prefillFromQuery() {
+    if (!form) return;
+    var q;
+    try { q = new URLSearchParams(location.search); } catch (e) { return; }
+    var seam = (q.get('seam') || '').trim();
+    var node = (q.get('node') || '').trim();
+    var nname = (q.get('nname') || '').trim();
+    if (!seam && !node) return;
+    var nodeFull = node + (nname ? ' ' + nname : '');
+    // 把来意写进「创作意向」，降低填写门槛（可改）
+    if (form.intent && !form.intent.value) {
+      form.intent.value = '想认领主线地图上的介入缝 ' + (seam || '—') + '（节点 ' + (nodeFull || '—') + '）：';
+    }
+    (function addTip() {
+      var tip = document.createElement('p');
+      tip.className = 'form-msg';
+      tip.style.color = 'var(--accent2)';
+      tip.innerHTML =
+        '<span class="zhonly">已从主线地图带过来意：介入缝 <strong>' + esc(seam || '—') + '</strong> · 节点 <strong>' + esc(nodeFull || '—') + '</strong>。你当前是观察者，<strong>先提交创作者申请</strong>，获批后即可就该介入缝正式提交提案（提案表单会自动预填）。</span>' +
+        '<span class="enonly">Carried over from the map: slot <strong>' + esc(seam || '—') + '</strong> · node <strong>' + esc(nodeFull || '—') + '</strong>. You are an observer — <strong>submit a creator application first</strong>; once approved you can formally propose on this slot (the form auto-prefills).</span>';
+      if (form.parentNode) form.parentNode.insertBefore(tip, form);
+    })();
+  })();
+
   /* ---- 启动 ---- */
   refreshGate();
   window.addEventListener('storage', function (e) {
