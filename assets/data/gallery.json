@@ -35,6 +35,28 @@
 
   "pieces": [
     {
+      "id": "sandbox-wukong-self-correction-3days",
+      "section": "sparks",
+      "title": { "zh": "孙悟空自我纠错3天", "en": "Wukong Self-Corrects for 3 Days" },
+      "kind": "text",
+      "format": "prose",
+      "status": "sandbox",
+      "anchor": { "node": "N12", "act": 3, "seams": ["A8"] },
+      "modes": ["A"],
+      "body": {
+        "type": "markdown",
+        "path": "01-canon/sandbox/wukong-self-correction-3days_v1.md",
+        "anchor": "提案正文",
+        "note": "沙盒条目（未入正典）· 内容为测试占位，待正式内容替换"
+      },
+      "links": {
+        "discord": null,
+        "vote": [],
+        "github": "https://github.com/OpenWuKongverse/openwukongverse-docs/issues/3"
+      },
+      "credits": [{ "anon": "不要问我师父是谁03" }]
+    },
+    {
       "id": "n4-wukong-appears",
       "demo": true,
       "section": "stories",
