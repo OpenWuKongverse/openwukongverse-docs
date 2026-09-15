@@ -84,6 +84,7 @@ OpenWuKongVerse（OWKV）是一个 Web3 社区共创的硬核科幻动漫 IP 项
 | [`02-co-creation/proposal-template.md`](02-co-creation/proposal-template.md) | **共创提案模板**（OWKV-PROPOSAL-TPL）：一页可填、直接可报名提交的提案模板 + A12/B3/C7 三则示范填充 |
 | [`02-co-creation/draft-co-creation-agreement.md`](02-co-creation/draft-co-creation-agreement.md) | **《共创协议完整草案》**（对外可签署条款成品，十章） |
 | [`03-community/community-structure.md`](03-community/community-structure.md) | **社区基础架构**（OWKV-COMM-STRUCT）：四角色（首席架构师/评审团/共创者/观察者）+ 进入/退出机制 + 三阶段演进（在 03-community） |
+| [`03-community/discord-channel-plan.md`](03-community/discord-channel-plan.md) | **Discord 服务器频道与权限规划**（OWKV-DISCORD-PLAN）：角色映射（社区四角色←→Discord 4 角色）+ 6 频道权限矩阵（答疑/脑洞公开，申请/审核私密）+ Onboarding 流程 + 安全防刷（永久码+验证等级+AutoMod）+ 公开/私密边界 + 分阶段建群；主群永久码 `discord.gg/eHXV9fMBvE` 已挂 join.html |
 
 ---
 
