@@ -188,3 +188,22 @@ wrangler d1 execute owkv-events --remote --file=schema-proposals.sql
 - `GET /api/proposals`（公开看板数据；**不返回正文**，正文只留 GitHub Issue 留痕）
 
 **关键设计**：两步式审批（GET 确认页零副作用 / POST 原子条件更新 `WHERE status='pending'` + `meta.changes===1`）+ Discord 链接 `<...>` 包裹抑制抓取（与创作者审批同一防副作用模型）。
+
+
+## 2026-09-15 积分预聚合缓存（`contributors.points_cache`）
+
+**背景**：`/api/user/me` 原先每次实时 `SELECT dim, SUM(points) FROM ledger WHERE contributor_id=? GROUP BY dim` 聚合。账本累积后读放大明显，且 `ledger` 的 `contributor_id` 索引未建。
+
+**改动**：积分账本变更时把聚合结果写回 `contributors.points_cache`（JSON 串），读时直接取单列。
+- `computePoints(env, id)` — 实时聚合（沿用原 SQL）
+- `getPoints(env, id)` — 读缓存；为空时回退实时聚合并顺手回填（兼容存量行与列缺失，平滑迁移）
+- `recalcPointsCache(env, id)` — 账本变更后刷新缓存
+
+**不变量（重要）**：任何写 `ledger` 的路径，必须在同一批变更后调用 `recalcPointsCache(env, id)`，否则该用户 `points_cache` 会陈旧。目前 `worker.js` 尚无 `INSERT INTO ledger`（积分入账逻辑未接），**接入时必须同步调用**。
+
+**schema 增量执行**（一次性；SQLite/D1 无 `ADD COLUMN IF NOT EXISTS`，重复执行报 duplicate column 可忽略）：
+```bash
+wrangler d1 execute owkv-events --remote --file=schema-points-cache.sql
+```
+
+**前端配套（同一批）**：`assets/js/auth.js` 的 `fetchMe()` 增加 in-flight 合并 + 5s TTL 缓存（`invalidateMe()` 在 `setToken`/`logout` 时作废），减少打开 `personal.html` 时的重复请求次数（原为 3 次）。

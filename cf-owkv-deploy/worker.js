@@ -316,17 +316,8 @@ async function handleUserMe(request, env) {
   ).bind(payload.sub).first();
   if (!user) return json(404, { ok: false, error: 'user_not_found' });
 
-  // 积分聚合
-  const pointsRows = await env.DB.prepare(
-    `SELECT dim, SUM(points) AS total FROM ledger WHERE contributor_id = ? GROUP BY dim`
-  ).bind(payload.sub).all();
-
-  const points = { C1: 0, C2: 0, C3: 0, C4: 0, total: 0 };
-  for (const r of (pointsRows.results || [])) {
-    const v = Number(r.total) || 0;
-    points[r.dim] = v;
-    points.total += v;
-  }
+  // 积分：优先读预聚合缓存列（读单列），为空则回退实时聚合并回填
+  const points = await getPoints(env, payload.sub);
 
   return json(200, {
     ok: true,
@@ -346,6 +337,60 @@ async function handleUserMe(request, env) {
     },
     points
   });
+}
+
+/* ═══════════════════════ 积分读取与预聚合缓存 ═══════════════════════ */
+// 设计：ledger 是积分唯一依据，但读路径若每次 SUM+GROUP BY，账本累积后读放大明显。
+// 故在账本变更时把聚合结果写入 contributors.points_cache（JSON 串），读时直接取。
+// 不变量：任何写 ledger 的路径都必须在同一批变更后调用 recalcPointsCache(env, id)，
+//         否则该用户的 points_cache 会陈旧。回退分支仅在缓存为空时触发。
+
+async function computePoints(env, id) {
+  const rows = await env.DB.prepare(
+    `SELECT dim, SUM(points) AS total FROM ledger WHERE contributor_id = ? GROUP BY dim`
+  ).bind(id).all();
+  const points = { C1: 0, C2: 0, C3: 0, C4: 0, total: 0 };
+  for (const r of (rows.results || [])) {
+    const v = Number(r.total) || 0;
+    points[r.dim] = v;
+    points.total += v;
+  }
+  return points;
+}
+
+// 读积分：缓存命中直接返回；未命中（存量行 / 列缺失）回退实时聚合并顺手回填
+async function getPoints(env, id) {
+  let cached = null;
+  try {
+    const row = await env.DB.prepare('SELECT points_cache FROM contributors WHERE id = ?').bind(id).first();
+    if (row && row.points_cache) cached = JSON.parse(row.points_cache);
+  } catch (e) {
+    cached = null; // 列不存在（迁移未执行）→ 走回退，不阻断读路径
+  }
+  if (cached && typeof cached.total === 'number') {
+    return {
+      C1: cached.C1 || 0, C2: cached.C2 || 0, C3: cached.C3 || 0, C4: cached.C4 || 0,
+      total: cached.total || 0
+    };
+  }
+  const points = await computePoints(env, id);
+  try {
+    await env.DB.prepare('UPDATE contributors SET points_cache = ? WHERE id = ?')
+      .bind(JSON.stringify(points), id).run();
+  } catch (e) { /* 列缺失时忽略：下次请求仍走回退 */ }
+  return points;
+}
+
+// 账本变更后刷新缓存（供未来 ledger 写入点调用）
+async function recalcPointsCache(env, id) {
+  const points = await computePoints(env, id);
+  try {
+    await env.DB.prepare('UPDATE contributors SET points_cache = ? WHERE id = ?')
+      .bind(JSON.stringify(points), id).run();
+  } catch (e) {
+    console.error('recalcPointsCache failed:', e);
+  }
+  return points;
 }
 
 /* ═══════════════════════ 兼容旧表单 ═══════════════════════ */

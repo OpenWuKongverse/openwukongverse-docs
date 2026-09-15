@@ -23,6 +23,7 @@
       if (t) { localStorage.setItem(TOKEN_KEY, t); }
       else { localStorage.removeItem(TOKEN_KEY); }
     } catch (e) {}
+    invalidateMe(); // token 变化后作废 me 缓存，避免换号读到上一位用户的身份/积分
   }
   function getMe() {
     try { return JSON.parse(localStorage.getItem(ME_KEY) || 'null'); } catch (e) { return null; }
@@ -51,25 +52,48 @@
     return api('/api/auth/verify-otp', { method: 'POST', body: payload });
   }
 
-  /* ---- /api/user/me: 带 JWT 拉取身份 + 积分 ---- */
-  function fetchMe() {
+  /* ---- /api/user/me: 带 JWT 拉取身份 + 积分 ----
+     请求合并 + 短 TTL：同一页面打开时，导航栏(DOMContentLoaded)、账户卡、
+     身份视图切换都会调用 fetchMe()，此前各自打一次后端（叠加 CORS 预检
+     后是多次完整往返）。现在 TTL 窗口内的并发调用共用一个 in-flight Promise，
+     结果也缓存复用，后端只被真正打一次。 */
+  var ME_TTL_MS = 5000;        // 窗口内复用结果（积分非高频变更，5s 足够）
+  var _meInflight = null;      // 进行中的请求（并发合并）
+  var _meResult = null;        // 上一次成功结果
+  var _meAt = 0;               // 上次成功时间戳
+
+  function invalidateMe() { _meInflight = null; _meResult = null; _meAt = 0; }
+
+  function fetchMe(opts) {
+    opts = opts || {};
     var t = getToken();
-    if (!t) return Promise.reject(new Error('no_token'));
-    return api('/api/user/me', { headers: { Authorization: 'Bearer ' + t } })
+    if (!t) { invalidateMe(); return Promise.reject(new Error('no_token')); }
+    // 同 token 的进行中请求 → 直接复用（并发去重）
+    if (!opts.force && _meInflight) return _meInflight;
+    // TTL 内已有成功结果 → 直接返回
+    if (!opts.force && _meResult && (Date.now() - _meAt) < ME_TTL_MS) {
+      return Promise.resolve(_meResult);
+    }
+    _meInflight = api('/api/user/me', { headers: { Authorization: 'Bearer ' + t } })
       .then(function (j) {
+        _meInflight = null;
         if (j && j.ok) {
           // 缓存 user + points（points 用于导航 chip 积分显示）
           setMe(Object.assign({}, j.user, { points: j.points || { C1:0,C2:0,C3:0,C4:0,total:0 } }));
+          _meResult = j; _meAt = Date.now();
           return j;
         }
         return Promise.reject(new Error((j && j.error) || 'me_failed'));
-      });
+      })
+      .catch(function (e) { _meInflight = null; throw e; });
+    return _meInflight;
   }
 
   /* ---- 登出 ---- */
   function logout() {
     setToken('');
     setMe(null);
+    invalidateMe();
     renderNavAuth();
     onLogout && onLogout();
   }
