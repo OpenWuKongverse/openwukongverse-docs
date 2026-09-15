@@ -496,3 +496,80 @@ i.dot {
   .mm-station { width: 84px; }
   .mm-drawer-panel { width: 100%; }
 }
+
+/* =========================================================
+   表单布局修正（BUGFIX）· .enroll-form 三页共用
+   （proposals 表单 / join 报名 / apply 申请）
+   修因：
+     ① fieldset 缺 grid-column → 落入左标签列，并引发后续
+        「标签↔控件」左右互换级联（桌面+移动均复现）
+     ② textarea / fieldset / legend / .checkbox 无任何样式
+     ③ align-items:center → 长文本域行的标签视觉错位（浮到中部）
+     ④ 移动端无断点：210px 1fr 不塌列，输入框被挤在 210px 内
+     ⑤ join.html .auth-step 只占左列 → 整个 OTP 表单被压进 210px
+   ========================================================= */
+
+/* ① 跨栏：fieldset 等应占满整行（form-msg/turnstile/submit 原有，补全） */
+.enroll-form > fieldset,
+.enroll-form > .auth-step,
+.enroll-form > .form-msg,
+.enroll-form > .cf-turnstile,
+.enroll-form > .enroll-submit { grid-column: 1 / -1; }
+
+/* ⑤ join.html：.auth-step 自身镜像同样的两栏网格 */
+.enroll-form > .auth-step {
+  display: grid; grid-template-columns: 210px 1fr;
+  column-gap: 1rem; row-gap: .95rem; align-items: start;
+}
+.enroll-form > .auth-step > fieldset,
+.enroll-form > .auth-step > .form-msg,
+.enroll-form > .auth-step > .cf-turnstile,
+.enroll-form > .auth-step > .enroll-submit { grid-column: 1 / -1; }
+.enroll-form > .auth-step > .enroll-submit { justify-self: start; }
+
+/* ③ 顶对齐：长文本域的标签不再浮到中部；标签加内边距与单行输入文字对齐 */
+.enroll-form { align-items: start; }
+.enroll-form > label,
+.enroll-form > .auth-step > label { padding-top: .5rem; }
+
+/* ② textarea：与 input 同款外观，撑满所在列 */
+.enroll-form textarea {
+  width: 100%; box-sizing: border-box;
+  background: var(--bg-soft); border: 1px solid var(--line); border-radius: 8px;
+  color: var(--txt); font-size: .95rem; font-family: inherit;
+  padding: .62rem .8rem; margin: 0; line-height: 1.6; min-height: 7rem;
+  resize: vertical; transition: border-color .15s, box-shadow .15s;
+}
+.enroll-form textarea:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(88,166,255,.18);
+}
+
+/* ② fieldset / legend / 复选框组（三层红线自检） */
+.enroll-form fieldset {
+  border: 0; padding: 0; margin: 0; min-width: 0;
+  display: flex; flex-wrap: wrap; align-items: center; gap: .55rem 1rem;
+}
+.enroll-form fieldset > legend {
+  float: none; width: 100%; padding: 0; margin: 0 0 .15rem;
+  color: var(--txt-dim); font-size: .85rem; font-weight: 600; letter-spacing: .02em;
+}
+.enroll-form label.checkbox {
+  display: inline-flex; align-items: center; gap: .42rem;
+  text-align: left; font-weight: 400; color: var(--txt);
+  padding: .34rem .7rem; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--bg-soft); cursor: pointer;
+}
+.enroll-form label.checkbox:hover { border-color: var(--accent); }
+.enroll-form label.checkbox input { accent-color: var(--accent); width: 1rem; height: 1rem; margin: 0; }
+
+/* ④ 移动端：塌成单列，标签在输入框上方并左对齐 */
+@media (max-width: 640px) {
+  .enroll-form,
+  .enroll-form > .auth-step { grid-template-columns: 1fr; }
+  .enroll-form > label,
+  .enroll-form > .auth-step > label { text-align: left; padding-top: 0; }
+  .enroll-form label .dim-msg { text-align: left; }
+  .enroll-form > .enroll-submit,
+  .enroll-form > .auth-step > .enroll-submit { justify-self: stretch; }
+}
